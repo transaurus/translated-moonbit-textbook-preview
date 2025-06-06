@@ -1,0 +1,742 @@
+{
+  "source_file_path_relative_to_docusaurus_root": "docs/10-hash-maps-closures.md",
+  "source_file_content_hash": "dcc705c68b836dc5e6c9cc69959c50789754fbbd918c2f07a7a2c94e3434ab46",
+  "segments": [
+    {
+      "segment_id": "76e4a56a",
+      "source_content": "# 10. Hash Maps & Closures",
+      "source_content_hash": "075fb860d17c1f0aadd840a0eaa94bb7591a2bd6f044de59925bd0e54690f21f",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "# 10. ハッシュマップとクロージャ"
+      }
+    },
+    {
+      "segment_id": "adbc947a",
+      "source_content": "## Review",
+      "source_content_hash": "fb10aa9db2db8777222ffdbd43fde6590d0cbc4c05c03ccdf4ba938c7ca8c1e5",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "## 復習"
+      }
+    },
+    {
+      "segment_id": "e7ec8f99",
+      "source_content": "A map or table is a collection of key-value pairs that bind keys to values, where each key is unique. A simple implementation of a map is a list of tuples, where each tuple is a key-value pair. We add a new key-value pair to the head of the list, and traverse from the head of the list for lookup operations.",
+      "source_content_hash": "858031d2adf534042e29833d436a89bf20728b27efcb92aa8a680c090f13db37",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "マップ（またはテーブル）は、キーと値を結びつけるキー・バリューペアの集合であり、各キーは一意です。マップの単純な実装としては、タプルのリストがあり、各タプルがキー・バリューペアとなっています。新しいキー・バリューペアはリストの先頭に追加され、検索操作ではリストの先頭から走査します。"
+      }
+    },
+    {
+      "segment_id": "6ef78e84",
+      "source_content": "Another implementation is based on the balanced binary tree (BBT) we introduced in [Chapter 5](./trees). We just need to modify the BBT so that each node now stores a key-value pair. In tree operations, we compare the first parameter of the key-value pair with the key we want to operate on.",
+      "source_content_hash": "b585afcf065cfe411473d8621348eabcfdd162ccd255edf99304080411f42e4b",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "別の実装方法として、[第5章](./trees)で紹介した平衡二分木（BBT）を基にしたものがあります。BBTを修正して、各ノードがキー・バリューペアを保持するようにします。木の操作では、キー・バリューペアの最初のパラメータと操作対象のキーを比較します。"
+      }
+    },
+    {
+      "segment_id": "d912d376",
+      "source_content": "## Hash Maps",
+      "source_content_hash": "480fbee3612f2ed14ef0f5bf1cb30263024066bbbe1eb5d844111f8bf52ec2be",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "## ハッシュマップ"
+      }
+    },
+    {
+      "segment_id": "8a5f6a7b",
+      "source_content": "### Hash Function",
+      "source_content_hash": "497e5b8f10441145ab323d2170bd316a219e833e3be2aac3ee809c351e26d7c7",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "### ハッシュ関数"
+      }
+    },
+    {
+      "segment_id": "180bddb1",
+      "source_content": "First, what is a hash function or hashing? A hash function maps or binds data of arbitrary length to data of fixed length. For example, you may have heard of the MD5 algorithm, which maps files of any size or format to a short 128-bit digest (compressed data representation).",
+      "source_content_hash": "16d5d28798e82ec98fb062a63a162d1879b1856c5c5d84fb683a0823446156ae",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "まず、ハッシュ関数またはハッシュとは何でしょうか？ハッシュ関数は、任意の長さのデータを固定長のデータにマッピングまたは結びつけます。例えば、MD5アルゴリズムは、任意のサイズや形式のファイルを短い128ビットのダイジェスト（圧縮されたデータ表現）にマッピングします。"
+      }
+    },
+    {
+      "segment_id": "cf898102",
+      "source_content": "For the `Hash` interface in MoonBit, data is mapped to values in the range of integers.  For example,  the string \"ThisIsAVeryVeryLongString\" will be mapped to the integer -321605584.",
+      "source_content_hash": "6f58f576041a98dcf370a229b9787bd64a6c784c45d733d6079bf36028afe014",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "MoonBitの`Hash`インターフェースでは、データは整数の範囲の値にマッピングされます。例えば、文字列\"ThisIsAVeryVeryLongString\"は整数-321605584にマッピングされます。"
+      }
+    },
+    {
+      "segment_id": "93be3c14",
+      "source_content": "```moonbit no-check\ntrait Hash { hash(Self) -> Int }\n\"ThisIsAVeryVeryLongString\".hash() == -321605584\n```",
+      "source_content_hash": "eaa70454672c2b43ebc1631839257fc2312ac653b0d08329235010b6a8ec739d",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_93be3c14"
+      }
+    },
+    {
+      "segment_id": "63622bf0",
+      "source_content": "### Hash Maps Data Structure",
+      "source_content_hash": "89a062422cc96121e3aa4e93c45eb477040443fa5159e442950c656811c4c746",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "### ハッシュマップのデータ構造"
+      }
+    },
+    {
+      "segment_id": "98cfbd53",
+      "source_content": "Hash maps use this mechanism to efficiently handle data by mapping the data to a hash value, and then the hash value to an array index. This makes adding, looking up, and updating data fast because random access to arrays is the most efficient operation in modern computers. Hash map operations are ideally in constant time, which means the running time does not increase as the data input size grows (independent of the input size). However, operations on balanced binary trees are in logarithmic time. Here's the example pseudocode snippet demonstrating the mapping mechanism in a hash map:",
+      "source_content_hash": "5a7903224ee4b5ca90cadca3d96dc8898dff17213e8f8f8d7b21ae3cfaa4f38c",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "ハッシュマップはこのメカニズムを利用して、データをハッシュ値にマッピングし、そのハッシュ値を配列のインデックスにマッピングすることで、効率的にデータを処理します。これにより、データの追加、検索、更新が高速に行えます。なぜなら、配列へのランダムアクセスは現代のコンピュータで最も効率的な操作だからです。ハッシュマップの操作は理想的には定数時間で行われます。つまり、実行時間はデータ入力サイズの増加に伴って増加しません（入力サイズに依存しません）。一方、平衡二分木の操作は対数時間です。以下は、ハッシュマップのマッピングメカニズムを示す疑似コードの例です。"
+      }
+    },
+    {
+      "segment_id": "a89b882e",
+      "source_content": "```moonbit no-check\n// For a: Array[(Key, Value)], key: Key, value: Value\nlet index = key.hash() % a.length() // key value--hashing-->hash value--modulo operation-->index in array\na[ index ] = value // add or update data\nlet value = a[ index ] // look up data\n```",
+      "source_content_hash": "4e4febfd8d677773ef45a9a7a12f1845e2d1d81711c873db5d8782411b134529",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_a89b882e"
+      }
+    },
+    {
+      "segment_id": "4daf5cdd",
+      "source_content": "Suppose we have an array of key-value pairs and want to add, update, or look up data. We first calculate the hash value based on the key. Since hash values can be any integer, we use modulo to map a hash value to an array index and then look up or update data with the corresponding array index. However, as mentioned earlier, this is the ideal scenario because hash collisions may occur.",
+      "source_content_hash": "2174da60bbaae83e980d57e962b51e35cb76e45a112fbe6c75371e2251d27131",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "キー・バリューペアの配列があり、データを追加、更新、または検索したいとします。まず、キーに基づいてハッシュ値を計算します。ハッシュ値は任意の整数になり得るため、モジュロ演算を使用してハッシュ値を配列のインデックスにマッピングし、対応する配列インデックスでデータを検索または更新します。ただし、前述のように、これは理想的なシナリオであり、ハッシュ衝突が発生する可能性があります。"
+      }
+    },
+    {
+      "segment_id": "f422383e",
+      "source_content": "## Hash Collision",
+      "source_content_hash": "2a0397bcbeb6484efea0f192513b810ed15e83df0407eb626f1d086e43948bbb",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "## ハッシュ衝突"
+      }
+    },
+    {
+      "segment_id": "97ae4a01",
+      "source_content": "According to the [pigeonhole principle](https://en.wikipedia.org/wiki/Pigeonhole_principle) or [birthday problem](https://en.wikipedia.org/wiki/Birthday_problem), the amount of data we map may exceed the range of integers, and the hash value may far exceed the valid array indices. For example, we obviously can't directly allocate an array with 2.1 billion slots, and then collisions will occur where multiple data have the same array index (different pieces of data may have the same hash value, and different hash values may be mapped to the same index in an array). There are several ways to handle hash collisions.",
+      "source_content_hash": "0561f4efae3aca151b701929364a20c9a792dcf8d5c6118fbc9ff209f786143b",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "[鳩の巣原理](https://en.wikipedia.org/wiki/Pigeonhole_principle)や[誕生日の問題](https://en.wikipedia.org/wiki/Birthday_problem)によると、マッピングするデータ量が整数の範囲を超える可能性があり、ハッシュ値が有効な配列インデックスをはるかに超える場合があります。例えば、明らかに21億スロットの配列を直接割り当てることはできず、異なるデータが同じ配列インデックスを持つ衝突が発生します（異なるデータが同じハッシュ値を持つ場合や、異なるハッシュ値が同じ配列インデックスにマッピングされる場合）。ハッシュ衝突を処理する方法はいくつかあります。"
+      }
+    },
+    {
+      "segment_id": "c3a738de",
+      "source_content": "One approach is **direct addressing**. When data must be stored in the slot corresponding to the array index we calculated, different pieces of data might be stored in the same slot causing issues. So, we use another data structure in each slot to store items hashed to the same index. Possible data structures include lists, balanced binary trees, and the original array turns into an array of lists or trees.",
+      "source_content_hash": "de31dfe18d72fd59bd67ed191cc664093bb97a4af15846c5cc20cf45a44e4b90",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "1つのアプローチは**直接アドレッシング**です。データを計算した配列インデックスに対応するスロットに格納する必要がある場合、異なるデータが同じスロットに格納され問題が発生する可能性があります。そのため、各スロットで別のデータ構造を使用して、同じインデックスにハッシュされたアイテムを格納します。使用可能なデータ構造にはリストや平衡二分木があり、元の配列はリストや木の配列に変わります。"
+      }
+    },
+    {
+      "segment_id": "3cfe6286",
+      "source_content": "Another approach is **open addressing** which does not change the type of the array, so the array still stores data directly but follows specific rules about finding empty slots to store the data. For example, linear probing can be used to find the next empty slot to store data starting from the original slot, while quadratic probing increments the index by $1^2$, $2^2$, $3^2$ ... to find empty slots. In this lecture, we'll focus on direct addressing with lists and open addressing with linear probing.",
+      "source_content_hash": "ed3a727e914efa6dc13d61fe80686981c90fdbd5c5e5651fde0c5a308c8c98ff",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "別のアプローチは**開放アドレッシング**で、配列の型を変更せず、配列が直接データを格納しますが、データを格納する空きスロットを見つけるための特定のルールに従います。例えば、線形探査法を使用して、元のスロットから開始して次の空きスロットを見つけてデータを格納します。二次探査法では、インデックスを$1^2$、$2^2$、$3^2$...と増やして空きスロットを見つけます。この講義では、リストを使用した直接アドレッシングと線形探査法を使用した開放アドレッシングに焦点を当てます。"
+      }
+    },
+    {
+      "segment_id": "06c0f776",
+      "source_content": "### Direct Addressing",
+      "source_content_hash": "c84b00a79a9fd8e0c01605af015547a7d91ae9f468ae3c6c24877f07c626f03f",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "### 直接アドレッシング"
+      }
+    },
+    {
+      "segment_id": "aa1e7006",
+      "source_content": "Let's start with direct addressing. When a hash/index collision occurs, store the data of the same index into some data structure like lists. For example, when adding 0 and 5 (with hash values of 0 and 5 respectively) into an array of length 5, both 0 and 5 mod length 5 will be 0 and are added into a list at index 0:",
+      "source_content_hash": "4e0589a400ef3062b43471bab337ffd0639e963f1a97abe5b65c8bf7e483dc06",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "まず直接アドレッシングから始めましょう。ハッシュ/インデックスの衝突が発生した場合、同じインデックスのデータをリストなどのデータ構造に格納します。例えば、長さ5の配列に0と5（それぞれハッシュ値が0と5）を追加する場合、0と5 mod 長さ5はどちらも0になるため、インデックス0のリストに追加されます："
+      }
+    },
+    {
+      "segment_id": "13d9cd70",
+      "source_content": "![](/pics/separate_chaining.drawio.webp)",
+      "source_content_hash": "29733527dc0f2966e8f89971f11b263cf8f167ffc0024a4c33683e835d1eef2c",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "![](/pics/separate_chaining.drawio.webp)"
+      }
+    },
+    {
+      "segment_id": "29528c8d",
+      "source_content": "For implementation, we'll define two additional data structures: 1) a key-value pair that enables convenient in-place value updates; and 2) a mutable list where a null value means an empty list, and otherwise the tuples are the head element plus the remaining list. Finally, let's define the hash map. It contains an array of lists of key-value pairs, and we dynamically maintain the length of the array and the number of key-value pairs.",
+      "source_content_hash": "619b94c04f85f4280ad145effdc8963b6d2d96204f307b69484251ee6c09a011",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "実装では、2つの追加データ構造を定義します：1) インプレースでの値更新を可能にするキーと値のペア、2) null値が空のリストを意味し、それ以外の場合タプルが先頭要素と残りのリストとなる可変リスト。最後に、ハッシュマップを定義します。これはキーと値のペアのリストの配列を含み、配列の長さとキーと値のペアの数を動的に維持します。"
+      }
+    },
+    {
+      "segment_id": "4795a13d",
+      "source_content": "```moonbit\nstruct Entry[K, V] { // Struct for key-value pair storage\n  key : K\n  mut value : V // In-place update enabled\n}\n\nstruct Bucket[V] { // Collection that can store key-value pairs\n  mut val : Option[(V, Bucket[V])] // In-place addition, removal enabled\n}\n\nstruct HT_bucket[K, V] {\n  mut values : Array[Bucket[Entry[K, V]]] // List of key-value pairs, array of lists\n  mut length : Int // Length of array dynamically maintained\n  mut size : Int // Number of key-value pairs in the hash map dynamically maintained\n}\n```",
+      "source_content_hash": "3b5d09cfec96d95f2233aa6b3fb3a018d9bd8ec77ef0a9d8b1cc1de68a5ea65c",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_4795a13d"
+      }
+    },
+    {
+      "segment_id": "06e24cc0",
+      "source_content": "For the add/update operation, we first calculate the position to store the key based on its hash value. Then, we look up if the key already exists by traversing the list. If the key exists, we update the value, and if not we add the key-value pair. Similarly, we check the corresponding list and update it for the remove operation.",
+      "source_content_hash": "106e8826a93a1d5816e18f56d3669d2f92496823fdc035531ff18447a17de017",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "追加/更新操作では、まずキーのハッシュ値に基づいて格納位置を計算します。次に、リストを走査してキーが既に存在するかどうかを調べます。キーが存在する場合は値を更新し、存在しない場合はキーと値のペアを追加します。同様に、対応するリストをチェックし、削除操作ではリストを更新します。"
+      }
+    },
+    {
+      "segment_id": "7f71ff2a",
+      "source_content": "![height:200px](/pics/separate_chaining_op_en.drawio.webp)",
+      "source_content_hash": "cc40627da5d6e3ed4df21821590e9df9c994b11c44af6a015b81f61fa37bfac7",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "![height:200px](/pics/separate_chaining_op_en.drawio.webp)"
+      }
+    },
+    {
+      "segment_id": "147e8550",
+      "source_content": "The following code demonstrates adding and updating data. We first calculate the hash value of the key at line 2 with the hash interface specified in `K : Hash` at line 1. Then we find and traverse the corresponding data structure. We're using a mutable data structure with an infinite while loop at line 4. We break out of the loop if we find the key already exists or reach the end of the list. If the key is found, we update the data in place. Otherwise, we update the bucket to be the remaining list so the loop terminates. When we reach the end of the list and haven't found the key, we add a new pair of data at the end of the list. At last, we check if it needs resizing based on the current load factor.",
+      "source_content_hash": "c40249df86f925ae319b8e92d067774faab2eecfbf86d6cd4fd0e04725125597",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "以下のコードはデータの追加と更新を示しています。1行目の`K : Hash`で指定されたハッシュインターフェースを使用して、2行目でキーのハッシュ値を計算します。次に対応するデータ構造を見つけて走査します。4行目で無限whileループを使用した可変データ構造を使用しています。キーが既に存在するか、リストの終端に到達した場合にループを抜けます。キーが見つかった場合、データをインプレースで更新します。見つからなかった場合、バケットを残りのリストに更新してループを終了させます。リストの終端に到達してもキーが見つからなかった場合、リストの末尾に新しいデータペアを追加します。最後に、現在の負荷係数に基づいてリサイズが必要かどうかをチェックします。"
+      }
+    },
+    {
+      "segment_id": "af983f82",
+      "source_content": "```moonbit\nlet load = 0.75\nfn resize() -> Unit {} // placeholder for resize implementation\n\nfn put[K : Hash + Eq, V](map : HT_bucket[K, V], key : K, value : V) -> Unit {\n  let index = key.hash() % map.length // Calculate the index\n  let mut bucket = map.values[index] // Get the corresponding data structure\n  while true {\n    match bucket.val {\n      None => { // If doesn't exist, add and exit loop\n        bucket.val = Some(({ key, value }, { val: None }))\n        map.size = map.size + 1\n        break\n      }\n      Some((entry, rest)) => {\n        if entry.key == key { // If exists, update the value\n          entry.value = value\n          break\n        } else { // Otherwise, update bucket so the loop terminates\n          bucket = rest\n  } } } }\n  if map.size.to_double() / map.length.to_double() >= load { // Resize according to the load factor\n    resize()\n  }\n}\n```",
+      "source_content_hash": "da7f16286185c2f98b60af5d79558a50b205e10ec8a3a28eb78b492002d08f01",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_af983f82"
+      }
+    },
+    {
+      "segment_id": "25212439",
+      "source_content": "You might wonder why we need to resize as the lists can keep growing. Let's first introduce the concept of load factor: the ratio of the number of key-value pairs to the length of the array. So basically a higher load factor means more collisions, longer linked lists, and slower add, lookup, update, and remove operations. However, we chose to use arrays for efficient operations in constant time. So, we need to set a threshold and reallocate a larger array if the load factor exceeds such threshold to reduce the length of the lists. Nevertheless, if the threshold is too high, it's more likely to have long lists resulting in slower list traversal and reduced performance; and if the threshold is too low, it takes more time to resize the array and reallocate each element by re-calculating the hash values.",
+      "source_content_hash": "14ade8aa1c95d80e7f0d04874bafff80960ece5fb346ca66a37c89c1e3013211",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "なぜリサイズが必要なのか疑問に思うかもしれません。リストは際限なく成長できるからです。まず負荷係数の概念を紹介しましょう：キーと値のペアの数と配列の長さの比率です。基本的に、負荷係数が高いほど衝突が多くなり、リンクリストが長くなり、追加、検索、更新、削除の操作が遅くなります。しかし、定数時間での効率的な操作のために配列を選択しました。そのため、しきい値を設定し、負荷係数がそれを超えた場合により大きな配列を再割り当てしてリストの長さを短くします。ただし、しきい値が高すぎると長いリストが発生しやすくなり、リストの走査が遅くなりパフォーマンスが低下します。逆にしきい値が低すぎると、配列のリサイズと各要素のハッシュ値の再計算による再割り当てに時間がかかります。"
+      }
+    },
+    {
+      "segment_id": "d79a4831",
+      "source_content": "Next, let's briefly go over the remove operation. Similar to the add/update operation, we calculate the hash and index, find the corresponding list, and traverse it. We exit the loop once the traversal has finished. During each loop, we check if it's the data we're looking for. If so, we modify the list in place by removing the stored value and updating the hash map size. Otherwise, we keep traversing. The lookup and resize operations for direct addressing are relatively simple and feel free to try them out as a practice.",
+      "source_content_hash": "476d2740ca34a52ab2a8d84b2dcbd49da2ea01b59f082578c105b87df0e09512",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "次に、削除操作を簡単に見ていきましょう。追加/更新操作と同様に、ハッシュとインデックスを計算し、対応するリストを見つけて走査します。走査が終了したらループを抜けます。各ループで、探しているデータかどうかをチェックします。見つかった場合、格納された値を削除してリストをインプレースで変更し、ハッシュマップのサイズを更新します。見つからなかった場合、走査を続けます。直接アドレッシングの検索とリサイズ操作は比較的単純なので、練習として試してみてください。"
+      }
+    },
+    {
+      "segment_id": "64071bcc",
+      "source_content": "```moonbit\nfn remove[K : Hash + Eq, V](map : HT_bucket[K, V], key : K) -> Unit {\n  let index = key.hash() % map.length // Calculate the index\n  let mut bucket = map.values[index] // Get the corresponding data structure\n  while true {\n    match bucket.val {\n      None => break // Exit after finishing traversal\n      Some((entry, rest)) => {\n        if entry.key == key { // Remove if exists\n          bucket.val = rest.val // { Some(entry, { val }) } -> { val }\n          map.size = map.size - 1\n          break\n        }\n        else { // Otherwise, continue traversal\n          bucket = rest\n  } } } } }\n```",
+      "source_content_hash": "c459ab9d5268637e8cf91cbd8a0470a03ad4e653f590bda08a494ac3074114e8",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_64071bcc"
+      }
+    },
+    {
+      "segment_id": "b9b8694c",
+      "source_content": "### Open Addressing",
+      "source_content_hash": "526bc45dbf9b15bd28b1fd6a6f3dc9595e97c843cf34097ce3a3e7a98f7a32b0",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "### オープンアドレッシング"
+      }
+    },
+    {
+      "segment_id": "b6152880",
+      "source_content": "Let's continue with open addressing. Recall that linear probing is when a hash collision occurs, we keep incrementing the index to find the next empty slot to place the collided key. In the following example, we first add 0 whose hash value is 0 into slot 0. Then, we add 1 whose hash value is 1 into slot 1. Lastly, we add 5 whose hash value is 5, but it exceeds the range of indices and we use modulo to get 0 instead. In theory, we should store 5 in slot 0, but the slot was already taken. Therefore, we increment the index until we find the next empty slot which is slot 2 as slot 1 was also taken. Note that an invariant must be maintained throughout the program: there should be no empty slots between the original slot and the slot where the key-value pair is actually stored. This ensures we won't waste time traversing the whole hash map to check if some key-value pair already exists or not. Also, since we made sure there's no gap between the slots, we can exit the loop once the next empty slot is found.",
+      "source_content_hash": "a3e100cc46975b67c27cf99e3d3b4006d0ffc1eddb021a3932e74e63cf29d61a",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "オープンアドレッシングについて続けて説明します。線形探査法とは、ハッシュ衝突が発生した場合、インデックスをインクリメントしながら次の空きスロットを見つけ、衝突したキーを配置する方法です。次の例では、まずハッシュ値が0の0をスロット0に追加します。次に、ハッシュ値が1の1をスロット1に追加します。最後に、ハッシュ値が5の5を追加しますが、インデックスの範囲を超えているためモジュロ演算で0を得ます。理論的には5をスロット0に格納すべきですが、このスロットは既に占有されています。そのため、インデックスをインクリメントして次の空きスロット（スロット2、スロット1も占有されていたため）を見つけます。プログラム全体を通じて不変条件を維持する必要があります：元のスロットとキーと値のペアが実際に格納されているスロットの間に空きスロットがあってはなりません。これにより、あるキーと値のペアが既に存在するかどうかを確認するためにハッシュマップ全体を走査する無駄な時間を省けます。また、スロット間に隙間がないことを確認しているため、次の空きスロットが見つかればループを終了できます。"
+      }
+    },
+    {
+      "segment_id": "b9331170",
+      "source_content": "![height:300px](/pics/open_address_en.drawio.webp)",
+      "source_content_hash": "bfe3b0113d1481ed3d61e2a71dfdc3b3ec3c0be630649aa7b8751fdee015257e",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "![height:300px](/pics/open_address_en.drawio.webp)"
+      }
+    },
+    {
+      "segment_id": "8fcdd6d4",
+      "source_content": "To implement open addressing, we will use an array with default values similar to the implementation of a circular queue introduced in the last lecture. Feel free to try and implement it using Option as well. Besides the array to store key-value pairs, we also have an array of boolean values to determine if the current slot is empty. As usual, we dynamically maintain the length of the array and the number of key-value pairs.",
+      "source_content_hash": "e6b30e576724b8e7b18777de134a565ec8212d3c17702e3fa099a331cb805c19",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "オープンアドレッシングを実装するために、前回の講義で紹介した循環キューと同様に、デフォルト値を持つ配列を使用します。Optionを使用した実装にも挑戦してみてください。キーと値のペアを格納する配列に加えて、現在のスロットが空であるかどうかを判断するブール値の配列も用意します。通常通り、配列の長さとキーと値のペアの数を動的に管理します。"
+      }
+    },
+    {
+      "segment_id": "5be4f25e",
+      "source_content": "```moonbit no-check\nstruct Entry[K, V] { // Struct for key-value pair storage\n  key : K\n  mut value : V // In-place update enabled\n} derive(Default)\n\nstruct HT_open[K, V] {\n  mut values : Array[Entry[K, V]] // Array of key-value pairs\n  mut occupied : Array[Bool] //  Array denoting whether the current slot is empty\n  mut length : Int // Length of array dynamically maintained\n  mut size : Int // Number of key-value pairs in the hash map dynamically maintained\n}\n```",
+      "source_content_hash": "91e29fa2951aaa826ed25c442ddb18ce0ca0f85d2ede17197a21700e149d93dc",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_5be4f25e"
+      }
+    },
+    {
+      "segment_id": "9e90a9b3",
+      "source_content": "For the add/update operation, we calculate the index to add/update data based on the hash value of the key. If the slot is not empty, we further check if it's the key we're looking for. If so, we update the value; otherwise, we keep probing backward and store the key-value pair once we find an empty slot. Here, we can assume an empty slot exists as we resize the array when needed. Note that the \"backward\" traversal here is the same as that in a circular queue. If the index exceeds the length of the array, we go back to the beginning of the array.",
+      "source_content_hash": "e15a42fe154f8ab9ec6baf6a2849716069f361b6d4595d689bf89c416aaeeef1",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "追加/更新操作では、キーのハッシュ値に基づいてデータを追加/更新するインデックスを計算します。スロットが空でない場合、探しているキーかどうかをさらに確認します。キーが見つかった場合は値を更新し、そうでない場合は後方に探査を続け、空きスロットを見つけたらキーと値のペアを格納します。ここでは、必要に応じて配列のサイズを変更するため、空きスロットが存在すると仮定できます。「後方」への走査は、循環キューでの走査と同じです。インデックスが配列の長さを超えた場合、配列の先頭に戻ります。"
+      }
+    },
+    {
+      "segment_id": "681ef526",
+      "source_content": "We can define a helper method to check if a key already exists. If so, we directly return its index; otherwise we return the index of the next empty slot.",
+      "source_content_hash": "1313cde5d00e757156c049bb07725b3fac06f9dde5e62a29852818b499a3aae4",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "キーが既に存在するかどうかを確認するヘルパーメソッドを定義できます。キーが存在する場合はそのインデックスを直接返し、存在しない場合は次の空きスロットのインデックスを返します。"
+      }
+    },
+    {
+      "segment_id": "eb25bb8c",
+      "source_content": "```moonbit no-check\n// Probe to the right of the index of the original hash, return the index of the first empty slot\nfn find_slot[K : Hash + Eq, V](map : HT_open[K, V], key : K) -> Int {\n  let hash = key.hash() // Hash value of the key\n  let mut i = hash % map.length // Index to be stored at if there's no hash collision\n  while map.occupied[i] {\n    if map.values[i].key == key { // If a key already exists, return its index\n      return i\n    }\n    i = (i + 1) % map.length\n  }\n  return i // Otherwise, return when an empty slot occurs\n}\n```",
+      "source_content_hash": "eefbf4d95241bdec34f6281bdd3da3e86babdcf2ce5da0391edfcbf0484ec989",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_eb25bb8c"
+      }
+    },
+    {
+      "segment_id": "008183b0",
+      "source_content": "We then define the add/update, lookup, and remove operations utilizing this helper function. For the add/update operation, we first determine if the key exists by checking if the slot with the calculated index is empty or not. If the key is found, we update its corresponding value; otherwise, we add the key-value pair into the empty slot and update the occupied status and the size of the hash map. Lastly, we check if resizing is needed.",
+      "source_content_hash": "0979628d7f559a3e30a6b4d962188d9fabc02fd70304543f6fe224b040ed3ee7",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "次に、このヘルパー関数を利用して追加/更新、検索、削除操作を定義します。追加/更新操作では、まず計算されたインデックスのスロットが空かどうかを確認してキーが存在するかどうかを判断します。キーが見つかった場合は対応する値を更新し、見つからなかった場合は空きスロットにキーと値のペアを追加し、占有状態とハッシュマップのサイズを更新します。最後に、サイズ変更が必要かどうかを確認します。"
+      }
+    },
+    {
+      "segment_id": "71779666",
+      "source_content": "```moonbit no-check\nfn put[K : Hash + Eq + Default, V : Default](map : HT_open[K, V], key : K, value : V) -> Unit {\n  let index = find_slot(map, key) // Use helper method to look up the key\n  if map.occupied[index] { // Check for key or empty slot\n    map.values[index].value = value // Update if the key already exists\n  } else { // Otherwise, add the key-value pair into the empty slot\n    map.occupied[index] = true\n    map.values[index] = { key, value }\n    map.size = map.size + 1\n  }\n  // Check the load factor to determine if resizing is needed\n  if map.size.to_double() / map.length.to_double() >= 0.75 {\n    resize(map) // fn resize(map) -> Unit\n  }\n}\n```",
+      "source_content_hash": "d2a2e5c9750ad32cf8ed1e9362dd2dae220fa3deb5dd00bf6982144d5b4e7cdb",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_71779666"
+      }
+    },
+    {
+      "segment_id": "e29bd639",
+      "source_content": "The remove operation is more complicated. Recall that we have an invariant to maintain: there should be no empty slots between the original slot and the slot where the key-value pair is actually stored. As shown below, if we add 0, 1, 5, and 3 sequentially and then remove 1, there will be a gap between 0 and the position of 5 which violates the invariant and we won't be able to correctly look up 5.",
+      "source_content_hash": "b65c41a702d7d67b0a547b775f39ae5bf51a5aec59be196a70488b68a0be6771",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "削除操作はより複雑です。維持すべき不変条件を思い出してください：元のスロットとキーと値のペアが実際に格納されているスロットの間に空きスロットがあってはなりません。以下に示すように、0、1、5、3を順番に追加した後1を削除すると、0と5の位置の間に隙間が生じ、不変条件に違反し、5を正しく検索できなくなります。"
+      }
+    },
+    {
+      "segment_id": "e5821418",
+      "source_content": "A simple solution is to define a special state that marks a slot as \"deleted\"  to ensure subsequent data can still be reached and found. Another solution is to check if any element from the slot of data removal to the next empty slot needs to move location so as to maintain the invariant. Here we demonstrate the simpler marking method, also known as \"tombstone\".",
+      "source_content_hash": "862ddbc0e08b8322821f41420654e5b0f597e7d8d3ad50b4246f7faefe6aacb2",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "簡単な解決策は、スロットを「削除済み」としてマークする特別な状態を定義し、後続のデータが到達可能で検索可能であることを保証することです。もう一つの解決策は、データ削除のスロットから次の空きスロットまでの要素が位置を移動する必要があるかどうかを確認し、不変条件を維持することです。ここではより簡単なマーキング方法、いわゆる「墓石」法を紹介します。"
+      }
+    },
+    {
+      "segment_id": "4e2e17c5",
+      "source_content": "![height:320px](/pics/open_address_delete_en.drawio.webp)",
+      "source_content_hash": "816b7ad5c1105e85cb02227b7f72c893d24e3608ee4d0590f58a0fbaeb5fbe79",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "![height:320px](/pics/open_address_delete_en.drawio.webp)"
+      }
+    },
+    {
+      "segment_id": "b49a7009",
+      "source_content": "We define a new `Status` enum consisting of `Empty`, `Occupied` and `Deleted`, and update the type of the occupied array from boolean value to Status.",
+      "source_content_hash": "1a0b96e94380814a80c6516ca5985be7bc31ff8dee3a86b9507838ea6c80a189",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "`Empty`、`Occupied`、`Deleted`からなる新しい`Status`列挙型を定義し、占有配列の型をブール値からStatusに更新します。"
+      }
+    },
+    {
+      "segment_id": "768336f1",
+      "source_content": "```moonbit\nenum Status {\n  Empty\n  Deleted // Add the \"deleted status\n  Occupied\n}\n\nstruct HT_open[K, V] {\n  mut values : Array[Entry[K, V]]\n  mut occupied : Array[Status] // Change from boolean to Status\n  mut length : Int\n  mut size : Int\n}\n```",
+      "source_content_hash": "5541389f1e03d2409f159f2d105aadf453c2b85322208c72192bf7be30bc3f66",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_768336f1"
+      }
+    },
+    {
+      "segment_id": "ebfad7e4",
+      "source_content": "Let's also update the helper function so that during key or empty slot lookup, we record the first empty slot that can be denoted by status `Empty` or `Deleted` to reuse the slot after data removal. However, we still need to find the next Empty slot to determine if the key does not exist. We use a simple variable named `empty` to record this. A negative value means we haven't found an empty slot yet, and we update the value to the index of the next empty slot if we find one. It also means we've encountered an empty slot if the loop ends, and then we decide what to return based on the variable `empty`.",
+      "source_content_hash": "664947ade78e7eda07060bbd302dbef16b26991d3224db383aa63619a4e865bb",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "ヘルパー関数も更新して、キーまたは空きスロットの検索時に、ステータスが`Empty`または`Deleted`の最初の空きスロットを記録し、データ削除後にそのスロットを再利用できるようにします。ただし、キーが存在しないかどうかを判断するためには、次の`Empty`スロットを見つける必要があります。ここでは`empty`というシンプルな変数を使用して記録します。負の値はまだ空きスロットが見つかっていないことを意味し、空きスロットが見つかった場合はそのインデックスに更新します。また、ループが終了した時点で空きスロットに遭遇したことを意味し、変数`empty`に基づいて返す値を決定します。"
+      }
+    },
+    {
+      "segment_id": "a4a54521",
+      "source_content": "```moonbit\n// Probe to the right of the index of the original hash, return the index of the first empty slot\nfn find_slot[K : Hash + Eq, V](map : HT_open[K, V], key : K) -> Int {\n  let index = key.hash() % map.length\n  let mut i = index\n  let mut empty = -1 // Record the first empty slot occurred: status Empty or Deleted\n  while (physical_equal(map.occupied[i], Empty)).not() {\n    if map.values[i].key == key {\n      return i\n    }\n    if physical_equal(map.occupied[i], Deleted) && empty != -1 { // Update empty slot\n      empty = i\n    }\n    i = (i + 1) % map.length\n  }\n  return if empty == -1 { i } else { empty } // Return the first empty slot\n}\n```",
+      "source_content_hash": "6fd14b161afb6ff21f2f9620399fb288b11db49d95ea75848a7ce878b8e49c37",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_a4a54521"
+      }
+    },
+    {
+      "segment_id": "49be422b",
+      "source_content": "The remove operation is simpler, we just need to update the status indicator according to the result of the helper function. It's important to note that with this approach, it'll take extra lookup time/overhead after multiple additions and removals as there will be many `Deleted` slots. Therefore, we need to rearrange the elements afterwards.",
+      "source_content_hash": "30588e4c5a005056b8ae38da4ddc6434a18740570f3ba8ef2a530ff8f08881ca",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "削除操作はよりシンプルで、ヘルパー関数の結果に従ってステータスインジケーターを更新するだけです。このアプローチでは、追加と削除を繰り返すと多くの`Deleted`スロットが生じるため、追加の検索時間/オーバーヘッドがかかることに注意が必要です。そのため、後で要素を再配置する必要があります。"
+      }
+    },
+    {
+      "segment_id": "5ad8d2b2",
+      "source_content": "```moonbit no-check\nfn remove[K : Hash + Eq + Default, V : Default](map : HT_open[K, V], key : K) -> Unit {\n  let index = find_slot(map, key)\n  if physical_equal(map.occupied[index], Occupied) {\n    map.values[index] = default()\n    map.occupied[index] = Deleted\n    map.size = map.size - 1\n  }\n}\n```",
+      "source_content_hash": "9eb656a6092738bf63d9fe602be165af16fc2c5068aa148187f8658a68497034",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_5ad8d2b2"
+      }
+    },
+    {
+      "segment_id": "ba12acea",
+      "source_content": "Next, let's introduce another implementation of open addressing: rearrange elements after each removal to compress the lookup path. Suppose we still add 0, 1, 5, 3 sequentially and then remove 1, we can see that the invariant holds for elements before 1, but cannot be sure if it also holds for elements after it. These elements might have been originally stored here or stored here due to the original slot was occupied and this is the next empty slot. Therefore, a check is required.",
+      "source_content_hash": "804792996b832731da12efb870ea238ef05aa513878bab96ac47c932be7f8fd5",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "次に、オープンアドレッシングの別の実装として、削除ごとに要素を再配置して検索パスを圧縮する方法を紹介します。0、1、5、3を順番に追加した後、1を削除する場合を考えます。1より前の要素については不変条件が維持されていますが、1より後の要素については不変条件が維持されているかどうか確信が持てません。これらの要素は元々このスロットに格納されていたか、元のスロットが占有されていたため次の空きスロットに格納された可能性があります。そのため、チェックが必要です。"
+      }
+    },
+    {
+      "segment_id": "4033c370",
+      "source_content": "First, we check element 5 and notice that 5 should be mapped to index 0, but is stored in the current slot to handle hash collision. Now that element 1 has been removed, the invariant no longer holds as there's an empty slot between indices 0 and 2. To solve this, we need to move element 5 forward to the index previously storing element 1. Then we check element 3 and it's in the slot it should be mapped to, so we do not move it. We encounter an empty slot after element 3. The elements after the empty spot won't be affected, so we stop checking.",
+      "source_content_hash": "6a0684033a6ac13d279d084f5f05b6ad3776abb40f4b0d4542ce4f5729d076fa",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "まず要素5をチェックすると、5はインデックス0にマップされるべきですが、ハッシュ衝突を処理するために現在のスロットに格納されています。要素1が削除されたため、インデックス0と2の間に空きスロットが生じ、不変条件が維持されていません。これを解決するには、要素5を前に移動して要素1が格納されていたインデックスに配置します。次に要素3をチェックすると、マップされるべきスロットに既にあるため移動しません。要素3の後に空きスロットがあるため、それ以降の要素は影響を受けないのでチェックを終了します。"
+      }
+    },
+    {
+      "segment_id": "dfb6fc67",
+      "source_content": "![](/pics/rearrange_en.drawio.webp)",
+      "source_content_hash": "25c63a89905920038ad50a9c45eb5c3c834221f6b63e4d69892101c7aa92096a",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "![](/pics/rearrange_en.drawio.webp)"
+      }
+    },
+    {
+      "segment_id": "80dbdeb8",
+      "source_content": "Let's look at another example as follows: we have an array of size 10, so a number that ends in *n* will be mapped to index *n* with modulo, like the index for element 0 is 0, for element 11 is 1, for element 13 is 3, etc. We will remove the data at index 1 and rearrange the elements in the hash map. We check the elements at index 1 to 5 and:",
+      "source_content_hash": "508d9fdafb33e12cdb13d55e56fddaa9498630b0b7c3b4295bd023825a34d849",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "別の例を見てみましょう：サイズ10の配列があり、*n*で終わる数値はモジュロ演算によりインデックス*n*にマップされます（例：要素0はインデックス0、要素11はインデックス1、要素13はインデックス3など）。インデックス1のデータを削除し、ハッシュマップ内の要素を再配置します。インデックス1から5の要素をチェックします："
+      }
+    },
+    {
+      "segment_id": "d3f13bf4",
+      "source_content": "We find element 11 should be stored at index 1 if there were no hash collision. After removing the data at index 1, we now have an empty slot at index 1 and can move element 11 to it. Then we check element 3 and it's already in the slot it should be mapped to. Next, we check element 21 which should be stored at index 1, but now we see a gap between slot 1 to the actual slot element 21 is stored. This is caused by moving element 11 earlier, so also move element 21 forward. Lastly, we check element 13 which should be stored at index 3. Now there's a gap after moving element 21, so we move element 13 forward as well.",
+      "source_content_hash": "b9115088236681a1c3a62c74abc9289eea2b7e6e1b5a031bece394cbb0137e5c",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "要素11はハッシュ衝突がなければインデックス1に格納されるべきです。インデックス1のデータを削除した後、インデックス1に空きスロットができたため、要素11をそこに移動できます。次に要素3をチェックすると、既にマップされるべきスロットにあります。次に要素21をチェックすると、インデックス1に格納されるべきですが、要素11を前に移動したため、実際の格納スロットまでにギャップが生じています。そのため、要素21も前に移動します。最後に要素13をチェックすると、インデックス3に格納されるべきですが、要素21を移動したためギャップが生じているので、要素13も前に移動します。"
+      }
+    },
+    {
+      "segment_id": "e636ba62",
+      "source_content": "Now, the invariant holds again: there should be no empty slots between the original slot and the slot where the key-value pair is actually stored. The detailed implementation is left as an exercise and feel free to give it a try!",
+      "source_content_hash": "d341daf5623dfba5c6be174eea89a527d0cb7684bd1c8b044734027a6c841d28",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "これで不変条件が再び成立します：元のスロットと実際にキーと値のペアが格納されているスロットの間に空きスロットがあってはなりません。詳細な実装は演習として残しておきますので、ぜひ挑戦してみてください！"
+      }
+    },
+    {
+      "segment_id": "b0c30ab4",
+      "source_content": "![](/pics/rearrange_2_en.drawio.webp)",
+      "source_content_hash": "d27e1fd73b110d6b279bdba522b259a2a8c3dbd58ddfc2fa0852f8877d43999f",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "![](/pics/rearrange_2_en.drawio.webp)"
+      }
+    },
+    {
+      "segment_id": "f7d4d765",
+      "source_content": "## Closure",
+      "source_content_hash": "f302dc244196058cba2b662d29e2d09f83cccdf688ec9d11a767a023f833559f",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "## クロージャ"
+      }
+    },
+    {
+      "segment_id": "13440cd7",
+      "source_content": "It's time for the last topic in this lecture! What is a closure? A closure is the combination of a function bundled together with references to its surrounding state. Its surrounding state is determined by the lexical environment. For example, in the following code, when we define the function at line 3, the `i` here corresponds to the `i` at line 2. Therefore, when we call `println_i` later at line 3, it outputs the value of `i` from line 2. Then we update `i` at line 4, and the output will also be updated accordingly.",
+      "source_content_hash": "a0f984561f9d8dd3cd0af9d9853f5c8706d3371a277bb91a81536fff94cc7a93",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "この講義の最後のトピックに移りましょう！クロージャとは何でしょうか？クロージャとは、関数とその周囲の状態への参照を組み合わせたものです。その周囲の状態はレキシカル環境によって決定されます。例えば、以下のコードでは、3行目で関数を定義する際、この`i`は2行目の`i`に対応します。そのため、後で3行目で`println_i`を呼び出すと、2行目の`i`の値が出力されます。次に4行目で`i`を更新すると、出力もそれに応じて更新されます。"
+      }
+    },
+    {
+      "segment_id": "5d3138c7",
+      "source_content": "However, when we introduce another `i` at line 7, although the variable names are the same, the new variable `i` has nothing to do with our closure, so the output at line 8 will not change. The environment captured by the closure corresponds to the program structure and is determined at code definition, but not runtime.",
+      "source_content_hash": "81d3f39e79a3caf7733f419dde58c0038aa2e23b9a50e0675c250c84aa9d08b3",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "しかし、7行目で別の`i`を導入すると、変数名は同じですが、新しい変数`i`はクロージャとは無関係なので、8行目の出力は変更されません。クロージャによって捕捉される環境はプログラムの構造に対応し、コード定義時に決定されますが、実行時には決定されません。"
+      }
+    },
+    {
+      "segment_id": "7b9b1777",
+      "source_content": "```moonbit\nfn init {\n  let mut i = 2\n  fn println_i() { println(i) } // Capturing i\n  i = 3\n  println_i() // Output 3\n  {\n    let i = 4 // A different i variable\n    println_i() // Output 3\n  }\n}\n```",
+      "source_content_hash": "a85ad4cf1c4f4d09d803784d3cd892113dfa1f1ae8ccc5e743784aed96a05f42",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_7b9b1777"
+      }
+    },
+    {
+      "segment_id": "519c654d",
+      "source_content": "### Data Encapsulation",
+      "source_content_hash": "3b29362203bcf7f0c533be1b32082faffcaf4d860450c7b66e3c4aa9c3e53e06",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "### データのカプセル化"
+      }
+    },
+    {
+      "segment_id": "2d5a3f2f",
+      "source_content": "We can use closures to encapsulate data and behavior. Variables defined inside a function cannot be accessed from anywhere outside the function, because it's only in the scope of the function. Let's define two functions that capture the value as return value, enabling users to get and set value as shown at lines 4 and 5.\nAlso, we can add data validation in the functions. User operation is unrestricted if we directly define a mutable field in a structure, but now with validation we can filter illegitimate input.\nLastly, we return these two functions. From the results of `get()` we can see that a legitimate input will update the value of the captured variable via the function, while illegitimate input is filtered out.",
+      "source_content_hash": "5e2c7061b1df6dc03212aac15df0aebf48622da3445ec59101ca12b4348ec3a3",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "クロージャを使用してデータと振る舞いをカプセル化することができます。関数内で定義された変数は、関数のスコープ内でのみ有効であるため、関数の外部からアクセスすることはできません。4行目と5行目に示すように、値を返り値として捕捉する2つの関数を定義することで、ユーザーが値を取得および設定できるようにします。\nまた、関数内でデータの検証を追加することができます。構造体で直接可変フィールドを定義するとユーザーの操作は無制限になりますが、検証を追加することで不正な入力をフィルタリングできます。\n最後に、これら2つの関数を返します。`get()`の結果から、正当な入力は関数を介して捕捉された変数の値を更新し、不正な入力はフィルタリングされることがわかります。"
+      }
+    },
+    {
+      "segment_id": "d1748707",
+      "source_content": "```moonbit\nfn natural_number_get_and_set()\n  -> ( () -> Int, (Int) -> Unit) { // (get, set)\n  let mut i = 0 // Does not have direct access\n  fn get() -> Int { i }\n  fn set(new_value: Int) -> Unit { if new_value >= 0 { i = new_value } } // Can add data validation\n  (get, set)\n}\n\nfn init {\n  let (get, set) = natural_number_get_and_set()\n  set(10)\n  println(get()) // 10\n  set(-100)\n  println(get()) // 10\n}\n```",
+      "source_content_hash": "6bcd6e5995a6c34325f863e3cdaecc71b55d43218acc8b63eddbf7cfbab3bc0a",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_d1748707"
+      }
+    },
+    {
+      "segment_id": "c95293b9",
+      "source_content": "We can also use closures with structs to encapsulate the hash map behavior and define an abstract data structure. We previously showed implementations of open addressing and direct addressing, but this does not matter for users as they have the same effect.\nIn this case, we can define a struct `MyMap` that has four functions, which all capture the same hash map and allow modifications. Then, we provide two functions to construct this struct, offering implementations of both open addressing and direct addressing. As an exercise, think about how we can implement it with a simple list or tree, etc.\nLastly, let's use this struct. We only need to replace the initialization function, and the rest of the code remains unchanged when using different implementations.",
+      "source_content_hash": "279ef14a0e96ddc254aa085e1e5d4435e91ab53667ef80f2c2431213296d76e8",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "クロージャを構造体と共に使用して、ハッシュマップの振る舞いをカプセル化し、抽象データ構造を定義することもできます。以前にオープンアドレッシングとダイレクトアドレッシングの実装を示しましたが、ユーザーにとっては同じ効果を持つため、これは問題になりません。\nこの場合、4つの関数を持つ構造体`MyMap`を定義できます。これらの関数はすべて同じハッシュマップを捕捉し、変更を許可します。次に、この構造体を構築するための2つの関数を提供し、オープンアドレッシングとダイレクトアドレッシングの両方の実装を提供します。練習として、単純なリストやツリーなどでどのように実装できるか考えてみてください。\n最後に、この構造体を使用してみましょう。異なる実装を使用する場合、初期化関数を置き換えるだけで、残りのコードは変更されません。"
+      }
+    },
+    {
+      "segment_id": "a85d7a64",
+      "source_content": "```moonbit\nstruct MyMap[K, V] {\n  get : (K) -> Option[V]\n  put : (K, V) -> Unit\n  remove : (K) -> Unit\n  size : () -> Int\n}\n```",
+      "source_content_hash": "8bf70246266d1f2a28e903f1d5a096a2668f8ec4a09523ebbb7a8dcc36e3ac30",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_a85d7a64"
+      }
+    },
+    {
+      "segment_id": "d96a088c",
+      "source_content": "```moonbit no-check\n// Implementation of open addressing\nfn MyMap::hash_open_address[K : Hash + Eq + Default, V : Default]() -> MyMap[K, V] { ... }\n// Implementation of direct addressing\nfn MyMap::hash_bucket[K : Hash + Eq, V]() -> MyMap[K, V] { ... }\n// Implementation with a simple list or tree, etc.\n\nfn init {\n  // Replace the initialization function, rest of the code unchanged\n  let map : MyMap[Int, Int] = MyMap::hash_bucket()\n  // let map : MyMap[Int, Int] = MyMap::hash_open_address()\n  (map.put)(1, 1)\n  println((map.size)())\n}\n```",
+      "source_content_hash": "b589052265b94d0d3fa380ef53dec6636cb866b37c67e54b52c0e979338a6cdd",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_d96a088c"
+      }
+    },
+    {
+      "segment_id": "7e031d10",
+      "source_content": "Here is the main code snippet. We implement the `map` table inside `hash_bucket`, then capture it in multiple functions, store these functions in a struct, and return it.",
+      "source_content_hash": "07b85db4b2d4a144d164b98eeb567f7dd9cdb7aae88676cc5b2621eee2c7d021",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "以下は主要なコードスニペットです。`hash_bucket`内に`map`テーブルを実装し、それを複数の関数で捕捉し、これらの関数を構造体に格納して返します。"
+      }
+    },
+    {
+      "segment_id": "31df1954",
+      "source_content": "```moonbit no-check\nfn MyMap::hash_bucket[K : Hash + Eq, V]() -> MyMap[K, V] {\n  let initial_length = 10\n  let load = 0.75\n  let map = {\n    values: @array.new(5, fn() { { val : None } }) // Aliasing\n    size: 0,\n    length: initial_length,\n  }\n\n  fn resize() { ... }\n\n  fn get(key : K) -> Option[V] { ... }\n  fn put(key : K, value : V) -> Unit { ... }\n  fn remove(key : K) -> Unit { ... }\n  fn size() -> Int { map.size }\n\n  { get, put, remove, size }\n}\n```",
+      "source_content_hash": "abb0982d481f3b9afdd66040a6dc7fb1791e5b081c07ae93e763e78225ce85cf",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_31df1954"
+      }
+    },
+    {
+      "segment_id": "dbd18971",
+      "source_content": "Moreover, we can extend and build more methods based on the struct for convenience to use. For example, if the struct provides a function to get the number of key-value pairs, we can additionally determine if the hash map is empty. If the struct provides a function to get the value, we can use it to determine if the hash map contains the corresponding key, etc. In this way, we can add the same logic to different implementations at once.",
+      "source_content_hash": "a2832ca084b45065ab1bc906683786cdcb89dc1b0fba5272df083de67bf2b818",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "さらに、構造体を基に便利に使用するため、より多くのメソッドを拡張して構築できます。例えば、構造体がキーと値のペアの数を取得する関数を提供する場合、ハッシュマップが空かどうかを追加で判断できます。構造体が値を取得する関数を提供する場合、それを使用してハッシュマップに対応するキーが含まれているかどうかを判断できます。このようにして、異なる実装に一度に同じロジックを追加できます。"
+      }
+    },
+    {
+      "segment_id": "37e16f6b",
+      "source_content": "```moonbit\nfn MyMap::is_empty[K, V](map : MyMap[K, V]) -> Bool {\n  (map.size)() == 0\n}\n\nfn MyMap::contains[K, V](map : MyMap[K, V], key : K) -> Bool {\n  match (map.get)(key) {\n    Some(_) => true\n    None => false\n  }\n}\n```",
+      "source_content_hash": "7545ad0141d07496ca270a57cafabfad184158a2da1db1c6e5d80db43f59d434",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_37e16f6b"
+      }
+    },
+    {
+      "segment_id": "dfe86be9",
+      "source_content": "```moonbit no-check\nfn init {\n  let map : MyMap[Int, Int] = MyMap::hash_bucket()\n  println(map.is_empty()) // true\n  println(map.contains(1)) // false\n}\n```",
+      "source_content_hash": "8b68f8f59c50cd74a1ed9b20aa69480491d76fe7926f8a651806a5015cef6094",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_dfe86be9"
+      }
+    },
+    {
+      "segment_id": "3f6b512a",
+      "source_content": "## Summary",
+      "source_content_hash": "30ac03ff33731529441be8fbe52a3bd0d4c5ec830e806d54692168ebb7f98ada",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "## まとめ"
+      }
+    },
+    {
+      "segment_id": "e91bdcd9",
+      "source_content": "We introduced two ways to implement a hash map with direct addressing and open addressing. Meanwhile, we talked about the concept of a closure and how to use it for encapsulation. To better understand the algorithms, the following readings are recommended:",
+      "source_content_hash": "9cb653497bde1bc5144dfe762f86849bf04808f807baaf09a82db4206a2812da",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "ダイレクトアドレッシングとオープンアドレッシングを使用してハッシュマップを実装する2つの方法を紹介しました。同時に、クロージャの概念とそれをカプセル化に使用する方法について説明しました。アルゴリズムをよりよく理解するために、以下の文献を推奨します："
+      }
+    },
+    {
+      "segment_id": "7674e10d",
+      "source_content": "- ***Introduction to Algorithms***: Chapter 11 - Hash Tables; or\n- ***Algorithms***: Section 3.4 - Hash Tables",
+      "source_content_hash": "bb56d0f90d20e6d4327ce585d1b77ad45b797cafad87071d4b6fcdb340419505",
+      "node_type": "list",
+      "translatable": true,
+      "translations": {
+        "ja": "- ***アルゴリズムイントロダクション***: 第11章 - ハッシュテーブル; または\n- ***アルゴリズム***: セクション3.4 - ハッシュテーブル"
+      }
+    }
+  ],
+  "target_i18n_subpath": "docusaurus-plugin-content-docs/current/10-hash-maps-closures.md",
+  "last_updated_timestamp": "2025-06-06T05:19:35.748204+00:00",
+  "schema_version": "1.0",
+  "translated_versions": {
+    "ja": "dcc705c68b836dc5e6c9cc69959c50789754fbbd918c2f07a7a2c94e3434ab46"
+  }
+}

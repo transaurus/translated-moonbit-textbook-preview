@@ -1,0 +1,42 @@
+{
+  "source_file_path_relative_to_docusaurus_root": "blog/2021-08-01-mdx-blog-post.mdx",
+  "source_file_content_hash": "cb658e0ab5138c862780b886a720f9cf659604c7b5ce001a21c89c7e028f6011",
+  "segments": [
+    {
+      "segment_id": "58cfcc64",
+      "source_content": "---\nslug: mdx-blog-post\ntitle: MDX Blog Post\nauthors: [slorber]\ntags: [docusaurus]\n---",
+      "source_content_hash": "2afe474e9d26409563376773d052d23840a3d735f9eff4a4347f47ffd4f80b05",
+      "node_type": "yaml",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_58cfcc64"
+      }
+    },
+    {
+      "segment_id": "3fbbcc07",
+      "source_content": "Blog posts support [Docusaurus Markdown features](https://docusaurus.io/docs/markdown-features), such as [MDX](https://mdxjs.com/).",
+      "source_content_hash": "aeae3a7566870de04da0fa8b67ea6dda8be377f0765b204ff2b2bd9984fee81b",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "ブログ投稿では[DocusaurusのMarkdown機能](https://docusaurus.io/docs/markdown-features)や[MDX](https://mdxjs.com/)が利用可能です。"
+      }
+    },
+    {
+      "segment_id": "6cae1da3",
+      "source_content": ":::tip\n\nUse the power of React to create interactive blog posts.\n\n```js\n<button onClick={() => alert('button clicked!')}>Click me!</button>\n```\n\n<button onClick={() => alert('button clicked!')}>Click me!</button>\n\n:::",
+      "source_content_hash": "b6784a8c5909378b760cb03a98fb295a1140f4c194051d425a572bcbd74e9efc",
+      "node_type": "containerDirective",
+      "translatable": true,
+      "translations": {
+        "ja": ":::tip\n\nReactの機能を使ってインタラクティブなブログ投稿を作成しましょう。\n\n```js\n<button onClick={() => alert('button clicked!')}>Click me!</button>\n```\n\n<button onClick={() => alert('button clicked!')}>Click me!</button>\n\n:::"
+      }
+    }
+  ],
+  "target_i18n_subpath": "docusaurus-plugin-content-blog/2021-08-01-mdx-blog-post.mdx",
+  "last_updated_timestamp": "2025-06-06T05:19:35.740904+00:00",
+  "schema_version": "1.0",
+  "translated_versions": {
+    "ja": "cb658e0ab5138c862780b886a720f9cf659604c7b5ce001a21c89c7e028f6011"
+  }
+}

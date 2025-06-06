@@ -1,0 +1,212 @@
+{
+  "source_file_path_relative_to_docusaurus_root": "blog/2019-05-29-long-blog-post.md",
+  "source_file_content_hash": "eca2a231fe238cb932a044cb28b8095af37b795ce6ba138cb65f6d85fc807aef",
+  "segments": [
+    {
+      "segment_id": "58cfcc64",
+      "source_content": "---\nslug: long-blog-post\ntitle: Long Blog Post\nauthors: endi\ntags: [hello, docusaurus]\n---",
+      "source_content_hash": "92958bf0d5b04a630f523f17087bebe2545336dac0cb5c8f2612bf2a3db7f914",
+      "node_type": "yaml",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_58cfcc64"
+      }
+    },
+    {
+      "segment_id": "3fbbcc07",
+      "source_content": "This is the summary of a very long blog post,",
+      "source_content_hash": "22642e691ce2343206050dff1dc1bb2acbb646e8ae5b1d7e41cc1c1f55057d7d",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "これは非常に長いブログ記事の要約です。"
+      }
+    },
+    {
+      "segment_id": "7e5c5a39",
+      "source_content": "Use a `<!--` `truncate` `-->` comment to limit blog post size in the list view.",
+      "source_content_hash": "d184cb5348a538d2f38690ead4905a64670740e87d1ed5eeaf87564558b8da81",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "リスト表示でブログ記事のサイズを制限するには、`<!--` `truncate` `-->`コメントを使用してください。"
+      }
+    },
+    {
+      "segment_id": "b7b09f68",
+      "source_content": "<!--truncate-->",
+      "source_content_hash": "f5cded2aa7e288e395fe4f67f9dabda2281904b2f5358d07302b3aa8be0acdfa",
+      "node_type": "comment",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_b7b09f68"
+      }
+    },
+    {
+      "segment_id": "ad8fd492",
+      "source_content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet",
+      "source_content_hash": "ba49e69624abf9d793fd2bcd695d281b23e64462c112abe45947d5c88bf25076",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet"
+      }
+    },
+    {
+      "segment_id": "86b54d44",
+      "source_content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet",
+      "source_content_hash": "ba49e69624abf9d793fd2bcd695d281b23e64462c112abe45947d5c88bf25076",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet"
+      }
+    },
+    {
+      "segment_id": "39b3772c",
+      "source_content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet",
+      "source_content_hash": "ba49e69624abf9d793fd2bcd695d281b23e64462c112abe45947d5c88bf25076",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet"
+      }
+    },
+    {
+      "segment_id": "1acb9a05",
+      "source_content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet",
+      "source_content_hash": "ba49e69624abf9d793fd2bcd695d281b23e64462c112abe45947d5c88bf25076",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet"
+      }
+    },
+    {
+      "segment_id": "2df4f75f",
+      "source_content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet",
+      "source_content_hash": "ba49e69624abf9d793fd2bcd695d281b23e64462c112abe45947d5c88bf25076",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet"
+      }
+    },
+    {
+      "segment_id": "98cfbd53",
+      "source_content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet",
+      "source_content_hash": "ba49e69624abf9d793fd2bcd695d281b23e64462c112abe45947d5c88bf25076",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet"
+      }
+    },
+    {
+      "segment_id": "ccc88b4c",
+      "source_content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet",
+      "source_content_hash": "ba49e69624abf9d793fd2bcd695d281b23e64462c112abe45947d5c88bf25076",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet"
+      }
+    },
+    {
+      "segment_id": "d9172fa4",
+      "source_content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet",
+      "source_content_hash": "ba49e69624abf9d793fd2bcd695d281b23e64462c112abe45947d5c88bf25076",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet"
+      }
+    },
+    {
+      "segment_id": "26524352",
+      "source_content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet",
+      "source_content_hash": "ba49e69624abf9d793fd2bcd695d281b23e64462c112abe45947d5c88bf25076",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet"
+      }
+    },
+    {
+      "segment_id": "73ab96a3",
+      "source_content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet",
+      "source_content_hash": "ba49e69624abf9d793fd2bcd695d281b23e64462c112abe45947d5c88bf25076",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet"
+      }
+    },
+    {
+      "segment_id": "7499a4e7",
+      "source_content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet",
+      "source_content_hash": "ba49e69624abf9d793fd2bcd695d281b23e64462c112abe45947d5c88bf25076",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet"
+      }
+    },
+    {
+      "segment_id": "517051a7",
+      "source_content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet",
+      "source_content_hash": "ba49e69624abf9d793fd2bcd695d281b23e64462c112abe45947d5c88bf25076",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet"
+      }
+    },
+    {
+      "segment_id": "135468ee",
+      "source_content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet",
+      "source_content_hash": "ba49e69624abf9d793fd2bcd695d281b23e64462c112abe45947d5c88bf25076",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet"
+      }
+    },
+    {
+      "segment_id": "33331f27",
+      "source_content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet",
+      "source_content_hash": "ba49e69624abf9d793fd2bcd695d281b23e64462c112abe45947d5c88bf25076",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet"
+      }
+    },
+    {
+      "segment_id": "50746522",
+      "source_content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet",
+      "source_content_hash": "ba49e69624abf9d793fd2bcd695d281b23e64462c112abe45947d5c88bf25076",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet"
+      }
+    },
+    {
+      "segment_id": "95e9ba12",
+      "source_content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet",
+      "source_content_hash": "ba49e69624abf9d793fd2bcd695d281b23e64462c112abe45947d5c88bf25076",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet"
+      }
+    }
+  ],
+  "target_i18n_subpath": "docusaurus-plugin-content-blog/2019-05-29-long-blog-post.md",
+  "last_updated_timestamp": "2025-06-06T05:19:35.745748+00:00",
+  "schema_version": "1.0",
+  "translated_versions": {
+    "ja": "eca2a231fe238cb932a044cb28b8095af37b795ce6ba138cb65f6d85fc807aef"
+  }
+}

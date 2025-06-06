@@ -1,0 +1,906 @@
+{
+  "source_file_path_relative_to_docusaurus_root": "docs/04-tuples-structs-enums.md",
+  "source_file_content_hash": "096c097631857457fbd0b245643676dea282ebdf2dc0ba28d12bc98f09ffae1a",
+  "segments": [
+    {
+      "segment_id": "76e4a56a",
+      "source_content": "# 4. Tuples, Structs & Enums",
+      "source_content_hash": "8ed574c1c656ecf7d588f1ce74e4559cfe411bad992be429562d297637ec108d",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "# 4. タプル、構造体、列挙型"
+      }
+    },
+    {
+      "segment_id": "faebdc62",
+      "source_content": "The topic of this chapter is tuples, structures, and enumerated types. In a nutshell, we will be exploring how to customize data structures in MoonBit.",
+      "source_content_hash": "f4b061b0d13f17f1e7b6a722a0c2b194619cadf13ae053f77e4a1acfcc12547c",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "この章のテーマはタプル、構造体、列挙型です。簡単に言えば、MoonBitでデータ構造をカスタマイズする方法を探求していきます。"
+      }
+    },
+    {
+      "segment_id": "f85bbfb4",
+      "source_content": "## Review: Tuples",
+      "source_content_hash": "987300c59910321e43841c19c92fceff3c58d1e85a9d90fb2562d8dd2341149e",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "## 復習: タプル"
+      }
+    },
+    {
+      "segment_id": "6ef78e84",
+      "source_content": "First, review the fundamental data type in MoonBit introduced in [Chapter 2](./development-environments-expressions): Tuples.",
+      "source_content_hash": "4a6b8b9bdffeac38c1b32eb7286a0a98d902326b053188e92ba1286e636748db",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "まず、[第2章](./development-environments-expressions)で紹介されたMoonBitの基本データ型であるタプルを復習しましょう。"
+      }
+    },
+    {
+      "segment_id": "53eaf0e1",
+      "source_content": "A MoonBit tuple is a composite of data which have different types with a fixed length. In comparison, lists are collections of data which have the same type with arbitrary lengths. For example, the length of the list below is not fixed, but the values stored must all be of the character type. In the previous chapter, we didn't discuss why `Cons` is named \"Cons\". It is an abbreviation for \"Construct\".",
+      "source_content_hash": "194c0d882a61a1c782b2eff59d508cbb721db1a95a604233ed6ede4552b02491",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "MoonBitのタプルは、異なる型のデータを固定長で組み合わせた複合データです。一方、リストは同じ型のデータを任意の長さで集めたものです。例えば、以下のリストの長さは固定されていませんが、格納される値はすべて文字型でなければなりません。前章では「Cons」がなぜ「Construct」の略称なのか説明しませんでした。"
+      }
+    },
+    {
+      "segment_id": "43a8bc7e",
+      "source_content": "```moonbit no-check\nCons('H', Cons('i', Cons('!', Nil)))\n```",
+      "source_content_hash": "63d1555a5536f4d1b2b115a828247cd66e4dafd318031a7277ff8180db86d104",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_43a8bc7e"
+      }
+    },
+    {
+      "segment_id": "cf898102",
+      "source_content": "The definition of tuples is represented by expressions enclosed in parentheses and separated by commas. The types are also specified using the same syntax, as in the definition of personal identity information here: `(\"Bob\", 2023, 10, 24): (String, Int, Int, Int)`.",
+      "source_content_hash": "736a1ec0837995a4ec0731867eca001e5bcac78b9d1e97fe26a7c4bbe7c79b48",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "タプルの定義は、括弧で囲まれカンマで区切られた式で表されます。型も同じ構文で指定されます。例えば、個人識別情報の定義は次のようになります: `(\"Bob\", 2023, 10, 24): (String, Int, Int, Int)`。"
+      }
+    },
+    {
+      "segment_id": "42ad8e83",
+      "source_content": "Tuple members are accessed by indexes, starting from `0` on the left. For example, `(2023, 10, 24).0 == 2023`.",
+      "source_content_hash": "2bb1715d09af5fd8483edd7b60c9fed035822eb6ab67e184b23d8e01996d055c",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "タプルのメンバには左から`0`始まりのインデックスでアクセスします。例えば、`(2023, 10, 24).0 == 2023`。"
+      }
+    },
+    {
+      "segment_id": "aee0e40d",
+      "source_content": "## Cartesian Product",
+      "source_content_hash": "9327cb1e4c91f83ada15b88780cfdb1d2ea27d67bff57a3c3ec487ea0bdf3e3a",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "## 直積"
+      }
+    },
+    {
+      "segment_id": "f5f6d2ce",
+      "source_content": "You may be familiar with the concept of the Cartesian product. The Cartesian product of two sets is a set where all elements are ordered pairs formed by the elements of the original two sets. For example, the Cartesian product of the set of card suits and the numbers $1$ to $52$ forms all possible ordered pairs of suits and numbers.",
+      "source_content_hash": "a5006bc30deb41e8994f4cb5358af13c4d6ed9f6f89eb6d2e84df17f1a07971f",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "直積の概念には馴染みがあるかもしれません。2つの集合の直積は、元の2つの集合の要素から形成される順序対をすべて含む集合です。例えば、トランプのスートの集合と1から52までの数字の直積は、スートと数字のすべての可能な順序対を形成します。"
+      }
+    },
+    {
+      "segment_id": "2fdadb08",
+      "source_content": "$\\{♥️ ♦️ ♠️ ♣️\\} \\times \\{ n \\in \\mathbb{N} \\mid 1 \\leq n \\leq 52 \\}$",
+      "source_content_hash": "c7f867077326cb82e9a80e4e73f767f81960bc9b158d17e74b4e4771fb0c1a37",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "$\\{♥️ ♦️ ♠️ ♣️\\} \\times \\{ n \\in \\mathbb{N} \\mid 1 \\leq n \\leq 52 \\}$"
+      }
+    },
+    {
+      "segment_id": "f2c2bdd0",
+      "source_content": "Tuples, on the other hand, go beyond the Cartesian product of two sets; they represent the Cartesian product of multiple sets, making them more accurately termed as ordered sets. Consequently, tuples are also known as product types. You might wonder if there are sum types alongside product types. We will introduce sum types and explore the concepts of **zero** and **one** later.",
+      "source_content_hash": "23c0eaef7b060925bf6cead2bc089622022e66b81e8df67a550a0cd0680d00ac",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "一方、タプルは2つの集合の直積を超えて、複数の集合の直積を表すため、より正確には順序集合と呼ばれます。したがって、タプルは積型とも呼ばれます。積型と対になる和型があるのか疑問に思うかもしれません。後ほど和型を紹介し、**ゼロ**と**一**の概念についても探求します。"
+      }
+    },
+    {
+      "segment_id": "a76548f8",
+      "source_content": "Beyond the Cartesian product of two sets, tuples represent the Cartesian product of multiple sets, named n-tuple. Consequently, tuples are also known as product types. You might wonder if there are sum types alongside product types. We will introduce sum types and explore the concepts of **zero** and **one** later.",
+      "source_content_hash": "e02a2e243fdf0461c8d2a5651c31478dc7cea5308b8c3b11a8bfb94b87b0be09",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "2つの集合の直積を超えて、タプルは複数の集合の直積（n-タプル）を表します。したがって、タプルは積型とも呼ばれます。積型と対になる和型があるのか疑問に思うかもしれません。後ほど和型を紹介し、**ゼロ**と**一**の概念についても探求します。"
+      }
+    },
+    {
+      "segment_id": "f2f30ae8",
+      "source_content": "## Structures",
+      "source_content_hash": "98916766333459b71f4dadd8c3b2ab45a857fcdbf11a856430f7dc4ebc2a9035",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "## 構造体"
+      }
+    },
+    {
+      "segment_id": "dfe931a2",
+      "source_content": "The problem is that it is hard to understand the data represented by tuples. For example, `(String, Int)` – does it represent a person's name and age, or a person's name and phone number, or perhaps address and email?",
+      "source_content_hash": "112274ad956b1096ead29e671d395dd2f8975925cde1c40dcc9654ae67ee6699",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "問題は、タプルで表されるデータを理解するのが難しいことです。例えば、`(String, Int)`は、人の名前と年齢、名前と電話番号、あるいは住所とメールアドレスを表しているのでしょうか？"
+      }
+    },
+    {
+      "segment_id": "4daf5cdd",
+      "source_content": "Structures allow us to assign **names** to the data, both to the entire type and to each field individually. For instance:",
+      "source_content_hash": "8388ea23a868f6f6d71b62066601d63b6f7dcdd86073962f962ce3083080ecb2",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "構造体を使用すると、データ全体の型と各フィールドに個別に**名前**を付けることができます。例えば："
+      }
+    },
+    {
+      "segment_id": "fc8eadc3",
+      "source_content": "- ```moonbit\n  struct PersonalInfo { name: String; age: Int }\n  ```\n\n- ```moonbit\n  struct ContactInfo { name: String; telephone: Int }\n  ```\n\n- ```moonbit\n  struct AddressInfo { address: String; postal: Int }\n  ```",
+      "source_content_hash": "8fb55e6d42b395f37bc66b070f88780fa09fb7e1c02755eb66ead79b3a0ac150",
+      "node_type": "list",
+      "translatable": true,
+      "translations": {
+        "ja": "- ```moonbit\n  struct PersonalInfo { name: String; age: Int }\n  ```\n\n- ```moonbit\n  struct ContactInfo { name: String; telephone: Int }\n  ```\n\n- ```moonbit\n  struct AddressInfo { address: String; postal: Int }\n  ```"
+      }
+    },
+    {
+      "segment_id": "13d9cd70",
+      "source_content": "We can clearly understand the information about the data and the meaning of each corresponding field by names.",
+      "source_content_hash": "30f3c041540481ff32cdea6ec2987718279a58f28c8367b3cef604aa82e11649",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "名前によって、データに関する情報と各フィールドの意味を明確に理解できます。"
+      }
+    },
+    {
+      "segment_id": "29528c8d",
+      "source_content": "The syntax of defining a structure is `struct <struct_name> { <field_name>: <type> ; ... }`. For example: `struct PersonalInfo { name: String; age: Int }`. As we have mentioned, the semicolons can be omitted when the fields are on separate lines.",
+      "source_content_hash": "6262ca5554e2f370374bbae40c5db9af05c7fd9cea7b9ad94774377a7eee9f49",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "構造体を定義する構文は`struct <struct_name> { <field_name>: <type> ; ... }`です。例えば: `struct PersonalInfo { name: String; age: Int }`。前述のように、フィールドが別々の行にある場合はセミコロンを省略できます。"
+      }
+    },
+    {
+      "segment_id": "c504c207",
+      "source_content": "Definitions of the values of a structure are enclosed in braces, with each field assigned a value: `<field_name>: <value>`; each field assignment is followed by a comma. For instance: `let info: PersonalInfo = { name: \"Moonbit\", age: 1, }`. Note the comma after each value. It can be omitted if the last comma is directly followed by the closing brace without a newline. The order of fields does not matter, for example, `{ age: 1, name: \"Moonbit\" }`. If two structures have the exact same fields with the same types, it's challenging to tell them apart just by their field values. To resolve this, we add type annotations like `let jack = ({ ... } : PersonInfo)` to specify the type of a value.",
+      "source_content_hash": "37ba186ec8463780ae0d6a43d9d4df63fbb49e612cd4333aa0425cab0134cc13",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "構造体の値の定義は中括弧で囲み、各フィールドに値を割り当てます: `<field_name>: <value>`; 各フィールドの割り当ての後にはカンマが続きます。例えば: `let info: PersonalInfo = { name: \"Moonbit\", age: 1, }`。各値の後のカンマに注意してください。最後のカンマが改行なしで閉じ括弧の直後に続く場合は省略可能です。フィールドの順序は関係ありません。例えば、`{ age: 1, name: \"Moonbit\" }`。2つの構造体が全く同じフィールドと型を持つ場合、フィールド値だけでは区別が困難です。これを解決するために、`let jack = ({ ... } : PersonInfo)`のように型注釈を追加して値の型を指定します。"
+      }
+    },
+    {
+      "segment_id": "98d26038",
+      "source_content": "Accessing the fields of a structure is similar to tuples – by using the field name to retrieve the corresponding data, for example, `.age` to retrieve the field `age`. When creating a new structure based on an existing one, redeclaring each field can be tedious, especially if the original structure is large. For convenience, MoonBit also provides a feature to update only specific fields. We can simply indicate the base structure with `.. <original_structure>` before the definition of the structure values, and then only declare the fields that have been modified. See the example below.",
+      "source_content_hash": "f7a38ab28211d182eef14317bf3e12f10319100d7f5bd45652abe0b20f4d3e30",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "構造体のフィールドへのアクセスはタプルと同様で、フィールド名を使用して対応するデータを取得します。例えば、`.age`で`age`フィールドを取得します。既存の構造体に基づいて新しい構造体を作成する場合、各フィールドを再宣言するのは面倒です。特に元の構造体が大きい場合に便利なように、MoonBitでは特定のフィールドのみを更新する機能も提供しています。構造体の値の定義の前に`.. <original_structure>`で基本構造体を示し、変更されたフィールドのみを宣言できます。以下の例を参照してください。"
+      }
+    },
+    {
+      "segment_id": "f275f5fd",
+      "source_content": "```moonbit no-check\nlet new_info = { .. old_info, age: 2, }\nlet other_info = { .. old_info, name: \"Hello\", }\n```",
+      "source_content_hash": "482832d038050f9b787f87e893511e2517622fa6b4fac2a7916b577dddb7264b",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {}
+    },
+    {
+      "segment_id": "ab5fc5b5",
+      "source_content": "## Relationship Between Tuples and Structures",
+      "source_content_hash": "7003518d410855aaf6c3941463aa8b871930b0ef459e0ba09330b2deb35045f0",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "## タプルと構造体の関係"
+      }
+    },
+    {
+      "segment_id": "6ea4c715",
+      "source_content": "You may notice that tuples and structures seem quite similar. In fact, a structure and a tuple composed of the same types are isomorphic. Isomorphism, in this context, means there exists a one-to-one mapping between two sets. If there are mappings $f: A \\to B$ and $g: B \\to A$ between sets $A$ and $B$, such that for any $a \\in A$ and $b \\in B$, it satisfies $g(f(a)) = a$ and $f(g(b)) = b$, as shown in the diagram below, then these two sets are isomorphic.",
+      "source_content_hash": "8b56408ab1d9df0eaa051ab561c3f786f14f2ec1c3345075478d17146afb97e9",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "タプルと構造体は非常に似ていることに気付くかもしれません。実際、同じ型で構成された構造体とタプルは同型です。ここでの同型とは、2つの集合間に一対一の対応が存在することを意味します。集合$A$と$B$の間に写像$f: A \\to B$と$g: B \\to A$が存在し、任意の$a \\in A$と$b \\in B$に対して$g(f(a)) = a$と$f(g(b)) = b$を満たす場合、これら2つの集合は同型です。以下の図に示すように。"
+      }
+    },
+    {
+      "segment_id": "5a41b4fb",
+      "source_content": "```mermaid\nflowchart RL\n  subgraph A[\"$$A$$\"]\n    a(($$a$$))\n  end\n  subgraph B[\"\"$$B$$\"\"]\n    b(($$b$$))\n  end\n  a-..->|\"g: B → A\"|b\n  b-..->|\"f: A → B\"|a\n  style A rx:25, ry:25\n  style B rx:25, ry:25\n```",
+      "source_content_hash": "1f656710543f9e4abe9e50847a4d45b69d0b1dd9fa0e95609830f3b1251a410a",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {}
+    },
+    {
+      "segment_id": "d0dd855b",
+      "source_content": "For example, `PersonalInfo` and `(String, Int)` are isomorphic, as we can establish the following pair of mappings:",
+      "source_content_hash": "35e45874e6bd2e40616ddd5b7142b6b18bf901ec95fe1cac29c125d286af7c79",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "例えば、`PersonalInfo`と`(String, Int)`は同型です。次のような対応関係を確立できます:"
+      }
+    },
+    {
+      "segment_id": "7b2110d8",
+      "source_content": "```moonbit expr\nfn f(info: PersonalInfo) -> (String, Int) { (info.name, info.age) }\n\nfn g(pair: (String, Int)) -> PersonalInfo { { name: pair.0, age: pair.1, }}\n```",
+      "source_content_hash": "313c9e85cd8dcee28f19d8c232d9fca102dcffe33422734aeba7dda94ec9661a",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {}
+    },
+    {
+      "segment_id": "ec619944",
+      "source_content": "Feel free to verify this. Similarly, `PersonalInfo` is isomorphic to `(Int, String)`. You can try defining the corresponding mappings yourself.",
+      "source_content_hash": "c2de05c375cb9bec4c96c4d374ddc71f6162ff5f7ef74a84e6eda984d43aeec5",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "自由に検証してみてください。同様に、`PersonalInfo`は`(Int, String)`とも同型です。対応する写像を自分で定義してみてください。"
+      }
+    },
+    {
+      "segment_id": "2547a6bb",
+      "source_content": "The key difference between tuples and structures lies in their compatibility. Tuples are *structural*, meaning they are compatible as long as the structure is the same – each field type corresponds one-to-one. For example, a function successfully accepts a tuple here.",
+      "source_content_hash": "839e12193d49b8a16621996a9f18ed6a971fec4aea90d452d539453bb82c827a",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "タプルと構造体の主な違いは互換性にあります。タプルは*構造的*であり、構造が同じであれば互換性があります。つまり、各フィールドの型が一対一で対応している必要があります。例えば、ここで関数はタプルを正常に受け入れます。"
+      }
+    },
+    {
+      "segment_id": "7d898a0e",
+      "source_content": "```moonbit\nfn accept(tuple: (Int, String)) -> Bool {\n  true\n}\nlet accepted: Bool = accept((1, \"Yes\"))\n```",
+      "source_content_hash": "09bf9230dd98e2c988fcf6e31913b00d20f9711cbf4f28537f45fdda1c06dd99",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {}
+    },
+    {
+      "segment_id": "82e90254",
+      "source_content": "On the other hand, structures are *nominal*, meaning compatibility is based on the type name, and the internal order can be rearranged. In the first example, even though the structures are identical, the function cannot accept the structure because the type names are different. In the second example, the function can accept it because the types are the same even if the order of the fields is different.",
+      "source_content_hash": "5a0d620c65d2735051574c75ed3a3624251761ef5e72135a691149dbb06ebd4a",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "一方、構造体は*名前的*であり、互換性は型名に基づいており、内部の順序は並べ替え可能です。最初の例では、構造体が同一であっても、型名が異なるため関数は構造体を受け入れられません。2番目の例では、フィールドの順序が異なっていても型が同じであれば関数は受け入れられます。"
+      }
+    },
+    {
+      "segment_id": "890e01bc",
+      "source_content": "```moonbit no-check\nstruct A { val : Int ; other: Int }\nstruct B { val : Int ; other: Int }\nfn accept(a: A) -> Bool {\n  true\n}\nlet not_accepted: Bool = accept(({ val : 1, other : 2 }: B)) // DO NOT COMPILE\nlet accepted: Bool = accept(({other: 2, val: 1}: A))\n```",
+      "source_content_hash": "8999e9885ed1ac6064f450fbc33b912e73b26e47f07dca67b471f6b0833a94ee",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {}
+    },
+    {
+      "segment_id": "f947c8e4",
+      "source_content": "## Pattern Matching",
+      "source_content_hash": "7de67cf8678036a085fa30c4ad22e301a00aae8e56108880b15c905d08ba6182",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "## パターンマッチング"
+      }
+    },
+    {
+      "segment_id": "7bc8bb24",
+      "source_content": "Pattern matching is another way to access tuples and structures.",
+      "source_content_hash": "49590db526a1b9f57a9b4687126913decc36f44811438e364107e5efc970bda9",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "パターンマッチングはタプルと構造体にアクセスする別の方法です。"
+      }
+    },
+    {
+      "segment_id": "f39e109c",
+      "source_content": "```moonbit\nfn head_opt(list: @immut/list.T[Int]) -> Option[Int] {\n  match list {\n    Nil => None\n    Cons(head, tail) => Some(head)\n  }\n}\n\nfn get_or_else(option_int: Option[Int], default: Int) -> Int {\n  match option_int {\n    None => default\n    Some(value) => value\n  }\n}\n```",
+      "source_content_hash": "7e09c98fb25bb2c956557ffde491042797903637f5c3fb1490cb1a90876d505a",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {}
+    },
+    {
+      "segment_id": "8fcdd6d4",
+      "source_content": "We have previously used pattern matching to inspect the structure of `List` and `Option`. For instance, using `Nil` and `Cons` to match lists; `None` and `Some` to match Options. In fact, pattern matching can match values (booleans, numbers, characters, strings) as well as constructors.",
+      "source_content_hash": "9b49b4e03b14232f5f3667b6c693c6dc9eb1cb75125a7af593cc080d559b7f1c",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "以前に`List`と`Option`の構造を検査するためにパターンマッチングを使用しました。例えば、`Nil`と`Cons`でリストをマッチングしたり、`None`と`Some`でOptionをマッチングしたりしました。実際、パターンマッチングは値（ブール値、数値、文字、文字列）だけでなくコンストラクタもマッチングできます。"
+      }
+    },
+    {
+      "segment_id": "5be4f25e",
+      "source_content": "```moonbit\nfn is_zero(i: Int) -> Bool {\n  match i {\n    0 => true\n    1 | 2 | 3 => false\n    _ => false\n  }\n}\n```",
+      "source_content_hash": "a48c6ab3a57c9e0524e9903527bb93c9989863fa73b6f80872ed8e3d691096c2",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {}
+    },
+    {
+      "segment_id": "bb1346b6",
+      "source_content": "In the examples above, we matched numbers. Here we use the pipe symbol (the `or` pattern) to simultaneously match multiple possible values. The underscore (`_`) is the wildcard to match all remaining cases. We can nest patterns in constructors, or bind corresponding structures with identifiers.",
+      "source_content_hash": "8ca16e54f5ab077a2ef1ae0b2b73120289147d0be87fe92094b4c4468a707255",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "上記の例では数値をマッチングしました。ここではパイプ記号（`or`パターン）を使用して複数の可能な値を同時にマッチングします。アンダースコア（`_`）は残りのすべてのケースにマッチするワイルドカードです。コンストラクタ内でパターンをネストしたり、対応する構造体を識別子にバインドしたりできます。"
+      }
+    },
+    {
+      "segment_id": "8a061704",
+      "source_content": "```moonbit\nfn contains_zero(l: @immut/list.T[Int]) -> Bool {\n  match l {\n    Nil => false\n    Cons(0, _) => true\n    Cons(_, tl) => contains_zero(tl)\n  }\n}\n```",
+      "source_content_hash": "f0b4495a392977c3390da0492cf573c4cc565d9e4e2bbf7c5e07d1ef13f0f636",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {}
+    },
+    {
+      "segment_id": "3e8f45da",
+      "source_content": "In this example, the branch `Cons(0, _)` matches lists starting with `0`. The branch `Cons(_, tl)` matches other lists, while binding the sublist to the identifier `tl` for further processing. The head of the current list is discarded by the wildcard.",
+      "source_content_hash": "4210c5283c800f96af57cda890aa4209397ec1704577dd56854043b9f5cd52f2",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "この例では、`Cons(0, _)`ブランチは`0`で始まるリストにマッチします。`Cons(_, tl)`ブランチは他のリストにマッチし、サブリストを識別子`tl`にバインドしてさらに処理します。現在のリストの先頭はワイルドカードによって破棄されます。"
+      }
+    },
+    {
+      "segment_id": "4c787c52",
+      "source_content": "Pattern matching for tuples and structures is just like for constructions.",
+      "source_content_hash": "526c5eae6f77a96afb7add77fbcf14ad761971a9996b3223cbce25f0309c44c1",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "タプルや構造体のパターンマッチングは、コンストラクタの場合と同様に行います。"
+      }
+    },
+    {
+      "segment_id": "520cfa65",
+      "source_content": "```moonbit\nfn first(pair: (Int, Int)) -> Int {\n  match pair {\n    (first, second) => first\n  }\n}\n\nfn baby_name(info: PersonalInfo) -> Option[String] {\n  match info {\n    { age: 0, .. } => None\n    { name, age } => Some(name)\n  }\n}\n```",
+      "source_content_hash": "2ec1d394153519e3706eb2b30671f573994b9c030c40246704e938ee5b8a255b",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_520cfa65"
+      }
+    },
+    {
+      "segment_id": "d636abf8",
+      "source_content": "Tuples' patterns are just like their definitions, enclosed in parentheses and separated by commas. Make sure the length of the matched tuple is correct. Structure patterns are enclosed in braces and separated by commas. We have additional pattern forms to make pattern matching more flexible:",
+      "source_content_hash": "d0a6ed00b045f9b0440be6ac14fdeb35885576b77f318f72994f0a146675bf12",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "タプルのパターンはその定義と同様に、括弧で囲まれカンマで区切られます。マッチ対象のタプルの長さが正しいことを確認してください。構造体のパターンは中括弧で囲まれカンマで区切られます。パターンマッチングをより柔軟にするために、追加のパターン形式があります："
+      }
+    },
+    {
+      "segment_id": "e1b58cbf",
+      "source_content": "- Explicitly match some specific values, such as `age: 0` to match the data with specific values.\n- Use another identifier to bind a field, such as `age: my_age`. This is useful when you don't want to use the field name as an identifier.\n- Omit remaining fields with `..` at the end.",
+      "source_content_hash": "bae237d8ba1b914f91a6dd47b609ce531df05db6417020323f1e3e45777dd46e",
+      "node_type": "list",
+      "translatable": true,
+      "translations": {
+        "ja": "- 特定の値を明示的にマッチ（例：`age: 0`で特定の値を持つデータにマッチ）\n- 別の識別子を使用してフィールドをバインド（例：`age: my_age`）。フィールド名を識別子として使用したくない場合に便利です。\n- 残りのフィールドを`..`で省略"
+      }
+    },
+    {
+      "segment_id": "dc72fd20",
+      "source_content": "Here is another example for better understanding how to use nested patterns. The `zip` function combines two lists into a new list of pairs like a zipper. The length of the resulting list is the minimum of the lengths of the input lists. Given the lists `[1, 2, 3]` and `['a', 'b', 'c', 'd']`, the zipped list would be `[(1, 'a'), (2, 'b'), (3, 'c')]`.",
+      "source_content_hash": "61a141e8ef59571fe98b78433c5bc278c88ea63ccbe1e260d4b43491bda2aa89",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "ネストしたパターンの使用方法を理解するためにもう一つの例を示します。`zip`関数は2つのリストをジッパーのようにペアの新しいリストに結合します。結果のリストの長さは入力リストの最小長になります。リスト`[1, 2, 3]`と`['a', 'b', 'c', 'd']`が与えられた場合、ジップされたリストは`[(1, 'a'), (2, 'b'), (3, 'c')]`になります。"
+      }
+    },
+    {
+      "segment_id": "82a37a1b",
+      "source_content": "```moonbit\nfn zip(l1: @immut/list.T[Int], l2: @immut/list.T[Char]) -> @immut/list.T[(Int, Char)] {\n  match (l1, l2) {\n    (Cons(hd, tl), Cons(hd2, tl2)) => Cons((hd, hd2), zip(tl, tl2))\n    _ => Nil\n  }\n}\n```",
+      "source_content_hash": "ba7c16546271d79f3b57e5209e43944a489eccdd1673b544090346733ae9dde8",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_82a37a1b"
+      }
+    },
+    {
+      "segment_id": "b49a7009",
+      "source_content": "We define our function with pattern matching. Here, we match a pairs by constructing a tuple and then match the nested tuple pattern, effectively matching both lists simultaneously. If either of the input lists is empty, the result is an empty list. When both lists are non-empty, we get a non-empty result. The first item of the result is a tuple of the two values we take from the inputs, followed by the zipped result of the sublists of both lists. Note that the order of pattern matching is top-down. (If a wildcard is placed at the top, the subsequent patterns will never be matched, and the code will never run. The good news is that MoonBit can detect this and provide warnings. These warnings are advisory and won't prevent compilation, so it's crucial to pay attention to the issues panel in your IDE.)",
+      "source_content_hash": "5a82706038eb6b4d9016166ccdc4632f501b0c9b47caa5570abad69268897166",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "パターンマッチングを使用して関数を定義します。ここでは、タプルを構築してペアをマッチし、ネストしたタプルパターンをマッチすることで、両方のリストを同時にマッチしています。入力リストのいずれかが空の場合、結果は空のリストになります。両方のリストが空でない場合、非空の結果が得られます。結果の最初のアイテムは入力から取得した2つの値のタプルで、その後ろに両方のリストのサブリストをジップした結果が続きます。パターンマッチングの順序は上から下であることに注意してください（ワイルドカードが先頭にある場合、後続のパターンはマッチされず、コードは実行されません。MoonBitはこれを検出して警告を出します。これらの警告は助言的なもので、コンパイルを妨げませんが、IDEの問題パネルに注意を払うことが重要です）。"
+      }
+    },
+    {
+      "segment_id": "9ebd9d9b",
+      "source_content": "Lastly, pattern matching is not limited to `match`; it can also be used in data binding. In local definitions, we can use pattern matching expressions to bind corresponding substructures to identifiers. It's essential to note that if the match fails, the program will encounter a runtime error and terminate.",
+      "source_content_hash": "c7c31d26879928a9e94c26526081dd03953b1c6a01d7db83f086cd53f88f4a29",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "最後に、パターンマッチングは`match`に限定されません。データバインディングでも使用できます。ローカル定義では、パターンマッチング式を使用して対応するサブ構造を識別子にバインドできます。マッチが失敗した場合、プログラムはランタイムエラーで終了することに注意が必要です。"
+      }
+    },
+    {
+      "segment_id": "54dd003b",
+      "source_content": "```moonbit no-check\nlet ok_one = Result::Ok(1);\nlet Result::Ok(one) = ok_one;\nlet Result::Err(e) = ok_one; // Runtime error\n```",
+      "source_content_hash": "3cfacc34a0dbcffec90790a1bb90f8752db4986deadbcbd06a607c6960159e24",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_54dd003b"
+      }
+    },
+    {
+      "segment_id": "17fd5988",
+      "source_content": "## Enumerated Types",
+      "source_content_hash": "2876b7cf42c423965c9ef2ea24e9b6594d75b3d535dc8cf20da92b4aec45c06d",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "## 列挙型"
+      }
+    },
+    {
+      "segment_id": "3208eb29",
+      "source_content": "Now, let's delve into the enumerated types.",
+      "source_content_hash": "e770750f4dab3386c9a9f94861baf32db309af849caa8de6fa88dd5f6788a3c6",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "それでは、列挙型について詳しく見ていきましょう。"
+      }
+    },
+    {
+      "segment_id": "38f964f1",
+      "source_content": "Think about this, how should we represent the union of several possibilities? For example, how do we define a type that represents the set of days from Monday to Sunday? How about defining a type for the outcomes of a coin toss – heads or tails? What about a type to represent the results of integer arithmetic operations, such as a successful result, overflow, or division by zero?",
+      "source_content_hash": "9ef4892354daffb29af94db04d6f30871b81c1c9a2609d8ba79224a4f116dbad",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "考えてみてください、いくつかの可能性の和集合をどのように表現すべきでしょうか？例えば、月曜日から日曜日までの集合を表す型をどのように定義しますか？コイントスの結果（表または裏）を表す型はどうでしょうか？整数演算の結果（成功、オーバーフロー、ゼロ除算など）を表す型は？"
+      }
+    },
+    {
+      "segment_id": "b4204c03",
+      "source_content": "The answer is enumerated types. Enumerated types allow us to define data structures that represent different cases. For example, we define a collection of seven days of the week here and the outcomes of a coin toss.",
+      "source_content_hash": "1e144aa2fc05d307517b6db651b48df40c533fcdd983de674460ba1ca77181fb",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "答えは列挙型です。列挙型を使用すると、異なるケースを表すデータ構造を定義できます。例えば、ここでは週の7日間の集合とコイントスの結果を定義しています。"
+      }
+    },
+    {
+      "segment_id": "d9ca18af",
+      "source_content": "```moonbit\nenum DaysOfWeek {\n  Monday; Tuesday; Wednesday; Thursday; Friday; Saturday; Sunday\n}\n\nenum Coin {\n  Head\n  Tail\n}\n```",
+      "source_content_hash": "297cf2e19f6790270afa89504eb07de1a64ba54ea56f64f1e291267136fbda97",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_d9ca18af"
+      }
+    },
+    {
+      "segment_id": "be0f7233",
+      "source_content": "The construction of an enumerated type is as follows:",
+      "source_content_hash": "552df5723656b54e2e6637146ccf377d6a0a5fed51fed91fef3cc7ac26cbcc2e",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "列挙型の構築方法は以下の通りです："
+      }
+    },
+    {
+      "segment_id": "eff3427d",
+      "source_content": "```moonbit no-check\nenum <type_name> { <variant>; }\n```",
+      "source_content_hash": "08919e0216680ccd817b31cb04ea8f721f15a7a8d75024557ca81f41aadc6db2",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_eff3427d"
+      }
+    },
+    {
+      "segment_id": "f6479c91",
+      "source_content": "Here, each possible variant is a constructor. For instance, `let monday = Monday`, where `Monday` defines the day of the week as Monday. Different enumerated types may cause conflicts because they might use the same names for some cases. In such cases, we distinguish them by adding `<type>::` in front of the constructor, such as `DaysOfWeek::Monday`.",
+      "source_content_hash": "da207af6e771d469a70e23c59f738636b2ed9220981abc146416726db2e2df80",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "ここで、各可能なバリアントはコンストラクタです。例えば、`let monday = Monday`では、`Monday`が月曜日を定義しています。異なる列挙型では、一部のケースで同じ名前を使用する可能性があるため、競合が発生する場合があります。そのような場合、`<型名>::`をコンストラクタの前に追加して区別します（例：`DaysOfWeek::Monday`）。"
+      }
+    },
+    {
+      "segment_id": "61e5dad6",
+      "source_content": "Now we need to ask, why do we need enumerated types? Why not just use numbers from one to seven to represent Monday to Sunday? Let's compare the following two functions.",
+      "source_content_hash": "0445e0b408058273c17676d2d29bcc1faf7ff68a81363fde957071ee77eb5777",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "ここで疑問が生じます。なぜ列挙型が必要なのでしょうか？単に1から7の数字で月曜日から日曜日を表すのではなぜダメなのでしょうか？次の2つの関数を比較してみましょう。"
+      }
+    },
+    {
+      "segment_id": "18e3e63d",
+      "source_content": "```moonbit no-check\nfn tomorrow(today: Int) -> Int\nfn tomorrow(today: DaysOfWeek) -> DaysOfWeek\nlet tuesday = 1 * 2 // Is this Tuesday?\n```",
+      "source_content_hash": "7c881323495954f7caae2067914ec9d5f16c155c5e1f871e56c022abcd8c5522",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_18e3e63d"
+      }
+    },
+    {
+      "segment_id": "85b17c36",
+      "source_content": "The most significant difference is that functions defined with enumerated types are total functions, while those defined with integers are partial functions. This increases the possibility of users providing incorrect inputs – they might pass `-1` or `8`, and we have no way to prevent this through the compiler. Another consideration is, what does adding one to a day of the week mean? What is the meaning of multiplying the day of the week by a number? Why is Monday multiplied by two equal to Tuesday? Why is Tuesday divided by two equal to Monday? Enumerated types can distinguish themselves from existing types and abstract better.",
+      "source_content_hash": "3ac2658f3b9191c673e6295c98272ba1ee3252f72988b7d1cff4393987bb2d56",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "最も大きな違いは、列挙型で定義された関数は全関数であるのに対し、整数で定義された関数は部分関数であることです。これにより、ユーザーが不正な入力（例えば`-1`や`8`）を渡す可能性が高まり、コンパイラを通じてこれを防ぐ手段がありません。さらに、曜日に1を加えるとはどういう意味でしょうか？曜日を数値で乗算する意味は？なぜ月曜日を2倍すると火曜日になるのか？火曜日を2で割ると月曜日になるのはなぜか？列挙型は既存の型から自身を区別し、より優れた抽象化を可能にします。"
+      }
+    },
+    {
+      "segment_id": "d3912b2e",
+      "source_content": "Additionally, enumerated types prevent the representation of irrational data. For instance, when using various services, user identification can be based on either a phone number or an email, both of which are optional but only one is required. If we use a structure with two nullable fields to represent this, there is a risk of both fields being empty or both having data, which is not what we want. Therefore, enumerated types can be used to better restrict the range of reasonable data.",
+      "source_content_hash": "2b725ff7573ee30a1cf672102f82108ba84a8c2ed0ae9fc24f88e28cd000ef65",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "また、列挙型は不合理なデータ表現を防ぎます。例えば各種サービス利用時、ユーザー識別は電話番号またはメールアドレスのいずれかで行えますが、両方ともオプションであり一方のみ必須です。これを2つのnull許容フィールドを持つ構造体で表現すると、両フィールドが空または両方にデータが存在するという望ましくない状態のリスクがあります。列挙型を使用すれば、合理的なデータ範囲をより適切に制限できます。"
+      }
+    },
+    {
+      "segment_id": "2dbbb313",
+      "source_content": "Each variant of an enumerated type can also carry data. For instance, we've seen the enumerated type `Option`.",
+      "source_content_hash": "946de2a830a6e92d417ff51e178a52b5499e6192412dcc3f5e33b4981d8e88bf",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "列挙型の各バリアントはデータを保持することも可能です。例えば`Option`列挙型がその例です。"
+      }
+    },
+    {
+      "segment_id": "2f24891a",
+      "source_content": "```moonbit no-check\nenum Option[T] {\n    Some(T)\n    None\n}\n\nenum ComputeResult {\n    Success(Int)\n    Overflow\n    DivideByZero\n}\n```",
+      "source_content_hash": "75b2cdab691ca4907fb693771a33a7fae58ff9e3d9fef8f710257fdf19a39642",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_2f24891a"
+      }
+    },
+    {
+      "segment_id": "65be34cb",
+      "source_content": "To do this, simply enclose parameters with parentheses and separate them by commas after each variant. In the second example, we define the case of successful integer operation, and the value is an integer. Enumerated types correspond to a distinguishable union. What does that mean? First, it is a union of different cases, for example, the set represented by the type `T` for `Some` and the set defined by the singular value `None`. Second, this union is distinguishable because each case has a unique name. Even if there are two cases with the same data type, they are entirely different. Thus, enumerated types are also known as sum types.",
+      "source_content_hash": "5833c228a62dbfe017f19787225a60d45d2bf25cd247bea27b2b7624570b0dc0",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "これを実現するには、各バリアントの後に括弧でパラメータを囲みカンマで区切ります。2番目の例では、整数演算成功ケースを定義し、その値は整数です。列挙型は直和集合に対応します。これはまず異なるケースの集合（例えば`Some`の型`T`が表す集合と`None`の単一値集合）の和集合であり、次に各ケースが一意の名前を持つため区別可能です。たとえ2つのケースが同じデータ型を持っていても、それらは完全に異なります。このため列挙型は和型とも呼ばれます。"
+      }
+    },
+    {
+      "segment_id": "6beaa586",
+      "source_content": "### Labeled Arguments",
+      "source_content_hash": "56417c7033887cdd20b72ecc0ea927d902dbddfba6aa9cfa282b8777097fc065",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "### ラベル付き引数"
+      }
+    },
+    {
+      "segment_id": "41e7f712",
+      "source_content": "Similar to functions, enum constructors also support the use of labeled arguments. This feature is beneficial in simplifying pattern matching patterns. For example:",
+      "source_content_hash": "e137ab06a97ba817da42f9afe4c0e52daa1abd920558cdebc519314c5e73b8eb",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "関数と同様に、enumコンストラクタもラベル付き引数の使用をサポートしています。この機能はパターンマッチングパターンを簡素化するのに有益です。例："
+      }
+    },
+    {
+      "segment_id": "2ef49e00",
+      "source_content": "```moonbit\nenum Side {\n  FrenchFries\n  Salad\n}\n\nenum Drink {\n  Coke\n  Sprite\n  Soup\n}\n\nenum Order {\n  ChickenThigh(~side : Side, ~drink : Drink)\n  KayaToast(~drink : Drink, ~no_kaya : Bool)\n}\n\nfn getSoftDrink(order : Order) -> Option[Drink] {\n  match order {\n    // use `label=pattern` to match labeled arguments of constructor\n    ChickenThigh(side=_, drink=Soup) => None\n    // `label=label` can be abbreviated as `~label`\n    ChickenThigh(side=_, ~drink) => Some(drink)\n    // use `..` to ignore all remaining labeled arguments\n    KayaToast(drink=Soup, ..) => None\n    KayaToast(~drink, ..) => Some(drink)\n  }\n}\n\nfn init {\n  // syntax for creating constructor with labeled arguments is the same as calling labeled function\n  let order : Order = ChickenThigh(side=Salad, drink=Coke)\n  let _: Option[Drink] = getSoftDrink(order)\n}\n```",
+      "source_content_hash": "3e6ce9ac33e33494371789fa75945e9da97dec9b8fb68fb4c941af1a31b31a41",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_2ef49e00"
+      }
+    },
+    {
+      "segment_id": "f8d1807a",
+      "source_content": "## Algebraic Data Types",
+      "source_content_hash": "cf3ce5a681f9d8978b1ef74179795c19fd1ac9a6c7d3ad72543e6006a11ccd7a",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "## 代数的データ型"
+      }
+    },
+    {
+      "segment_id": "c95293b9",
+      "source_content": "We've mentioned product types and sum types. Now, let me briefly introduce algebraic data types. It's important to note that this introduction to algebraic data types is quite basic. Please read the references for a deeper understanding.",
+      "source_content_hash": "7f3c5c51c083ebeda5ee2e23ea10c3d251c03eda4724623085473b543fc79100",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "これまでに直積型と和型について言及しました。ここで代数的データ型について簡単に紹介します。この導入は非常に基本的な内容であることに注意してください。より深い理解には参考文献を参照してください。"
+      }
+    },
+    {
+      "segment_id": "7ed923ee",
+      "source_content": "The terms tuple, structure, and enumerated type, which we discussed earlier, are collectively referred to as algebraic data types. They are called algebraic data types because they construct types through algebraic operations, specifically \"sum\" and \"product\", and they exhibit algebraic structures. Recall the properties of regular numbers, such as equality, addition, multiplication, and the facts such that any number multiplied by 1 equals itself, any number plus 0 equals itself, etc. Similarly, algebraic data types exhibit properties such as:",
+      "source_content_hash": "a50c6048a591492c84a03b5ef30cced0cf095aff842d2b6c8753b1a58549247c",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "前述のタプル、構造体、列挙型は総称して代数的データ型と呼ばれます。これらが代数的データ型と呼ばれる理由は、代数的操作（具体的には「和」と「積」）を通じて型を構築し、代数的構造を示すためです。通常の数値における等式、加算、乗算、および任意の数に1を乗じるとその数自身になる、任意の数に0を加えるとその数自身になるなどの性質を思い出してください。同様に、代数的データ型は以下のような性質を示します："
+      }
+    },
+    {
+      "segment_id": "1fedb5f8",
+      "source_content": "- type equality implying isomorphism\n- type multiplication forming product types (tuples or structures)\n- type addition forming sum types (enumerated types)",
+      "source_content_hash": "e81a7db9230c35f42dbc6295a61ee5c86071faef5008cf4bf66eeec8d05bfe2a",
+      "node_type": "list",
+      "translatable": true,
+      "translations": {
+        "ja": "- 型の等価性は同型を意味する\n- 型の乗算は直積型（タプルまたは構造体）を形成する\n- 型の加算は和型（列挙型）を形成する"
+      }
+    },
+    {
+      "segment_id": "a01e2096",
+      "source_content": "Here, **Zero** is a type that corresponds to an **empty type**. We can define an empty enumerated type without any cases; such a type has no constructors, and no values can be constructed, making it empty. **One** corresponds to a type with only one element, which we call the **Unit type**, and its value is a zero-tuple.",
+      "source_content_hash": "09d5ae885ccf18665908eae118ee47b5b2223ba3768c372c45f782ed7044e5c2",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "ここで、**ゼロ**は**空型**に対応する型です。ケースを持たない空の列挙型を定義できます。この型にはコンストラクタがなく、値を構築できないため空です。**1**は単一の要素のみを持つ型に対応し、これを**ユニット型**と呼び、その値は0タプルです。"
+      }
+    },
+    {
+      "segment_id": "130e2dfb",
+      "source_content": "Let's verify the properties mentioned earlier: any number multiplied by $1$ equals itself, and any number plus $0$ equals itself.",
+      "source_content_hash": "0ca0936de4c7226c815f89f7d7daa62ea2f44cafb49ae6232c3514701b4dab3b",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "前述の性質を検証しましょう：任意の数に$1$を乗じるとその数自身になり、任意の数に$0$を加えるとその数自身になります。"
+      }
+    },
+    {
+      "segment_id": "fa163a68",
+      "source_content": "```moonbit no-check\nfn f[T](t: T) -> (T, Unit) { (t, ()) }\nfn g[T](pair: (T, Unit)) -> T { pair.0 }\n```",
+      "source_content_hash": "7d2aa33144f5b8b0101333a17dfd2e334c965c17435bba031badcc3890060ce5",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_fa163a68"
+      }
+    },
+    {
+      "segment_id": "45d5dee4",
+      "source_content": "In this context, a type `T` multiplied by $1$ implies that `(T, Unit)` is isomorphic to `T`. We can establish a set of mappings: it's straightforward to go from `T` to `(T, Unit)` by simply adding the zero-tuple. Conversely, going from `(T, Unit)` to `T` involves ignoring the zero-tuple. You can intuitively find that they are isomorphic.",
+      "source_content_hash": "08eafcc0e6947bd1e1b654b90a2ccd548d09ffc2c8bb8f9e8c1a077ba068cb5c",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "この文脈では、型`T`に$1$を乗じることは、`(T, Unit)`が`T`と同型であることを意味します。マッピングの集合を確立できます：`T`から`(T, Unit)`へは単に0タプルを追加するだけで簡単に移行できます。逆に、`(T, Unit)`から`T`へは0タプルを無視することで移行できます。これらが同型であることが直感的に理解できるでしょう。"
+      }
+    },
+    {
+      "segment_id": "b19953ed",
+      "source_content": "```moonbit\nenum Nothing {}\n\nenum PlusZero[T] { CaseT(T); CaseZero(Nothing) }\n\nfn f[T](t: PlusZero[T]) -> T {\n  match t {\n    CaseT(t) => t\n    CaseZero(_) => abort(\"Impossible case, no such value.\")\n  }\n}\n\nfn g[T](t: T) -> PlusZero[T] { CaseT(t) }\n```",
+      "source_content_hash": "c9df7f9a6c6002a34436033d3a48949802dc9b1277cbcf01127b1e6b36964230",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_b19953ed"
+      }
+    },
+    {
+      "segment_id": "0302cdc1",
+      "source_content": "The property of any type plus zero equals itself means that, for any type, we define an enumerated type `PlusZero`. One case contains a value of type `T`, and the other case contains a value of type `Nothing`. This type is isomorphic to `T`, and we can construct a set of mappings. Starting with `PlusZero`, we use pattern matching to discuss the cases. If the included value is of type `T`, we map it directly to `T`. If the type is `Nothing`, this case will never happen because there are no values of type `Nothing`, so we use `abort` to handle, indicating that the program will terminate. Conversely, we only need to wrap `T` with `CaseT`. It's essential to emphasize that this introduction is quite basic, providing an intuitive feel. Explore further if you are interested.",
+      "source_content_hash": "9830267624110c2fc3dd32d51edc968006399bb7ff65e91b7729690c65b10115",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "任意の型にゼロを加えてもその型自身と等しいという性質は、任意の型に対して、列挙型`PlusZero`を定義することで示せます。この型は`T`型の値を含むケースと`Nothing`型の値を含むケースを持ち、`T`型と同型です。マッピングのセットを構築できます。`PlusZero`から始めて、パターンマッチングでケースを検討します。含まれる値が`T`型の場合、直接`T`にマッピングします。型が`Nothing`の場合、このケースは決して発生しません（`Nothing`型の値は存在しないため）、プログラムを終了させる`abort`で処理します。逆方向では、単に`T`を`CaseT`でラップします。この説明は非常に基本的で直感的な理解を提供するものです。興味があればさらに探求してください。"
+      }
+    },
+    {
+      "segment_id": "9802de48",
+      "source_content": "Here are a few examples.",
+      "source_content_hash": "b6beb5e0f0cbb5d7a63e4225c571f3c92dbb6e5b7c6c94ebbfcdae3a9bed8d83",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "以下にいくつかの例を示します。"
+      }
+    },
+    {
+      "segment_id": "ebf9dda2",
+      "source_content": "```moonbit\nenum Coins { Head; Tail }\n```",
+      "source_content_hash": "ccd50c4f6d5ae419793b60730e49c90acb943f3bb34d3c98e62e9b96da47d89c",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_ebf9dda2"
+      }
+    },
+    {
+      "segment_id": "c1e7eaab",
+      "source_content": "$\\texttt{Coins} = 1 + 1 = 2$",
+      "source_content_hash": "c596eef4c1d450ab3be160a38d4beac1d8ce41177fc9ee9af7212dfb8a5efa8d",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "$\\texttt{Coins} = 1 + 1 = 2$"
+      }
+    },
+    {
+      "segment_id": "88b052dd",
+      "source_content": "```moonbit no-check\nenum DaysOfWeek { Monday; Tuesday; ...; }\n```",
+      "source_content_hash": "ae921583ebb092ef618906c2c958365de935260bc3faea80d7586cedfd68fe4a",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_88b052dd"
+      }
+    },
+    {
+      "segment_id": "d70ad719",
+      "source_content": "$\\texttt{DaysOfWeek} = 1 + 1 + 1 + 1 + 1 + 1 + 1 = 7$",
+      "source_content_hash": "340b10242150121e480b451c1b19ae41180cd85ef4c07b9f51135b7de4a0e3d5",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "$\\texttt{DaysOfWeek} = 1 + 1 + 1 + 1 + 1 + 1 + 1 = 7$"
+      }
+    },
+    {
+      "segment_id": "9cbb5424",
+      "source_content": "The data type for the coin toss can be considered as $1 + 1$, as each case, `Head` and `Tail`, actually represents a set with only one value. Therefore, each case is isomorphic to the Unit type. When combined by the sum type, the `Coin` type becomes $1 + 1 = 2$, representing a set with two values, which is isomorphic to any other type with two values. Similarly, `DaysOfWeek` represents a set of seven values, isomorphic to any other type with seven values.",
+      "source_content_hash": "39f8ed7bd6657bd22a9135229fc81f5a2547ae5a7cca847196c6113905ba40e3",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "コイントスのデータ型は$1 + 1$と考えることができます。各ケース（`Head`と`Tail`）は実際には単一の値を持つ集合を表すため、各ケースはUnit型と同型です。和型で結合すると、`Coin`型は$1 + 1 = 2$となり、2つの値を持つ集合を表します。これは2つの値を持つ他の任意の型と同型です。同様に、`DaysOfWeek`は7つの値を持つ集合を表し、7つの値を持つ他の任意の型と同型です。"
+      }
+    },
+    {
+      "segment_id": "dbd18971",
+      "source_content": "A more interesting example is `List`, using `List[Int]` as an example.",
+      "source_content_hash": "bf09de1fa7aedfe3c3a379f06004d686ddf50d72dbf47a2b836dc9262111e871",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "より興味深い例として`List`、特に`List[Int]`を取り上げます。"
+      }
+    },
+    {
+      "segment_id": "f7f08e35",
+      "source_content": "The definition of `List[Int]` tells us that a list of integers is either an empty list or composed of an integer with a sublist. An empty list is isomorphic to the Unit type, so it can be expressed as `1 + Int * List`. As `List` is recursive, it can be substituted with `1 + Int * 1 + Int * List`. Applying the associative law of multiplication, we get `1 + Int * (1 + Int * List)`. Continuing the substitution and simplification, we find that the set of integer lists is a distinguishable union of a single-value set, an integer set, two integer sets, and even an infinite Cartesian product of integer sets. This corresponds with reality.",
+      "source_content_hash": "88060d9bc7bc2118c531811a258cfa05bd9ab2542e627fd77222f21282b9baf7",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "`List[Int]`の定義から、整数リストは空リストか、整数とサブリストで構成されるかのいずれかです。空リストはUnit型と同型なので、`1 + Int * List`と表現できます。`List`は再帰的であるため、`1 + Int * 1 + Int * List`と置換できます。乗法の結合則を適用すると、`1 + Int * (1 + Int * List)`を得ます。置換と簡略化を続けると、整数リストの集合は、単一値集合、整数集合、2つの整数集合、さらには整数集合の無限直積の和集合であることがわかります。これは現実と一致します。"
+      }
+    },
+    {
+      "segment_id": "6558c87d",
+      "source_content": "## Summary",
+      "source_content_hash": "30ac03ff33731529441be8fbe52a3bd0d4c5ec830e806d54692168ebb7f98ada",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "## まとめ"
+      }
+    },
+    {
+      "segment_id": "c08b6492",
+      "source_content": "In this chapter, we explored various custom data types in MoonBit, including:",
+      "source_content_hash": "a21c27b6766e3e284b1851862654ece8c74ec49d85573753c0de52ea33de259e",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "この章では、MoonBitにおける様々なカスタムデータ型を探求しました："
+      }
+    },
+    {
+      "segment_id": "5fd5b5ae",
+      "source_content": "- **Tuples:** Fixed-length combinations of different data types.\n- **Structures:** Tuples with names to fields for better understanding.\n- **Enumerated Types:** Types that represent a distinct set of values, often used to model different cases or options.",
+      "source_content_hash": "e8d6401ee6368bca926ff4f494fe316aedcf8aebf160a212db8fefda39f625c2",
+      "node_type": "list",
+      "translatable": true,
+      "translations": {
+        "ja": "- **タプル**: 異なるデータ型の固定長組み合わせ\n- **構造体**: フィールドに名前を付けたタプル（理解しやすくするため）\n- **列挙型**: 異なるケースやオプションをモデル化するために使われる、明確な値の集合を表す型"
+      }
+    },
+    {
+      "segment_id": "b41b4d77",
+      "source_content": "We also touched upon the concept of algebraic data types, which encompass tuples, structures, and enumerated types, and discussed some basic properties resembling those found in algebra.",
+      "source_content_hash": "8c04bbd7c1a5809c67d04fa7b5bde66a4a9ef37c554053030740bc4676966050",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "また、タプル・構造体・列挙型を含む代数的データ型の概念に触れ、代数に見られる基本的な性質について議論しました。"
+      }
+    },
+    {
+      "segment_id": "f613e20b",
+      "source_content": "For further exploration, please refer to:",
+      "source_content_hash": "18354b31a6ce4444376362406bccc4a548acbf163acec1b1361ed215e3534f9f",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "さらに深く学ぶには、以下を参照してください："
+      }
+    },
+    {
+      "segment_id": "aa526f01",
+      "source_content": "- ***Category Theory for Programmers***: [Chapter 6 - Simple Algebraic Data Types](https://bartoszmilewski.com/2015/01/13/simple-algebraic-data-types/)",
+      "source_content_hash": "12c3c5aed676c4fc33f65d2783c8db265dab5d23c1aa07c04d506b4b4aef3a85",
+      "node_type": "list",
+      "translatable": true,
+      "translations": {
+        "ja": "- ***Category Theory for Programmers***: [第6章 - 単純な代数的データ型](https://bartoszmilewski.com/2015/01/13/simple-algebraic-data-types/)"
+      }
+    }
+  ],
+  "target_i18n_subpath": "docusaurus-plugin-content-docs/current/04-tuples-structs-enums.md",
+  "last_updated_timestamp": "2025-06-06T05:19:35.746026+00:00",
+  "schema_version": "1.0",
+  "translated_versions": {
+    "ja": "096c097631857457fbd0b245643676dea282ebdf2dc0ba28d12bc98f09ffae1a"
+  }
+}

@@ -1,0 +1,842 @@
+{
+  "source_file_path_relative_to_docusaurus_root": "docs/05-trees.md",
+  "source_file_content_hash": "c8d3bcfa7a3080640f72eccd40d6b1d1deed70f165d24bf564a583e10ebc7c16",
+  "segments": [
+    {
+      "segment_id": "76e4a56a",
+      "source_content": "# 5. Trees",
+      "source_content_hash": "49aae3bc75c54927671306644674d64e9d2de6cc752b90fc313aa5c97c50e2f5",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "# 5. 木構造"
+      }
+    },
+    {
+      "segment_id": "faebdc62",
+      "source_content": "In this chapter, we explore a common data structure: trees, and related algorithms. We will start with a simple tree, understand the concept, and then learn about a specialized tree: binary tree. After that, we will explore a specialized binary tree: binary search tree. Further, we will also learn about the balanced binary tree.",
+      "source_content_hash": "c68915c3b28677e529613ef52ce344d7f2dec7997a908df7ae5ecd78cd05df7e",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "この章では、一般的なデータ構造である木構造と関連アルゴリズムについて探求します。まず単純な木構造から概念を理解し、その後特殊な木構造である二分木について学びます。さらに、特殊な二分木である二分探索木についても探求します。加えて、平衡二分木についても学びます。"
+      }
+    },
+    {
+      "segment_id": "e7ec8f99",
+      "source_content": "Trees are very common plants in our lives, as shown in the diagram.",
+      "source_content_hash": "dbb31823ff49f99c4316d6b4e78d064fbc2666168af839802c14fe6ddac70ccf",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "木構造は私たちの生活において非常に一般的な植物であり、以下の図のように表されます。"
+      }
+    },
+    {
+      "segment_id": "6ef78e84",
+      "source_content": "![trees](/pics/trees.drawio.webp)",
+      "source_content_hash": "f8b0efa481bbe16fe0ae97477f0b4de8078f3b1ee99a23ad483d45e0b3ff3297",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "![木構造](/pics/trees.drawio.webp)"
+      }
+    },
+    {
+      "segment_id": "53eaf0e1",
+      "source_content": "A tree has a root with multiple branches, each branch having leaves or other small branches. In fact, many data structures in our everyday lives look like a tree. For example, the pedigree chart, a.k.a., a family tree, grows from a pair of ancestors. We also use the phrase \"branching out\" to describe this process. Another example is file structure, where a folder may contain some files and other folders, just like leaves and branches. Mathematical expressions can also be represented as a tree, where each node is an operator, and each leaf is a number, with operators closer to the root being computed later.",
+      "source_content_hash": "55b0e18728ff4b603d8f87569fe7cb9f04358216cf4c740643f54199d41f0b64",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "木構造には根があり、そこから複数の枝が分かれ、各枝には葉や他の小さな枝が付いています。実際、私たちの日常生活における多くのデータ構造は木構造のように見えます。例えば、家系図（ファミリーツリー）は一組の祖先から成長していきます。また、「枝分かれする」という表現でこのプロセスを説明することもあります。別の例としてファイル構造があり、フォルダにはいくつかのファイルや他のフォルダが含まれており、葉や枝のようになっています。数式も木構造として表現でき、各ノードは演算子、各葉は数値であり、根に近い演算子ほど後で計算されます。"
+      }
+    },
+    {
+      "segment_id": "8a5f6a7b",
+      "source_content": "## Trees",
+      "source_content_hash": "456f6a283d41e4f2ea62d438a2087bdfcafe1bacb1cc6696ee8d9afbb054cdec",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "## 木構造"
+      }
+    },
+    {
+      "segment_id": "180bddb1",
+      "source_content": "In data structures, a tree is a finite collection of nodes that have a hierarchical relationship. Each node is a structure that stores data. It is common to describe this hierarch using family relationships, like parents, children, descendants and ancestors. Sometimes, we say there is a parent-child relationship between adjacent nodes, calling them parent nodes and child nodes. A node's descendants are all the nodes that stem from a node, while a node’s ancestors are all the nodes that it stems from.",
+      "source_content_hash": "b1550c73c8e57cbc3fe7809a2b43e258506408e01194bd687dca2549ea98216d",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "データ構造において、木構造は階層的な関係を持つノードの有限集合です。各ノードはデータを格納する構造体です。この階層を家族関係（親、子、子孫、祖先など）で説明することが一般的です。隣接するノード間には親子関係があると言い、それらを親ノードと子ノードと呼びます。ノードの子孫とはそのノードから派生するすべてのノードであり、ノードの祖先とはそのノードが派生するすべてのノードです。"
+      }
+    },
+    {
+      "segment_id": "cf898102",
+      "source_content": "If a tree is not empty, it should have exactly one root node, which has only child nodes and no parent nodes. All nodes except the root node should have exact one parent node. Nodes without child nodes, which are the outermost layer of nodes, are called leaf nodes, akin to the leaves of a tree. Additionally, no node can be its own descendant, meaning cycles cannot exist within the tree.",
+      "source_content_hash": "85f48ab3ef4450b559bead2451470f766981b942b6abb99bc8f2c887e27498da",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "木構造が空でない場合、正確に1つの根ノードを持つ必要があります。根ノードは子ノードのみを持ち、親ノードを持ちません。根ノード以外のすべてのノードは正確に1つの親ノードを持つ必要があります。子ノードを持たないノード、つまりノードの最外層にあるノードは葉ノードと呼ばれ、木の葉に似ています。さらに、どのノードも自身の子孫になることはできません。つまり、木構造内に循環は存在できません。"
+      }
+    },
+    {
+      "segment_id": "42ad8e83",
+      "source_content": "![](/pics/abstract-tree-en.drawio.webp)",
+      "source_content_hash": "25d05d010042797c776447a24c95a5c23d2194e68b3e6ab61e7b0b0dafd58741",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "![](/pics/abstract-tree-en.drawio.webp)"
+      }
+    },
+    {
+      "segment_id": "f6168993",
+      "source_content": "In a tree, an edge refers to a pair of nodes $(u, v)$, where either $u$ is the parent node of $v$ or $v$ is the parent node of $u$; simply put, these two nodes should have a parent-child relationship. We use arrows in diagrams to indicate parent-child relationships, with the arrow pointing from an ancestor to its descendant.",
+      "source_content_hash": "724f96cee50a46201c7c4c221bd88443e153128536bab67a382ad45138f85864",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "木構造において、辺とはノードの組$(u, v)$を指し、$u$が$v$の親ノードであるか、$v$が$u$の親ノードであるかのいずれかです。簡単に言えば、これら2つのノードには親子関係が必要です。図では親子関係を示すために矢印を使用し、矢印は祖先から子孫に向かって指します。"
+      }
+    },
+    {
+      "segment_id": "f5f6d2ce",
+      "source_content": "The example below is not a tree.",
+      "source_content_hash": "e6a02dfca379d200a26385a1efc6c127248e71035b92429bfbb49646958fb7fd",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "以下の例は木構造ではありません。"
+      }
+    },
+    {
+      "segment_id": "2fdadb08",
+      "source_content": "![](/pics/not-a-tree-en.drawio.webp)",
+      "source_content_hash": "ee16f4fd28dae84a48c0d79cb17e5ba3c1f58ed60f2e02face9fdee370ec7902",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "![](/pics/not-a-tree-en.drawio.webp)"
+      }
+    },
+    {
+      "segment_id": "f2c2bdd0",
+      "source_content": "Each red mark violates the requirements of a tree. In the upper right, there's another root node without a parent node, implying two root nodes in a tree, which is not allowed. At the bottom, the left leaf node has an extra arrow pointing to the root node, implying it's the parent node of the root, violating the structure requirements. And the right leaf node has two parent nodes, which also doesn't comply with the requirements.",
+      "source_content_hash": "cc1e8e1499b13374a2f7b240bcda2f36809c840df95e02e0f4e179609e3beae7",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "各赤いマークは木構造の要件に違反しています。右上には親ノードを持たない別の根ノードがあり、木構造に2つの根ノードが存在することは許可されません。下部では、左の葉ノードが根ノードを指す余分な矢印を持っており、根ノードの親ノードであることを意味するため、構造要件に違反しています。また、右の葉ノードは2つの親ノードを持っており、これも要件に準拠していません。"
+      }
+    },
+    {
+      "segment_id": "a76548f8",
+      "source_content": "It's common to place the root node at the top, with child nodes arranged below their parent nodes. We have some terms related to trees. Firstly, the depth of a node corresponds to the length of the path from the root node down to that node. In other words, the number of edges traversed when going from the root node downwards. Therefore, the depth of the root is $0$. Then the height of a node corresponds to the length of the longest path from the node to a leaf node. Likewise, the height of a leaf node is $0$. Finally, there's the height of a tree, which is equivalent to the height of the root node. If a tree has only one node, it is both the root node and a leaf node, with a height of $0$. If a tree is empty, meaning it has no nodes, we define its height as $-1$. However, some books may define it differently, considering the layers of the tree, with the root being the first layer, and so on.",
+      "source_content_hash": "74116b021a79fb7fa2efc96e484275ff99e51d8186f859d6d8f8abf8b761fbee",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "根ノードを上部に配置し、子ノードを親ノードの下に配置するのが一般的です。木構造に関連するいくつかの用語があります。まず、ノードの深さは、根ノードからそのノードまでのパスの長さに対応します。言い換えると、根ノードから下に向かって移動する際に通過する辺の数です。したがって、根の深さは$0$です。次に、ノードの高さは、そのノードから葉ノードまでの最長パスの長さに対応します。同様に、葉ノードの高さは$0$です。最後に、木構造の高さは根ノードの高さと等しくなります。木構造にノードが1つしかない場合、それは根ノードでもあり葉ノードでもあり、高さは$0$です。木構造が空（ノードがない）場合、その高さを$-1$と定義します。ただし、書籍によっては異なる定義を採用し、木構造の層を考慮して根を第1層とする場合もあります。"
+      }
+    },
+    {
+      "segment_id": "4b1d2d7d",
+      "source_content": "Having discussed the logical structure of a tree, let's now consider its storage structure. While the logical structure defines the relationships between data, the storage structure defines the specific representation of data. We'll use a binary tree as an example, where each node has at most two children. Here, we'll represent the tree using a list of tuples. Each tuple defines a parent-child relationship, such as `(0, 1)`, indicating that node $0$ is the parent of node $1$.",
+      "source_content_hash": "98afe3e59f2d8d3609f1fcb8473fe63c84b3bbe6c668d62d21f5e8ab9420c48d",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "これまで木の論理構造について議論してきましたが、次にその記憶構造について考えてみましょう。論理構造はデータ間の関係を定義するのに対し、記憶構造はデータの具体的な表現を定義します。ここでは、各ノードが最大2つの子を持つ二分木を例に取り、タプルのリストを使って木を表現します。各タプルは親子関係を定義しており、例えば `(0, 1)` はノード $0$ がノード $1$ の親であることを示します。"
+      }
+    },
+    {
+      "segment_id": "dfe931a2",
+      "source_content": "Another way is to use algebraic data structures we have talked about previously:",
+      "source_content_hash": "0f1d430c71a78bb83d06fbdfe0a7d558d3aa2a88acffd71f460188f2929c1f2e",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "別の方法として、以前に説明した代数的データ構造を使用する方法もあります："
+      }
+    },
+    {
+      "segment_id": "a2110253",
+      "source_content": "```moonbit no-check\nNode(0,\n  Node(1,\n    Leaf(3),\n    Empty),\n  Leaf(2))\n```",
+      "source_content_hash": "6063dcc4ebfd3ec43d6f8f1410fa5871ea66fafd335d75815009a6414db01007",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_a2110253"
+      }
+    },
+    {
+      "segment_id": "3cfe6286",
+      "source_content": "We define several cases using an enumeration type: `Node` represents a regular tree node with its own number and two subtrees, `Leaf` represents a tree with only one node, i.e., a leaf node, having only its own number, and `Empty` represents an empty tree. With this representation, we can define a tree structure similar to before. Of course, this is just one possible implementation.",
+      "source_content_hash": "e11d5805012cb101e42064de3c503459dbbd47ec3dcd5c6e7dc500bd6a5d9e60",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "列挙型を使って複数のケースを定義します：`Node` は通常の木のノードを表し、自身の番号と2つの部分木を持ちます。`Leaf` は葉ノードのみからなる木を表し、自身の番号のみを持ちます。`Empty` は空の木を表します。この表現を使うと、先ほどと同様の木構造を定義できます。もちろん、これは可能な実装の一つに過ぎません。"
+      }
+    },
+    {
+      "segment_id": "1042b50d",
+      "source_content": "The final approach is a list where each level's structure is arranged consecutively from left to right:",
+      "source_content_hash": "5747b075fee7ab43f4b7c367d7d041f3c0034068035aa6dc4416a2af79674e9c",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "最後の方法は、各レベルの構造が左から右へ連続的に配置されたリストです："
+      }
+    },
+    {
+      "segment_id": "aa1e7006",
+      "source_content": "![](/pics/list-tree.drawio.webp)",
+      "source_content_hash": "f09b87bdeb9ad52067f529a8c43c4424937387c717bb264f8cace4794d15390f",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "![](/pics/list-tree.drawio.webp)"
+      }
+    },
+    {
+      "segment_id": "13d9cd70",
+      "source_content": "For example, the root node is placed at the beginning of the list, followed by nodes of the second level from left to right, then nodes of the third level from left to right, and so on. Thus, node $3$ and the node to its right are children of node $1$, while the two nodes after are children of $2$. These three nodes are all empty in the example.",
+      "source_content_hash": "872ccdb1e25d0cf9ed1b9a92952372959d647e0933aae473cbeef1fd750022a4",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "例えば、ルートノードはリストの先頭に配置され、次に第2レベルのノードが左から右へ、さらに第3レベルのノードが左から右へ、というように続きます。したがって、ノード $3$ とその右側のノードはノード $1$ の子であり、その後の2つのノードはノード $2$ の子です。この例では、これら3つのノードはすべて空です。"
+      }
+    },
+    {
+      "segment_id": "29528c8d",
+      "source_content": "We can see that all three methods define the same tree, but their storage structures are quite different. Hence, we can conclude that the logical structure of data is independent of its storage structure.",
+      "source_content_hash": "4599df837ea902837d9c7b272130407d56a7e15ed670dddbc79bfab7042b48fc",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "これら3つの方法はすべて同じ木を定義していますが、記憶構造は大きく異なります。したがって、データの論理構造はその記憶構造から独立していると結論づけることができます。"
+      }
+    },
+    {
+      "segment_id": "c504c207",
+      "source_content": "Finally, the tree data structure has many derivatives. For example, a segment tree stores intervals and corresponding data, making it suitable for one-dimensional queries. Binary trees are a special type where each node has at most two branches, namely the left subtree and the right subtree. B-trees are suitable for sequential access, facilitating the storage of data on disks. KD-trees and R-trees, which are derivatives of binary trees and B-trees respectively, are suitable for storing spatial data structures. Apart from these, there are many other tree structures.",
+      "source_content_hash": "260225892f0c5a3c7a48ec48448377dd63aa3c34f6c2a02f5dc959e192d9bd23",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "最後に、木のデータ構造には多くの派生形があります。例えば、セグメント木は区間と対応するデータを格納するため、1次元のクエリに適しています。二分木は各ノードが最大2つの枝（左部分木と右部分木）を持つ特殊なタイプです。B木はシーケンシャルアクセスに適しており、ディスク上のデータ格納を容易にします。KD木とR木はそれぞれ二分木とB木の派生形で、空間データ構造の格納に適しています。これら以外にも多くの木構造が存在します。"
+      }
+    },
+    {
+      "segment_id": "c6cc90a0",
+      "source_content": "## Binary Trees",
+      "source_content_hash": "3f3db431db93d05fbd034aa4ec39d5071a54f554589d8749371d8a3551a4731c",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "## 二分木"
+      }
+    },
+    {
+      "segment_id": "d3649a1e",
+      "source_content": "A binary tree is either empty or consist of nodes that have at most two subtrees: a left subtree and a right subtree. For example, both subtrees of a leaf node are empty. Here, we adopt a definition based on recursive enumeration types, with default data storage being integers.",
+      "source_content_hash": "06b5262a0c4f37232d26b0f120265766dc9869a5c741b693b1cb4c76ab93aa12",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "二分木は空であるか、または最大2つの部分木（左部分木と右部分木）を持つノードで構成されます。例えば、葉ノードの両部分木は空です。ここでは、デフォルトのデータストレージとして整数を使用した再帰的列挙型に基づく定義を採用します。"
+      }
+    },
+    {
+      "segment_id": "c3955998",
+      "source_content": "```moonbit\nenum IntTree {\n  Node(Int, IntTree, IntTree) // data, left subtree, right subtree\n  Empty\n}\n```",
+      "source_content_hash": "74809329142ae356f999a41b116fa7d10214c0d940d1c3d1bfc9baec8c3a2206",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_c3955998"
+      }
+    },
+    {
+      "segment_id": "79ad944d",
+      "source_content": "The first algorithm we will discuss is binary tree traversal (or search). Tree traversal refers to the process of visiting all nodes of a tree in a certain order without repetition. Typically, there are two methods of traversal: depth-first and breadth-first. Depth-first traversal always visits one subtree before the other. During the traversal of a subtree, it recursively visits one of its subtrees. Thus, it always reaches the deepest nodes first before returning. For example,",
+      "source_content_hash": "05d2495e93825fd3599a9279078d058ddb5566ae563091cb1133a26449741eca",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "最初に説明するアルゴリズムは二分木の走査（または検索）です。木の走査とは、特定の順序で木のすべてのノードを重複なく訪問するプロセスを指します。通常、走査には2つの方法があります：深さ優先探索と幅優先探索です。深さ優先探索では、常に一方の部分木をもう一方よりも先に訪問します。部分木の走査中、その部分木の部分木を再帰的に訪問します。したがって、常に最も深いノードに最初に到達してから戻ります。例えば、"
+      }
+    },
+    {
+      "segment_id": "531437ca",
+      "source_content": "![](/pics/traversal-en.drawio.webp)",
+      "source_content_hash": "69bebf659290bbdf79027eb2eb7b340ef1ccdcb6618d3a790ab36a866367c956",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "![](/pics/traversal-en.drawio.webp)"
+      }
+    },
+    {
+      "segment_id": "06e24cc0",
+      "source_content": "In the diagram, we first visit the left subtree, then the left subtree again, leading to the visit of $3$. Subsequently, we continuously visit the right subtree, resulting in the visit of $5$. Finally, we visit the right subtree of the entire tree, which is $2$. On the other hand, breadth-first traversal starts from the root node and proceeds layer by layer, visiting nodes at a certain depth before moving deeper. For the same tree, breadth-first traversal will visit the root node first, followed by subtrees $1$ and $2$, then $3$ and $4$, and finally the deepest node $5$.",
+      "source_content_hash": "b1c54e3c3764f5831e26ca6e12212cf26b228464e3d3128c9908ad1032e40468",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "図では、最初に左部分木を訪問し、次に再び左部分木を訪問して $3$ に到達します。その後、右部分木を連続的に訪問し、$5$ に到達します。最後に、木全体の右部分木である $2$ を訪問します。一方、幅優先探索では、ルートノードから開始して層ごとに進み、特定の深さのノードをすべて訪問してからより深い層に進みます。同じ木の場合、幅優先探索では最初にルートノードを訪問し、次に部分木 $1$ と $2$、その後 $3$ と $4$、最後に最も深いノード $5$ を訪問します。"
+      }
+    },
+    {
+      "segment_id": "7f71ff2a",
+      "source_content": "Depth-first traversal usually involves three variations: preorder traversal, inorder traversal, and postorder traversal. The difference lies in when the root node is visited while traversing the entire tree. For example, in preorder traversal, the root node is visited first, followed by the left subtree, and then the right subtree. Taking the tree we just saw as an example, this means we start with $0$, then visit the left subtree; when visiting the left subtree, we start from the root node again, which is $1$; then $3$, $4$, $5$, and $2$. In inorder traversal, the left subtree is visited first, followed by the root node, and then the right subtree. Hence, it first visits the left subtree. At this moment, there is still a left subtree, so we go down to tree $3$. Now, it's a leaf node without a left subtree, so we visit the root node $3$. Then we return to visit the root node $1$ of the subtree and proceed to visit the right subtree. Postorder traversal follows a similar logic, visiting the left subtree first, then the right subtree, and finally the root node. In fact, solving the Fibonacci sequence can be seen as a postorder traversal, as we first visit the $(n-1)$-th and $(n-2)$-th items, which are two subtrees, and then solve the $n$-th item, which is the value of the root node. As for breadth-first traversal, we have already explained it: from left to right, the order is `[0, 1, 2, 3, 4, 5]`.",
+      "source_content_hash": "ed7b30b9d1928a4628fef1891349e7d5afff3cb54a19f653650b313e099dafad",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "深さ優先探索には通常、先行順探索（preorder traversal）、中間順探索（inorder traversal）、後行順探索（postorder traversal）の3つのバリエーションがあります。違いは、木全体を探索する際に根ノードをいつ訪問するかです。例えば、先行順探索では、最初に根ノードを訪問し、次に左部分木、そして右部分木を訪問します。先ほどの木を例にとると、$0$から始まり、左部分木を訪問します。左部分木を訪問する際には、再び根ノードから始まり、これは$1$です。次に$3$、$4$、$5$、そして$2$と続きます。中間順探索では、最初に左部分木を訪問し、次に根ノード、そして右部分木を訪問します。したがって、最初に左部分木を訪問します。この時点でまだ左部分木があるため、木$3$まで下ります。これは葉ノードで左部分木がないため、根ノード$3$を訪問します。その後、部分木の根ノード$1$を訪問し、右部分木に進みます。後行順探索も同様のロジックで、最初に左部分木、次に右部分木、最後に根ノードを訪問します。実際、フィボナッチ数列を解くことは後行順探索と見なすことができます。なぜなら、最初に$(n-1)$番目と$(n-2)$番目の項（これらは2つの部分木）を訪問し、その後$n$番目の項（根ノードの値）を解くからです。幅優先探索については既に説明しました：左から右への順序は`[0, 1, 2, 3, 4, 5]`です。"
+      }
+    },
+    {
+      "segment_id": "147e8550",
+      "source_content": "Let's take a look at the specific implementation of these two traversals in terms of finding a specific value in the tree's nodes. Firstly, let's consider depth-first traversal.",
+      "source_content_hash": "6aff9ac92302a05dce3a36e126ddf4a4f03907fc8853e870eb4ed872eefbb0a1",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "木のノードから特定の値を探す際のこれら2つの探索の具体的な実装を見てみましょう。まず、深さ優先探索について考えます。"
+      }
+    },
+    {
+      "segment_id": "af983f82",
+      "source_content": "```moonbit\nfn dfs_search(target: Int, tree: IntTree) -> Bool {\n  match tree { // check the visited tree\n    Empty => false // empty tree implies we are getting deepest\n    Node(value, left, right) => // otherwise, search in subtrees\n      value == target || dfs_search(target, left) || dfs_search(target, right)\n  }\n}\n```",
+      "source_content_hash": "b06ec342e232f3a30c8dac82635dc388198556e705ea175125dcc0969cfdfcc1",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_af983f82"
+      }
+    },
+    {
+      "segment_id": "a1fa5396",
+      "source_content": "As we introduced earlier, this is a traversal based on structural recursion. We first handle the base case, i.e., when the tree is empty, as shown in the third line. In this case, we haven't found the value we're looking for, so we return `false`. Then, we handle the recursive case. For a node, we check if its value is the desired result, as shown in line 5. If we find it, the result is `true`. Otherwise, we continue to traverse the left and right subtrees alternately, if either we find it in left subtree or right subtree will the result be `true`. In the current binary tree, we need to traverse both the left and right subtrees to find the given value. The binary search tree introduced later will optimize this process. The only differences between preorder, inorder, and postorder searches is the order of operations on the current node, the left subtree search, and the right subtree search.",
+      "source_content_hash": "13a52df0f36e927fe38995be4d744a3745f01207bbdc3dbd9af640810ccb0295",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "先に紹介したように、これは構造的再帰に基づく探索です。まず基本ケース、つまり木が空の場合（3行目に示す）を処理します。この場合、探している値が見つからなかったため、`false`を返します。次に、再帰ケースを処理します。ノードの場合、その値が目的の結果かどうかを確認します（5行目）。見つかった場合、結果は`true`です。それ以外の場合は、左部分木と右部分木を交互に探索し続けます。左部分木または右部分木のいずれかで見つかれば、結果は`true`になります。現在の二分木では、与えられた値を見つけるために左部分木と右部分木の両方を探索する必要があります。後で紹介する二分探索木はこのプロセスを最適化します。先行順、中間順、後行順探索の唯一の違いは、現在のノード、左部分木探索、右部分木探索の操作の順序です。"
+      }
+    },
+    {
+      "segment_id": "1c598ecd",
+      "source_content": "### Queues",
+      "source_content_hash": "780a26b8c28a39a105e9fff8eeb6436aacf2a60ded8939977a7fed17577d33e1",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "### キュー"
+      }
+    },
+    {
+      "segment_id": "2547a6bb",
+      "source_content": "Now let's continue with breadth-first traversal.",
+      "source_content_hash": "b4f70f9533b594ba815ee59753ab85754f636e757c66fda9c3b3f7694c42645c",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "次に、幅優先探索について続けます。"
+      }
+    },
+    {
+      "segment_id": "0750bfa1",
+      "source_content": "![](/pics/bfs-en.drawio.webp)",
+      "source_content_hash": "e5bbdaeb7f17b057cb4134a9dd529e86917560dbd30e20ab5013eaf7f0c57983",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "![](/pics/bfs-en.drawio.webp)"
+      }
+    },
+    {
+      "segment_id": "86348f98",
+      "source_content": "As mentioned earlier, breadth-first traversal involves visiting each subtree layer by layer. In this case, to be able to record all the trees we are going to visit, we need a brand-new data structure: the queue.",
+      "source_content_hash": "678de2cf2bb99472ed3946f4460c0cfd0f8607a7b5b304ef7a4f162c95acff35",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "前述のように、幅優先探索は各部分木を層ごとに訪問します。この場合、訪問予定のすべての木を記録するために、新しいデータ構造であるキューが必要です。"
+      }
+    },
+    {
+      "segment_id": "6b77b644",
+      "source_content": "![](/pics/queue-en.drawio.webp)",
+      "source_content_hash": "adeef4d0dd1b026cd9524a76bebd85247be8e1ca9baa3396d0fd7bbf1d6657f9",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "![](/pics/queue-en.drawio.webp)"
+      }
+    },
+    {
+      "segment_id": "a311e967",
+      "source_content": "A queue is a first-in-first-out (FIFO) data structure. Each time, we dequeue a tree from the queue and check whether its node value is the one we're searching for. If not, we enqueue its non-empty subtrees from left to right and continue the computation until the queue is empty.",
+      "source_content_hash": "2240587b574238d312f300e55a2baedb9d7650553aa9fcf500e821f216ea0567",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "キューは先入れ先出し（FIFO）のデータ構造です。毎回、キューから木をデキューし、そのノード値が探している値かどうかを確認します。そうでない場合、空でない部分木を左から右にエンキューし、キューが空になるまで計算を続けます。"
+      }
+    },
+    {
+      "segment_id": "eb51d107",
+      "source_content": "Let's take a closer look. Just like lining up in real life, the person who enters the line first gets served first, so it's important to maintain the order of arrival. The insertion and deletion of data follow the same order, as shown in the diagram. We've added numbers from $0$ to $5$ in order. After adding $6$, it follows $5$; and if we delete from the queue, we start from the earliest added $0$.",
+      "source_content_hash": "1a2579c8f7041b0edcc7f98fc990c01786ee24241213bd852ece9713cc8f8d44",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "詳しく見てみましょう。現実世界の列と同じように、最初に列に入った人が最初にサービスを受けるため、到着順序を維持することが重要です。データの挿入と削除も同じ順序で行われます。図に示すように、$0$から$5$までの数字を順番に追加しました。$6$を追加すると、$5$の後に続きます。キューから削除する場合、最初に追加された$0$から始めます。"
+      }
+    },
+    {
+      "segment_id": "1862c5fe",
+      "source_content": "The queue we're using here is defined by the following interface:",
+      "source_content_hash": "63953b61d0b8654359d265d400379392f9d82686f932e32c75084e15d0da16f5",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "ここで使用しているキューは次のインターフェースで定義されています："
+      }
+    },
+    {
+      "segment_id": "a476a172",
+      "source_content": "```moonbit no-check\nfn empty[T]() -> Queue[T] // construct an empty queue\nfn enqueue[T](q: Queue[T], x: T) -> Queue[T] // add element to the tail\n// attempt to dequeue an element, return None if the queue is empty\nfn pop[T](q: Queue[T]) -> (Option[T], Queue[T])\n```",
+      "source_content_hash": "5f1f2ced1019cb319315cd3d433cb744e58dc4a6046e9a148111a3f8bb53f46c",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_a476a172"
+      }
+    },
+    {
+      "segment_id": "9798d932",
+      "source_content": "<!-- Implementation of Queue\n\n```moonbit\nstruct Queue[T] {\n  front:@immut/list.T[T]\n  back:@immut/list.T[T]\n}\n\n/// `Queue::default[T]()`\n///\n/// Create an empty queue 创建空队列\nfn Queue::default[T]() -> Queue[T] {\n  { front: Nil, back: Nil }\n}\n\nfn empty[T]() -> Queue[T] {\n  Queue::default()\n}\n\n/// `from_list[T](front: @immut/list.T[T])`\n///\n/// Create queue from a list 从列表创建队列\nfn Queue::from_list[T](front: @immut/list.T[T]) -> Queue[T] {\n  { front:front, back:Nil }\n}\n\n/// `is_empty[T](q: Queue[T])`\n///\n/// Check if a queue is empty 检查列表是否为空\nfn Queue::is_empty[T](q: Queue[T]) -> Bool {\n  match q {\n    {front:Nil, back:Nil} => true\n    _ => false\n  }\n}\n\n/// `list_rev[T](xs: @immut/list.T[T])`\n///\n/// Reverse a list with tail recursion 基于尾递归的列表反转\nfn list_rev[T](xs: @immut/list.T[T]) -> @immut/list.T[T] {\n  fn go(acc, xs: @immut/list.T[T]) {\n    match xs {\n      Nil => acc\n      Cons(x, rest) => go((Cons(x, acc) : @immut/list.T[T]), rest)\n    }\n  }\n\n  go(Nil, xs)\n}\n\n/// `norm[T](q: Queue[T])`\n///\n/// Feed `back` into `front` so that `front` always have something 反转队列结构；确保列表头始终有元素\nfn norm[T](q: Queue[T]) -> Queue[T] {\n  match q {\n    {front:Nil, back:b} => { front:list_rev(b), back:Nil }\n    q => q\n  }\n}\n\n/// `enqueue[T](q: Queue[T], x: T)`\n///\n/// Add an element to the end of the queue 向队尾添加一个元素\nfn enqueue[T](q: Queue[T], x: T) -> Queue[T] {\n  match q {\n    {front:f, back:b} => norm({ front:f, back:Cons(x, b) })\n  }\n}\n\n/// `pop[T](q: Queue[T])`\n///\n/// Remove the first element from the queue 取出队列中第一个元素\nfn pop[T](q: Queue[T]) -> (Option[T], Queue[T]) {\n  match q {\n    {front:Nil, back:_} => (None, q)\n    {front:Cons(x, f), back:b} => (Some(x), norm({front:f, back:b}))\n  }\n}\n```\n-->",
+      "source_content_hash": "147fb24109f0c80090909961f32d38c9a5b0ec598df62c2c21d6db22e4f395b9",
+      "node_type": "comment",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_9798d932"
+      }
+    },
+    {
+      "segment_id": "0427bb2b",
+      "source_content": "`empty`: construct an empty queue; `enqueue`: add an element to the queue, i.e., add it to the tail; `pop`: attempt to dequeue an element and return the remaining queue. If the queue is already empty, the returned value will be `None` along with an empty queue. For example,",
+      "source_content_hash": "55b0fc5ac054e1ad5682230cf515b9e726b86236b04aef4be795376ce99ee311",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "`empty`: 空のキューを構築する; `enqueue`: 要素をキューに追加する、つまり末尾に追加する; `pop`: 要素をデキューしようと試み、残りのキューを返す。キューが既に空の場合、返される値は`None`と空のキューのペアとなる。例えば、"
+      }
+    },
+    {
+      "segment_id": "0152e600",
+      "source_content": "```moonbit no-check\nlet q = enqueue(enqueue(empty(), 1), 2)\nlet (head, tail) = pop(q)\nassert(head == Some(1))\nassert(tail == enqueue(empty(), 2))\n```",
+      "source_content_hash": "f8d2f059240e2ac76af8b52abc033034133b439b52281a64e60469484cdc06a3",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_0152e600"
+      }
+    },
+    {
+      "segment_id": "f2c67ca5",
+      "source_content": "We've added $1$ and $2$ to an empty queue. Then, when we try to dequeue an element, we should get `Some(1)`, and what's left should be equivalent to adding $2$ to an empty queue.",
+      "source_content_hash": "cfdcbdabb6790627e29de8f9922bfa62bd4ff7394fa33862d69726d4bec11f34",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "空のキューに$1$と$2$を追加した。その後、要素をデキューしようとすると、`Some(1)`が得られ、残りは空のキューに$2$を追加したものと等価になる。"
+      }
+    },
+    {
+      "segment_id": "3208eb29",
+      "source_content": "Let's return to the implementation of our breadth-first traversal.",
+      "source_content_hash": "cfc1f7085a67cb396f982935c9c49500c303bf3d1b9618e5b133bdb3ba6bcbec",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "それでは、幅優先探索の実装に戻ろう。"
+      }
+    },
+    {
+      "segment_id": "3c6be27a",
+      "source_content": "```moonbit\nfn bfs_search(target: Int, queue: Queue[IntTree]) -> Bool {\n  match pop(queue) {\n    (None, _) => false // If the queue is empty, end the search\n    (Some(head), tail) => match head { // If the queue is not empty, operate on the extracted tree\n      Empty => bfs_search(target, tail) // If the tree is empty, operate on the remaining queue\n      Node(value, left, right) =>\n        if value == target { true } else {\n          // Otherwise, operate on the root node and add the subtrees to the queue\n          bfs_search(target, enqueue(enqueue(tail, left), right))\n        }\n    }\n  }\n}\n```",
+      "source_content_hash": "c6618021c663aa8b48d3a780cb6d179326f130b98fdb99751d1a9f86e422f3a7",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_3c6be27a"
+      }
+    },
+    {
+      "segment_id": "c277c3c0",
+      "source_content": "If we want to search for a specific value in the tree's nodes, we need to maintain a queue containing trees, as indicated by the parameters. Then, we check whether the current queue is empty. By performing a `pop` operation and pattern matching on the head of the queue, if it's empty, we've completed all the searches without finding the value, so we return `false`. If the queue still has elements, we operate on this tree. If the tree is empty, we directly operate on the remaining queue; if the tree is not empty, as before, we check if the current node is the value we're looking for. If it is, we return `true`; otherwise, we enqueue the left and right subtrees `left` and `right` into the queue and continue searching the queue.",
+      "source_content_hash": "e5591f076384575bddeceb6dd908b1177259766403e88b03ebb950a368aa4d96",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "木のノードから特定の値を検索したい場合、パラメータで示されているように、木を含むキューを維持する必要がある。その後、現在のキューが空かどうかを確認する。キューの先頭に対して`pop`操作とパターンマッチングを行い、空であれば全ての検索を完了し値が見つからなかったため、`false`を返す。キューにまだ要素が残っている場合、この木に対して操作を行う。木が空であれば、残りのキューに対して直接操作を行う。木が空でない場合、以前と同様に、現在のノードが探している値かどうかを確認する。該当すれば`true`を返し、そうでなければ左右の部分木`left`と`right`をキューにエンキューして、キューの検索を続ける。"
+      }
+    },
+    {
+      "segment_id": "5eedf0a1",
+      "source_content": "So far, we've concluded our introduction to tree traversal. However, we may notice that this type of search doesn't seem very efficient because every subtree may contain the value we're looking for. Is there a way to reduce the number of searches? The answer lies in the binary search tree, which we'll introduce next.",
+      "source_content_hash": "127451ceeda3692d4d1df0e966076222580a83244dbf5d477a2b1fd492e9a7e7",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "これで、木の走査に関する説明は一通り終了した。しかし、この種の検索はあまり効率的ではないように思えるかもしれない。なぜなら、全ての部分木に探している値が含まれている可能性があるからだ。検索回数を減らす方法はあるだろうか？その答えは、次に紹介する二分探索木にある。"
+      }
+    },
+    {
+      "segment_id": "c7ab93a8",
+      "source_content": "## Binary Search Trees",
+      "source_content_hash": "674f65396bb9ea61b0d2b37b51433567dfc931a309539e87e2d1b14ec626af0e",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "## 二分探索木"
+      }
+    },
+    {
+      "segment_id": "9ede513a",
+      "source_content": "Previously, we mentioned that searching for elements in a binary tree might require traversing the entire tree. For example, in the diagram below, we attempt to find the element $8$ in the tree.",
+      "source_content_hash": "f869ce21261ef9b0b42fd0da8d9be9b8da01a6d46f55669ad2baab9b6486ce05",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "先ほど、二分木での要素検索には木全体を走査する必要があるかもしれないと述べた。例えば、下図の木で要素$8$を探す場合を考えよう。"
+      }
+    },
+    {
+      "segment_id": "49be422b",
+      "source_content": "![](/pics/bst-en.drawio.webp)",
+      "source_content_hash": "66d0130cbe9d886eaa1323db162b215ae1da1eb9a32b55569345e7d1cb2348bb",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "![](/pics/bst-en.drawio.webp)"
+      }
+    },
+    {
+      "segment_id": "01902900",
+      "source_content": "For the left binary tree, we have to search the entire tree, ultimately concluding that $8$ is not in the tree.",
+      "source_content_hash": "73e34d9861bd5a5233cf07a201e70e662bccad9838392102b9ad3ece68bc5ddb",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "左側の二分木では、木全体を検索する必要があり、最終的に$8$が木に含まれていないと結論づける。"
+      }
+    },
+    {
+      "segment_id": "dbeb30c1",
+      "source_content": "To facilitate searching, we impose a rule on the arrangement of data in the tree based on the binary tree: from left to right, the data is arranged in ascending order. This gives rise to the binary search tree. According to the rule, all data in the left subtree should be less than the node's data, and the node's data should be less than the data in the right subtree, as shown in the diagram on the right.",
+      "source_content_hash": "f56739e47e389ee83cef98a231fa1d3ba5c333045db7d750af5b30633259aac6",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "検索を容易にするため、二分木のデータ配置に規則を設ける：左から右へ、データを昇順に並べる。これが二分探索木の誕生である。この規則によれば、左部分木の全てのデータはノードのデータより小さく、ノードのデータは右部分木のデータより小さくなければならない（右図参照）。"
+      }
+    },
+    {
+      "segment_id": "09d52457",
+      "source_content": "We notice that if we perform an inorder traversal, we can traverse the sorted data from smallest to largest. Searching on a binary search tree is very simple: determine whether the current value is less than, equal to, or greater than the value we are looking for, then we know which subtree should be searched further. In the example above, when we check if $8$ is in the tree, we find that $8$ is greater than $5$, so we should search on the right subtree next. When we encounter $7$, we find that there is no right subtree, meaning there are no numbers greater than $7$, so we conclude that $8$ is not in the tree. As you can see, our search efficiency has greatly improved. In fact, the maximum number of searches we need to perform, in the worst-case scenario, is the height of the tree plus one, rather than the total number of elements. In some cases, the height of the tree may also equal the total number of elements, as we will see later.",
+      "source_content_hash": "917e76552d5a1be7afc79674e7950eb3e2e9c624fd990f715c9c397cacef92c3",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "ここで、中間順走査を行うと、小さい順にソートされたデータを走査できることに気付く。二分探索木での検索は非常に単純だ：現在の値が探している値より小さいか、等しいか、大きいかを判断し、次に検索すべき部分木がわかる。上記の例で$8$が木に含まれるか確認する場合、$8$が$5$より大きいので、次は右部分木を検索する。$7$に到達すると、右部分木が存在しない、つまり$7$より大きい数値がないことがわかるため、$8$が木に含まれていないと結論づける。ご覧の通り、検索効率は大幅に向上した。実際、最悪の場合に必要な最大検索回数は木の高さプラス1であり、要素の総数ではない。場合によっては、木の高さが要素の総数と等しくなることもあるが、それについては後述する。"
+      }
+    },
+    {
+      "segment_id": "d73903fc",
+      "source_content": "To maintain such a tree, we need special algorithms for insertion and deletion to ensure that the modified tree still maintains its order. Let's explore these two algorithms.",
+      "source_content_hash": "4dd4bce954090c6ef0393fa39fb854bd725241ccc0afeeba1744d7b81cc7ab6f",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "このような木を維持するには、挿入と削除のための特別なアルゴリズムが必要で、変更後の木も順序を維持できるようにする。これらの2つのアルゴリズムを探ってみよう。"
+      }
+    },
+    {
+      "segment_id": "130a77cc",
+      "source_content": "![](/pics/bst-insertion.drawio.webp)",
+      "source_content_hash": "16094e7dd32532cbb0b7554fd3c408b8122eb86b81270bb86ae4a04b6acf3869",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "![](/pics/bst-insertion.drawio.webp)"
+      }
+    },
+    {
+      "segment_id": "d119b75c",
+      "source_content": "For the insertion on a binary search tree, we also use structural recursion. First, we discuss the base case where the tree is empty. In this case, we simply replace the tree with a new tree containing only one node with the value we want to insert. Next, we discuss the recursive case. If a tree is non-empty, we compare the value we want to insert with the node's value. If it's less than the node, we insert the value into the left subtree and replace the left subtree with the subtree after insertion. If it's greater than the node, we replace the right subtree. For example, if we want to insert $3$, we need to compare it with each node. For instance, if it's less than $5$, we operate on the left subtree. Later, if it's greater than $2$, we operate on the right subtree. We focus on this subtree. As we can see, since $3$ is less than $4$, we should insert it into the left subtree. Then since this is an empty tree, we construct a tree containing only one node and replace the left subtree with a tree only containing $4$.",
+      "source_content_hash": "ccc9b273184ece2800088a3ab0d99babe48f45311f4b4454587c9f9bf12083a6",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "二分探索木への挿入についても、構造的再帰を使用します。まず、木が空である基底ケースを考えます。この場合、挿入したい値だけを含む新しいノードで木を置き換えます。次に、再帰的ケースを考えます。木が空でない場合、挿入したい値とノードの値を比較します。ノードの値より小さい場合は左部分木に挿入し、挿入後の部分木で左部分木を置き換えます。大きい場合は右部分木を置き換えます。例えば、3を挿入したい場合、各ノードと比較します。5より小さいので左部分木を操作し、その後2より大きいので右部分木を操作します。この部分木に注目すると、3は4より小さいので左部分木に挿入します。これが空の木なので、4だけを含む木で左部分木を置き換えます。"
+      }
+    },
+    {
+      "segment_id": "bce471ae",
+      "source_content": "```moonbit\nfn insert(tree: IntTree, value: Int) -> IntTree {\n  match tree {\n    Empty => Node(value, Empty, Empty) // construct a new tree if it's empty\n    Node(v, left, right) => // if not empty, update one subtree by insertion\n      if value == v { tree } else\n      if value < v { Node(v, insert(left, value), right) } else\n        { Node(v, left, insert(right, value)) }\n  }\n}\n```",
+      "source_content_hash": "3313efd13addd2e921f2cd8497fab9f459eea3ee4c5da5986853c32e7a9ae896",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_bce471ae"
+      }
+    },
+    {
+      "segment_id": "65be34cb",
+      "source_content": "Here we can see the complete insertion code. In line 3, if the original tree is empty, we reconstruct a new tree. In lines 6 and 7, if we need to update the subtree, we use the `Node` constructor to build a new tree based on the updated subtree.",
+      "source_content_hash": "dc4ffe9ee0bc045ce6046589a1559f935b62d6e874f6308cca464cdfc74978d1",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "ここに完全な挿入コードを示します。3行目では元の木が空の場合に新しい木を再構築します。6行目と7行目では、部分木を更新する必要がある場合、更新された部分木に基づいて`Node`コンストラクタで新しい木を構築します。"
+      }
+    },
+    {
+      "segment_id": "32fb7230",
+      "source_content": "Next, we discuss the delete operation.",
+      "source_content_hash": "6d2a378685034108a4f32fb813df1c7d7ea223631200ba1aaa0346e79a24b232",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "次に、削除操作について説明します。"
+      }
+    },
+    {
+      "segment_id": "41e7f712",
+      "source_content": "![](/pics/bst-deletion-en.drawio.webp)",
+      "source_content_hash": "5b6a2d1c78a4e946813f794d38a5c2698f1332a9e4d40dc144b44dc61aea2edc",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "![](/pics/bst-deletion-en.drawio.webp)"
+      }
+    },
+    {
+      "segment_id": "15d5abf0",
+      "source_content": "Similarly, we do it with structural recursion. If the tree is empty, it's straightforward because we don't need to do anything. If the tree is non-empty, we need to compare it with the current value and determine whether the current value needs to be deleted. If it needs to be deleted, we delete it. We'll discuss how to delete it later; if it's not the value we want to delete, we still need to compare it and find the subtree where the value might exist, then create an updated tree after deletion. The most crucial part of this process is how to delete the root node of a tree. If the tree has no subtrees or only one subtree, it's straightforward because we just need to replace it with an empty tree or the only subtree. The trickier part is when there are two subtrees. In this case, we need to find a new value to be the root node, and this value needs to be greater than all values in the left subtree and less than all values in the right subtree. There are two values that satisfy this condition: the maximum value in the left subtree and the minimum value in the right subtree. Here, we use the maximum value in the left subtree as an example. Let's take another look at the schematic diagram. If there are no subtrees, we simply replace it with an empty tree; if there's one subtree, we replace it with the subtree. If there are two subtrees, we need to set the maximum value in the left subtree as the value of the new root node and delete this value from the left subtree. The good news is that this value has at most one subtree, so the operation is relatively simple.",
+      "source_content_hash": "5edfc64aae4cecb49f265eb6bcdf857c9be918a07c710713e1f902934f9ec408",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "同様に、構造的再帰で行います。木が空の場合は何もする必要がありません。木が空でない場合、現在の値と比較し、削除すべき値かどうかを判断します。削除する必要がある場合は削除します（削除方法は後述）。削除する値でない場合は、値が存在する可能性のある部分木を見つけ、削除後の更新された木を作成します。このプロセスで最も重要なのは、木の根ノードを削除する方法です。部分木がない場合や1つだけの場合は簡単で、空の木かその部分木で置き換えます。難しいのは部分木が2つある場合で、この場合は新しい根ノードとなる値を見つける必要があります。この値は左部分木の全ての値より大きく、右部分木の全ての値より小さい必要があります。この条件を満たす値は2つあります：左部分木の最大値と右部分木の最小値です。ここでは左部分木の最大値を使用します。図をもう一度見てみましょう。部分木がない場合は空の木で置き換え、1つの部分木がある場合はその部分木で置き換えます。2つの部分木がある場合は、左部分木の最大値を新しい根ノードの値に設定し、この値を左部分木から削除します。この値は最大でも1つの部分木しか持たないので、操作は比較的簡単です。"
+      }
+    },
+    {
+      "segment_id": "5ce70a8c",
+      "source_content": "```moonbit\nfn remove_largest(tree: IntTree) -> (IntTree, Int) {\n    match tree {\n    Node(v, left, Empty) => (left, v)\n    Node(v, left, right) => {\n        let (newRight, value) = remove_largest(right)\n        (Node(v, left, newRight), value)\n    } }\n}\n```",
+      "source_content_hash": "c1a5330f2e185e5b21fa452af7ede3a328f36e1e57e52fe9acfd04a8424e21df",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_5ce70a8c"
+      }
+    },
+    {
+      "segment_id": "d76894b4",
+      "source_content": "```moonbit no-check\nfn remove(tree: IntTree, value: Int) -> IntTree {\n    match tree { ...\n      Node(root, left, right)  => if root == value {\n        let (newLeft, newRoot) => remove_largest(left)\n        Node(newRoot, newLeft, right)\n    } else ... }\n}\n```",
+      "source_content_hash": "70b03c1fd9d99c48cdfc12f6d7f8540209fe447494552e04f53554554e1a1d17",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_d76894b4"
+      }
+    },
+    {
+      "segment_id": "1d39fdbf",
+      "source_content": "Here, we demonstrate part of the deletion of a binary search tree. We define a helper function to find and delete the maximum value from the left subtree. We keep traversing to the right until we reach a node with no right subtree because having no right subtree means there are no values greater than it. Based on this, we define the deletion, where when both subtrees are non-empty, we can use this helper function to obtain the new left subtree and the new root node. We omit the specific code implementation here, leaving it as an exercise for you to practice after class.",
+      "source_content_hash": "4be1923b337f9fe66e979f3967fc6e8a124a8d99363754bf7cf86ada56d52a12",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "ここに二分探索木の削除の一部を示します。左部分木から最大値を見つけて削除するヘルパー関数を定義します。右部分木がなくなるまで右に進みます（右部分木がないことはそれより大きい値がないことを意味します）。これに基づいて削除を定義し、両部分木が空でない場合、このヘルパー関数を使って新しい左部分木と新しい根ノードを取得できます。具体的なコード実装は省略し、課後の練習問題とします。"
+      }
+    },
+    {
+      "segment_id": "38115c9a",
+      "source_content": "### Balanced Binary Trees",
+      "source_content_hash": "f30c75ea130e90d83cd16cd84aaec619d3254355aed6933ddfbdf0b51ada59f2",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "### 平衡二分木"
+      }
+    },
+    {
+      "segment_id": "46e586a3",
+      "source_content": "Finally, we delve into the balanced binary trees. When explaining binary search trees, we mentioned that the worst-case number of searches in a binary search tree depends on the height of the tree. Insertion and deletion on a binary search tree may cause the tree to become unbalanced, meaning that one subtree's height is significantly greater than the other's. For example, if we insert elements from $1$ to $5$ in sequence, we'll get a tree as shown in the lower left diagram.",
+      "source_content_hash": "3dbbef9e0056d8ed8043b5a8cc9b454ed732246221608044e282424fb9063675",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "最後に、平衡二分木について詳しく説明します。二分探索木の説明で、二分探索木の最悪ケースの探索回数は木の高さに依存すると述べました。二分探索木への挿入と削除は木のバランスを崩す可能性があり、一方の部分木の高さが他方より大幅に大きくなる場合があります。例えば、1から5までの要素を順番に挿入すると、左下の図のような木が得られます。"
+      }
+    },
+    {
+      "segment_id": "66e62938",
+      "source_content": "![](/pics/worst-bst-en.drawio.webp)",
+      "source_content_hash": "eb3b9c9a2c1fbda97f0734f8f27458f3456bfb8ae97a02406bf0c73c720b84ab",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "![](/pics/worst-bst-en.drawio.webp)"
+      }
+    },
+    {
+      "segment_id": "aa705b4d",
+      "source_content": "We can see that for the entire tree, the height of the left subtree is $-1$ because it's an empty tree, while the height of the right subtree is $3$. In this case, the worst-case number of searches equals the number of elements in the tree, which is $5$. However, if the tree is more balanced, meaning the heights of the two subtrees are similar, as shown in the right diagram, the maximum depth of a node is at most $2$, which is approximately $\\log_2n$ times, where $n$ is the number of elements in the tree. As you may recall from the curve of the logarithmic function, when the number of elements in the tree is large, there can be a significant difference in the worst-case search time between the two scenarios. Therefore, we hope to avoid this worst-case scenario to ensure that we always have good query performance. To achieve this, we can introduce a class of data structures called balanced binary trees, where the heights of any node's left and right subtrees are approximately equal. Common types of balanced binary trees include AVL trees, 2-3 trees, or red-black trees. Here, we'll discuss AVL trees, which are relatively simple.",
+      "source_content_hash": "88d3b9b1492abcd2f741fb7705e3a1ab1893a92a40020a9e7b00a8660e602511",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "この木全体において、左部分木の高さは空の木であるため$-1$であり、右部分木の高さは$3$です。この場合、最悪の探索回数は木の要素数である$5$回に等しくなります。しかし、木のバランスがより取れている場合、つまり2つの部分木の高さが近い場合、右図のようにノードの最大深度は最大でも$2$となり、これはおよそ$\\log_2n$回（$n$は木の要素数）に相当します。対数関数の曲線を思い出せば、木の要素数が大きい場合、2つのシナリオ間で最悪探索時間に大きな差が生じ得ることがわかります。したがって、常に良好な検索性能を保証するため、この最悪ケースを回避したいと考えます。これを実現するために、任意のノードの左右部分木の高さがほぼ等しい「平衡二分木」と呼ばれるデータ構造を導入できます。代表的な平衡二分木にはAVL木、2-3木、赤黒木などがあります。ここでは比較的単純なAVL木について説明します。"
+      }
+    },
+    {
+      "segment_id": "f0db2ff1",
+      "source_content": "The key to maintaining balance in a binary balanced tree is that when the tree becomes unbalanced, we can rearrange the tree to regain balance. The insertion and deletion of AVL trees are similar to standard binary search trees, except that AVL trees perform adjustments after each insertion or deletion to ensure the tree remains balanced. We add a height attribute to the node definition.",
+      "source_content_hash": "fc6edbccbc775d3ce5d60025fa6e66914c00f7221031fe9569431adf55acfd79",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "二分平衡木でバランスを維持する鍵は、木が不平衡になった際に再配置によってバランスを回復できる点にあります。AVL木の挿入・削除操作は標準的な二分探索木と同様ですが、各操作後に調整を行い木の平衡性を保ちます。ノード定義には高さ属性を追加します。"
+      }
+    },
+    {
+      "segment_id": "7faf515c",
+      "source_content": "```moonbit no-check\nenum AVLTree {\n  Empty\n  // current value, left subtree, right subtree, height\n  Node(Int, ~left: AVLTree, ~right: AVLTree, ~height: Int)\n}\nfn create(value : Int, ~left : AVLTree = Empty, ~right : AVLTree = Empty) -> AVLTree\nfn height(tree: AVLTree) -> Int\n```",
+      "source_content_hash": "1b4aac49318528e319350ce039eb2a5316d9a2048a57282c8e0abbb2cf42f543",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_7faf515c"
+      }
+    },
+    {
+      "segment_id": "8517ac25",
+      "source_content": "Here, we used the syntax for labeled arguments, which we introduced in [Chapter 3](./functions-lists-recursion#labeled-argument-and-optional-arguments) and [Chapter 4](./tuples-structs-enums#labeled-arguments). The `create` function creates a new AVL tree whose both subtrees are empty by default, without explicitly maintaining its height. Since the insertion and deletion operations of AVL trees are similar to standard binary search trees, we won't go into detail here.",
+      "source_content_hash": "ab9891ccb061d432a8268ec34bc25a8b2d73132d36b6914c45238b78e7939c13",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "ここでは[第3章](./functions-lists-recursion#labeled-argument-and-optional-arguments)と[第4章](./tuples-structs-enums#labeled-arguments)で紹介したラベル付き引数の構文を使用しています。`create`関数はデフォルトで両部分木が空の新しいAVL木を作成し、明示的に高さを管理しません。AVL木の挿入・削除操作は標準的な二分探索木と同様のため、詳細は割愛します。"
+      }
+    },
+    {
+      "segment_id": "5e0ab881",
+      "source_content": "![](/pics/rotation.drawio.webp)",
+      "source_content_hash": "d11148e778b5f65fd5d0b2877ca11f4c98311478982ef14db73c56b253f204f5",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "![](/pics/rotation.drawio.webp)"
+      }
+    },
+    {
+      "segment_id": "d1996877",
+      "source_content": "After inserting or deleting an element, we traverse back from the modified location until we find the first unbalanced position, which we call $z$. Then, we use $y$ to represent the higher subtree of $z$, and $x$ is the higher subtree of $y$. Next, we discuss rebalancing. In the first case, $x$ is between $y$ and $z$. In this case, we can move $x$ above its parent and grandparent. We can see that the depths of $x$'s two subtrees decrease by $1$, thereby reducing the height of the entire tree. Although the depth of $T_4$ increases by $1$, it was originally lower than the left subtree, so it remains balanced. The other case is when $x$ is on $y$ and $z$'s same side. In this case, we can reduce the height of the tree by making $y$ the root node. The purpose is still to reduce the depths of the two deepest subtrees to decrease the height of the left subtree.",
+      "source_content_hash": "98462c51110b903cd2b9852b889b95658e89e77bea7d781b294e5c7920e4ad38",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "要素の挿入または削除後、変更箇所から遡って最初の不平衡位置（$z$と呼ぶ）を発見します。次に$y$を$z$の高い方の部分木、$x$を$y$の高い方の部分木と表現します。再平衡化について議論します。第一のケースでは、$x$が$y$と$z$の間に位置します。この場合、$x$をその親と祖父母の上に移動できます。$x$の2つの部分木の深さが$1$減少し、木全体の高さが低減されます。$T_4$の深さは$1$増加しますが、元々左部分木より低かったため平衡性は保たれます。第二のケースでは、$x$が$y$と$z$と同じ側に位置します。この場合、$y$を根ノードにすることで木の高さを低減できます。目的は依然として、最も深い2つの部分木の深さを減らして左部分木の高さを下げることです。"
+      }
+    },
+    {
+      "segment_id": "d96a088c",
+      "source_content": "```moonbit no-check\nfn balance(left: AVLTree, z: Int, right: AVLTree) -> AVLTree {\n  if height(left) > height(right) + 1 {\n    match left {\n      Node(y, left_l, left_r, _) =>\n        if height(left_l) >= height(left_r) {\n          create(left_l, y, create(lr, z, right)) // x is on y and z's same side\n        } else { match left_r {\n          Node(x, left_right_l, left_right_r, _) =>  // x is between y and z\n            create(create(left_l, y, left_right_l), x, create(left_right_r, z, right))\n        } }\n    }\n  } else { ... }\n}\n```",
+      "source_content_hash": "47f66f5a2aec08fddc9567815997abc4e1b888f280d6953b62c477728a72fdc1",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_d96a088c"
+      }
+    },
+    {
+      "segment_id": "7e031d10",
+      "source_content": "Here is a snippet of code for a balanced tree. You can easily complete the code once you understand what we just discussed. We first determine if a tree is unbalanced, by checking if the height difference between the two subtrees exceeds a specific value and which side is higher. After determining this, we perform a rebalancing operation. At this point, the root node we pass in is $z$, and the higher side after pattern matching is $y$. Then, based on the comparison of the heights of $y$'s two subtrees, we further determine whether $x$ is $y$ and $z$'s same side or between $y$ and $z$, as shown in line 6. Afterwards, we recombine based on the scenarios discussed earlier, as shown in lines 6 and 9. Taking insertion of an element as an example:",
+      "source_content_hash": "f1b82033b56db0ae526975fbc3238e6f17156bedfb39989e7d804339b52d1c3f",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "平衡木のコードスニペットを示します。前述の内容を理解すれば容易に完成できます。まず、2つの部分木の高さ差が特定値を超えているか、どちら側が高いかをチェックし、木が不平衡か判定します。判定後、再平衡操作を実行します。この時点で渡される根ノードは$z$であり、パターンマッチング後の高い側が$y$です。次に$y$の2つの部分木の高さを比較し、$x$が$y$と$z$と同じ側か間にあるかをさらに判定します（6行目）。その後、前述のシナリオに基づいて再構成します（6行目と9行目）。要素挿入を例にとると："
+      }
+    },
+    {
+      "segment_id": "31df1954",
+      "source_content": "```moonbit no-check\nfn add(tree: AVLTree, value: Int) -> AVLTree {\n  match tree {\n    // When encountering the pattern `Node(v, ..) as t`,\n    // the compiler will know that `t` must be constructed by `Node`,\n    // so `t.left` and `t.right` can be directly accessed within the branch.\n    Node(v, ..) as t => {\n      if value < v { balance(add(t.left, value), v, t.right) } else { ... }\n    }\n    Empty => ...\n  }\n}\n```",
+      "source_content_hash": "a719831dc534de154883051663901ab410e2e5a5b12e6c7dcd8dd2ebe07d4539",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_31df1954"
+      }
+    },
+    {
+      "segment_id": "647ea627",
+      "source_content": "After inserting the element, we directly perform a rebalancing operation on the resulting tree.",
+      "source_content_hash": "8fe783ae79139812ed74bc3fd108d6dccea6dea33ac1f25edd52d6120320979a",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "要素挿入後、結果の木に対して直接再平衡操作を実行します。"
+      }
+    },
+    {
+      "segment_id": "e85288f7",
+      "source_content": "## Summary",
+      "source_content_hash": "30ac03ff33731529441be8fbe52a3bd0d4c5ec830e806d54692168ebb7f98ada",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "## まとめ"
+      }
+    },
+    {
+      "segment_id": "f10c482a",
+      "source_content": "In this chapter, we introduced the trees, including the definition of a tree and its related terminology, the definition of a binary tree, traversal algorithms, the definition of a binary search tree, its insertion and deletion operations, as well as the rebalancing operation of AVL trees, a type of balanced binary tree. For further study, please refer to:",
+      "source_content_hash": "7afe98b43e7b83b2db5975c96f92cdbb479950350999cb8b8080ac07338a9523",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "この章では、木構造について紹介しました。具体的には、木の定義と関連用語、二分木の定義、走査アルゴリズム、二分探索木の定義とその挿入・削除操作、そして平衡二分木の一種であるAVL木のリバランス操作について説明しました。さらに学習を進めたい場合は、以下の文献を参照してください："
+      }
+    },
+    {
+      "segment_id": "00e50cff",
+      "source_content": "- _**Introduction to Algorithms**_: Chapter 12 - Binary Search Trees; and\n- _**Introduction to Algorithms**_: Chapter 13 - Red-Black Trees",
+      "source_content_hash": "c9ad180834d7fe0b22261576e6425d537fb05129c6e1406752c680b49b0ca297",
+      "node_type": "list",
+      "translatable": true,
+      "translations": {
+        "ja": "- _**アルゴリズムイントロダクション**_：第12章「二分探索木」\n- _**アルゴリズムイントロダクション**_：第13章「赤黒木」"
+      }
+    }
+  ],
+  "target_i18n_subpath": "docusaurus-plugin-content-docs/current/05-trees.md",
+  "last_updated_timestamp": "2025-06-06T05:19:35.741615+00:00",
+  "schema_version": "1.0",
+  "translated_versions": {
+    "ja": "c8d3bcfa7a3080640f72eccd40d6b1d1deed70f165d24bf564a583e10ebc7c16"
+  }
+}

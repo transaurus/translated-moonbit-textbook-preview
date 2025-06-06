@@ -1,0 +1,712 @@
+{
+  "source_file_path_relative_to_docusaurus_root": "docs/12-autodiff.md",
+  "source_file_content_hash": "b0c36a4f7828762ac304645b52cb79dd6203b3964c1b6a274f218baa1a34c8ce",
+  "segments": [
+    {
+      "segment_id": "76e4a56a",
+      "source_content": "# 12. Case Study: Autodiff",
+      "source_content_hash": "16beba32c4400b748c64634b683221fb498d2ab5fb502922a3327d620608f6e2",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "# 12. ケーススタディ: 自動微分"
+      }
+    },
+    {
+      "segment_id": "faebdc62",
+      "source_content": "Today, we will talk about another case study on automatic differentiation (autodiff), while avoiding some of the complex mathematical concepts.",
+      "source_content_hash": "2b22684d94e017e1834a87eb78b4280abdc0a7703a25d66730484f2ebc2c38af",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "本日は、複雑な数学的概念を避けつつ、自動微分（autodiff）に関する別のケーススタディについて話します。"
+      }
+    },
+    {
+      "segment_id": "e7ec8f99",
+      "source_content": "Differentiation is an important operation in computer science. In machine learning, neural networks based on gradient descent apply differentiation to find local minima for training. You might be more familiar with solving functions and approximating zeros using Newton's method. Let's briefly review it. Here, we have plotted a function and set the initial value to 1, which is point A on the number axis.",
+      "source_content_hash": "5a7fd028772fc9a087463992a005738a17c570cffcfdeb3ddc42febf69ad01c1",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "微分はコンピュータサイエンスにおいて重要な操作です。機械学習では、勾配降下法に基づくニューラルネットワークが訓練のために局所的最小値を見つける際に微分を適用します。関数を解き、ニュートン法を用いて零点を近似することにもっと馴染みがあるかもしれません。簡単に復習しましょう。ここでは関数をプロットし、初期値を1（数直線上の点A）に設定しています。"
+      }
+    },
+    {
+      "segment_id": "6ef78e84",
+      "source_content": "![](/pics/geogebra-export-0.webp)",
+      "source_content_hash": "d47d172d26f9cfdefcd190efd3fd456f275f81483b0ee34c077bd88d12e382bd",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "![](/pics/geogebra-export-0.webp)"
+      }
+    },
+    {
+      "segment_id": "53eaf0e1",
+      "source_content": "![](/pics/geogebra-export-1.webp)",
+      "source_content_hash": "af55660b5947158cc4e2594712f9157db6096b25af726b7e4b51b871cbea7b03",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "![](/pics/geogebra-export-1.webp)"
+      }
+    },
+    {
+      "segment_id": "8ac585fb",
+      "source_content": "We want to approximate the zeros near it. We calculate point B on the function corresponding to the x-coordinate of this point and find the derivative at the point, which is the slope of the tangent line at that point.",
+      "source_content_hash": "311f3eb062c38465ebaf8737f96a87f900bdec868592f496a758aa7ab7216a5d",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "この点の近くにある零点を近似したいと考えています。この点のx座標に対応する関数上の点Bを計算し、その点における微分係数（その点での接線の傾き）を求めます。"
+      }
+    },
+    {
+      "segment_id": "180bddb1",
+      "source_content": "![](/pics/geogebra-export-2.webp)",
+      "source_content_hash": "7ffce3e1165274ed7294de7a1536fef2bc223e4a86ee6a871a73de41c3199bed",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "![](/pics/geogebra-export-2.webp)"
+      }
+    },
+    {
+      "segment_id": "cf898102",
+      "source_content": "![](/pics/geogebra-export-3.webp)",
+      "source_content_hash": "8377b24114293a43df8f2480b7910641c8ab5949a567107db7e2899f4bbc21d0",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "![](/pics/geogebra-export-3.webp)"
+      }
+    },
+    {
+      "segment_id": "42ad8e83",
+      "source_content": "By finding the intersection of the tangent line and the x-axis, we get a value that approximates zero.",
+      "source_content_hash": "93e051a2d08a7c7338d2fe669e21d55cc328d427c2a752e453cec7b2f8f6e564",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "接線とx軸の交点を見つけることで、零点に近い値を得ます。"
+      }
+    },
+    {
+      "segment_id": "f6168993",
+      "source_content": "![](/pics/geogebra-export-4.webp)",
+      "source_content_hash": "a251368271afb2edb9afb77dc0209dee73986021ed352ba874d6bd1c5a1380d9",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "![](/pics/geogebra-export-4.webp)"
+      }
+    },
+    {
+      "segment_id": "f5f6d2ce",
+      "source_content": "We then repeat the process to find the point corresponding to the function, calculate the derivative, and find the intersection of the tangent line and the x-axis.",
+      "source_content_hash": "6785e719b0cd437864ea4c30c3b1449a2825f8a3b9763eff725219cb3f507712",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "その後、このプロセスを繰り返し、関数に対応する点を見つけ、微分係数を計算し、接線とx軸の交点を求めます。"
+      }
+    },
+    {
+      "segment_id": "2fdadb08",
+      "source_content": "![](/pics/geogebra-export-5.webp)",
+      "source_content_hash": "aab3e9f4cde13be18a44c60d750bacd25f55c0ec66b27f0458d7f750f08424f4",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "![](/pics/geogebra-export-5.webp)"
+      }
+    },
+    {
+      "segment_id": "f2c2bdd0",
+      "source_content": "![](/pics/geogebra-export-6.webp)",
+      "source_content_hash": "804fbd7cd4bee69eefef7703ce03a90454b30c2ff989e329e5f381768fc84bf7",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "![](/pics/geogebra-export-6.webp)"
+      }
+    },
+    {
+      "segment_id": "a76548f8",
+      "source_content": "This way, we can gradually approach zero and get an approximate solution. We will provide the code implementation at the end.",
+      "source_content_hash": "36156cb4e276095764cdea9abf291411017d8d98858b0ae006d3eaf146e355e1",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "このようにして、徐々に零点に近づき、近似解を得ることができます。最後にコード実装を提供します。"
+      }
+    },
+    {
+      "segment_id": "4b1d2d7d",
+      "source_content": "![](/pics/geogebra-export-7.webp)",
+      "source_content_hash": "2138f226c5deb465e02e7796c0322a7c3ec66d8a9551867d6173f3d91f112ad0",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "![](/pics/geogebra-export-7.webp)"
+      }
+    },
+    {
+      "segment_id": "dfe931a2",
+      "source_content": "Today, we will look at the following simple combination of functions, involving only addition and multiplication. For example, when calculating 5 times $x_0$ squared plus $x_1$, if $x_0$ is 10 and $x_1$ is 100, we need to calculate the value of the function, 600, the partial derivative with respect to $x_0$, 100, and the partial derivative with respect to $x_1$, 1.",
+      "source_content_hash": "6ef3c75a67c837b0c5c1f6bf74b33ffbffbcc4adf8e788ee3e8fb79b9a68fc8e",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "今日は、加算と乗算のみを含む次のような単純な関数の組み合わせを見ていきます。例えば、5倍の$x_0$の2乗に$x_1$を加えたものを計算する場合、$x_0$が10で$x_1$が100のとき、関数の値600、$x_0$に関する偏微分係数100、$x_1$に関する偏微分係数1を計算する必要があります。"
+      }
+    },
+    {
+      "segment_id": "4daf5cdd",
+      "source_content": "*Example:* $f(x_0, x_1) = 5{x_0}^2 + {x_1}$",
+      "source_content_hash": "115b4c48b34990da1b3745c542eb3635c039574f324622c0c4953d8aefde49e9",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "*例:* $f(x_0, x_1) = 5{x_0}^2 + {x_1}$"
+      }
+    },
+    {
+      "segment_id": "fc8eadc3",
+      "source_content": "- $f(10, 100) = 600$\n- $\\frac{\\partial f}{\\partial x_0}(10, 100) = 100$\n- $\\frac{\\partial f}{\\partial x_1}(10, 100) = 1$",
+      "source_content_hash": "df448ef04775ded852d38a6ac1ae46f507636520864f50bef208a739b00be763",
+      "node_type": "list",
+      "translatable": true,
+      "translations": {
+        "ja": "- $f(10, 100) = 600$\n- $\\frac{\\partial f}{\\partial x_0}(10, 100) = 100$\n- $\\frac{\\partial f}{\\partial x_1}(10, 100) = 1$"
+      }
+    },
+    {
+      "segment_id": "62a6890b",
+      "source_content": "## Differentiation",
+      "source_content_hash": "73af3aa74e7de7d9ccecd98afd370d36b7c487b8a0394a92cdabbe762b2ae937",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "## 微分法"
+      }
+    },
+    {
+      "segment_id": "3cfe6286",
+      "source_content": "There are several ways to differentiate a function. The first method is manual differentiation where we use a piece of paper and a pen as a natural calculator. The drawback is that it's easy to make mistakes with complex expressions and we can't just manually calculate 24 hours a day. The second method is numerical differentiation: $\\frac{ \\texttt{f}(x + \\delta x) - \\texttt{f}(x) }{ \\delta x }$, where we add a small value (approaching zero) to the point we want to differentiate, calculate the difference, and divide it by the small value. The issue here is that computers cannot accurately represent decimals, and the larger the absolute value, the less accurate it is. Also, we cannot fully solve infinite series. The third method is symbolic differentiation, where we convert the function into an expression tree and then operate on the tree to get the derivative. Take $\\textit{Mul(Const(2), Var(1))} \\to \\textit{Const(2)}$ for example: here the differentiation result of constant 2 multiplied by x will be constant 2. The problem with symbolic differentiation is that the calculation results may not be simplified enough, and there may be redundant calculations. In addition, it's hard to directly use native control flow like conditionals and loops. If we want to define a function to find the larger value, we have to define an operator instead of simply comparing the current values.",
+      "source_content_hash": "f2f04ac2626991684d2f1b87ca305777b76f252f8546e38f24e2582b62ac5a99",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "関数を微分する方法にはいくつかあります。最初の方法は手動微分で、紙とペンを自然な計算機として使用します。欠点は、複雑な式では間違いを犯しやすく、24時間手動で計算し続けることはできないことです。2番目の方法は数値微分です: $\\frac{ \\texttt{f}(x + \\delta x) - \\texttt{f}(x) }{ \\delta x }$。ここでは、微分したい点に小さな値（ゼロに近い）を加え、差分を計算し、その小さな値で割ります。問題は、コンピュータが小数を正確に表現できないこと、絶対値が大きいほど精度が低くなること、そして無限級数を完全に解くことができないことです。3番目の方法は記号微分で、関数を式木に変換し、その木を操作して微分係数を得ます。例えば、$\\textit{Mul(Const(2), Var(1))} \\to \\textit{Const(2)}$: ここでは定数2にxを掛けたものの微分結果は定数2になります。記号微分の問題点は、計算結果が十分に簡略化されていない可能性があり、冗長な計算が含まれる可能性があることです。さらに、条件分岐やループなどのネイティブな制御フローを直接使用することが難しいことです。現在の値に基づいて大きい方を見つける関数を定義したい場合、単純に値を比較するのではなく、演算子を定義する必要があります。"
+      }
+    },
+    {
+      "segment_id": "d9330cd7",
+      "source_content": "```moonbit no-check\n// Need to define additional native operators for the same effect\nfn max[N : Number](x : N, y : N) -> N {\n if x.value() > y.value() { x } else { y }\n}\n```",
+      "source_content_hash": "11711c419153c6fbbbcfa5aa88cc669001338dce2c8a2ff42d618a3257b575ff",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_d9330cd7"
+      }
+    },
+    {
+      "segment_id": "a44047a5",
+      "source_content": "Lastly, the fourth method is automatic differentiation. Automatic differentiation uses the derivative rules of composite functions to perform calculation and differentiation by combining basic operations, which also aligns with modular thinking. Automatic differentiation is divided into forward and backward differentiation. We will introduce them one by one.",
+      "source_content_hash": "31755cc7c8e523f641abbfabcb6b2e03b9eb385be6f64dc17bb3b02bf01f59ea",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "最後に、4番目の方法は自動微分です。自動微分は合成関数の微分規則を使用して、基本演算を組み合わせることで計算と微分を実行します。これはモジュール化思考にも合致しています。自動微分は前方微分と後方微分に分かれます。これらを一つずつ紹介していきます。"
+      }
+    },
+    {
+      "segment_id": "cb5b269c",
+      "source_content": "## Symbolic Differentiation",
+      "source_content_hash": "93eca27d9ea54d29b8f701d988d20875d7953e0231d7c23eef798d007d2d8d05",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "## 記号微分"
+      }
+    },
+    {
+      "segment_id": "b36c6338",
+      "source_content": "Let's first look at symbolic differentiation. We define expressions using an enum type. An expression can be a constant, a variable indexed starting from zero, or the sum or product of two functions. Here we define simple constructors and overload operators to produce more concise expressions. Finally, in line 15, we use pattern matching to define a method that computes function values based on symbols, with the input being a vector (omitted here).",
+      "source_content_hash": "0833032db4ee5d845930f999858c6e283f8d2f05bed2dd23edf4517ff4f31427",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "まず記号微分を見ていきましょう。enum型を使用して式を定義します。式は定数、ゼロから始まるインデックス付き変数、または2つの関数の和や積になります。ここではシンプルなコンストラクタを定義し、演算子をオーバーロードしてより簡潔な式を生成します。最後に15行目で、パターンマッチングを使用して記号に基づいて関数値を計算するメソッドを定義します（入力はベクトルで、ここでは省略されています）。"
+      }
+    },
+    {
+      "segment_id": "eb80afe1",
+      "source_content": "```moonbit\nenum Symbol {\n  Constant(Double)\n  Var(Int)\n  Add(Symbol, Symbol)\n  Mul(Symbol, Symbol)\n} derive(Show)\n\n// Define simple constructors and overload operators\nfn Symbol::constant(d : Double) -> Symbol { Constant(d) }\nfn Symbol::var(i : Int) -> Symbol { Var(i) }\nfn Symbol::op_add(f1 : Symbol, f2 : Symbol) -> Symbol { Add(f1, f2) }\nfn Symbol::op_mul(f1 : Symbol, f2 : Symbol) -> Symbol { Mul(f1, f2) }\n\n// Compute function values\nfn Symbol::compute(self : Symbol, input : Array[Double]) -> Double {\n  match self {\n    Constant(d) => d\n    Var(i) => input[i] // get value following index\n    Add(f1, f2) => f1.compute(input) + f2.compute(input)\n    Mul(f1, f2) => f1.compute(input) * f2.compute(input)\n    }\n}\n```",
+      "source_content_hash": "0ec86cefe76872459df03f7edc5a242cf80df7b60ab6bda3fd47b2b4e546de4b",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_eb80afe1"
+      }
+    },
+    {
+      "segment_id": "463ed165",
+      "source_content": "Let's review the derivative rules for any constant function, any variable partially differentiated with respect to itself, the sum of two functions and the product of two functions. For example, the derivative of $f \\times g$ is the derivative of $f$ multiplied by $g$ plus the derivative of $g$ multiplied by $f$. Using these rules, we differentiate our symbols through pattern matching. Since it's partial differentiation, our parameter also includes an index to indicate which variable we are differentiating with respect to.",
+      "source_content_hash": "6e176950885b1e427f5a09e3e0d1e1baf4a036d9eda7e7db55581620249e620e",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "任意の定数関数、自分自身に関する偏微分を行う任意の変数、2つの関数の和と積の微分規則を復習しましょう。例えば、$f \\times g$の微分は$f$の微分に$g$を掛けたものと$g$の微分に$f$を掛けたものの和です。これらの規則を使用して、パターンマッチングを通じて記号を微分します。偏微分であるため、パラメータにはどの変数に関して微分を行うかを示すインデックスも含まれます。"
+      }
+    },
+    {
+      "segment_id": "536b7b6b",
+      "source_content": "- $\\frac{\\partial f}{\\partial x_i} = 0$ if $f$ is a constant function\n- $\\frac{\\partial x_i}{\\partial x_i} = 1, \\frac{\\partial x_j}{\\partial x_i} = 0, i \\neq j$\n- $\\frac{\\partial (f + g)}{\\partial x_i} = \\frac{\\partial f}{\\partial x_i} + \\frac{\\partial g}{\\partial x_i}$\n- $\\frac{\\partial (f \\times g)}{\\partial x_i} = \\frac{\\partial f}{\\partial x_i} \\times g + f \\times \\frac{\\partial g}{\\partial x_i}$",
+      "source_content_hash": "1a4fd13f760e2abee78e7b3c6b4af3f06dc37afb25a00407e178af2329f003ac",
+      "node_type": "list",
+      "translatable": true,
+      "translations": {
+        "ja": "- $f$が定数関数の場合、$\\frac{\\partial f}{\\partial x_i} = 0$\n- $\\frac{\\partial x_i}{\\partial x_i} = 1, \\frac{\\partial x_j}{\\partial x_i} = 0, i \\neq j$\n- $\\frac{\\partial (f + g)}{\\partial x_i} = \\frac{\\partial f}{\\partial x_i} + \\frac{\\partial g}{\\partial x_i}$\n- $\\frac{\\partial (f \\times g)}{\\partial x_i} = \\frac{\\partial f}{\\partial x_i} \\times g + f \\times \\frac{\\partial g}{\\partial x_i}$"
+      }
+    },
+    {
+      "segment_id": "2547a6bb",
+      "source_content": "We'll use the previous definition to construct our example function. As we can see, the multiplication and addition operations look very natural because MoonBit allows us to overload some operators.",
+      "source_content_hash": "2aca932f9e464d4e9fdfc29988a5292e72b2c86d97c121b45b0b4c8ff15b5b88",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "前の定義を使用して、例の関数を構築します。見ての通り、乗算と加算の操作は非常に自然に見えます。これはMoonBitがいくつかの演算子をオーバーロードできるためです。"
+      }
+    },
+    {
+      "segment_id": "7d898a0e",
+      "source_content": "```moonbit\nfn differentiate(self : Symbol, val : Int) -> Symbol {\n  match self {\n      Constant(_) => Constant(0.0)\n    Var(i) => if i == val { Constant(1.0) } else { Constant(0.0) }\n    Add(f1, f2) => f1.differentiate(val) + f2.differentiate(val)\n    Mul(f1, f2) => f1 * f2.differentiate(val) + f1.differentiate(val) * f2\n  }\n}\n```",
+      "source_content_hash": "c3bedeccc0c9cfc286274baebd1f2826412b3b950338b9b74b3274489d8321cb",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_7d898a0e"
+      }
+    },
+    {
+      "segment_id": "25212439",
+      "source_content": "After constructing the expression, we differentiate it to get the corresponding expression, as shown in line 7 and then compute the partial derivative based on the input. Without simplification, the derivative expression we obtain might be quite complicated, as shown below.",
+      "source_content_hash": "a16ed83e390e22a99f3c6c522cf9655baf49e8f54f13a8d8fe00aadcfaa0c9b8",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "式を構築した後、それを微分して対応する式を取得します（7行目に示されています）。そして入力に基づいて偏微分を計算します。簡略化を行わない場合、得られる微分式は以下のように非常に複雑になる可能性があります。"
+      }
+    },
+    {
+      "segment_id": "cae897fb",
+      "source_content": "```moonbit\nfn example() -> Symbol {\n  Symbol::constant(5.0) * Symbol::var(0) * Symbol::var(0) + Symbol::var(1)\n}\n\ntest \"Symbolic differentiation\" {\n  let input : Array[Double] = [10.0, 100.0]\n  let symbol : Symbol = example() // Abstract syntax tree of the function\n  assert_eq!(symbol.compute(input), 600.0)\n  // Expression of df/dx\n  inspect!(symbol.differentiate(0),\n  content=\"Add(Add(Mul(Mul(Constant(5.0), Var(0)), Constant(1.0)), Mul(Add(Mul(Constant(5.0), Constant(1.0)), Mul(Constant(0.0), Var(0))), Var(0))), Constant(0.0))\")\n  assert_eq!(symbol.differentiate(0).compute(input), 100.0)\n}\n```",
+      "source_content_hash": "1586cc3c5ac2e12b516219413fa2a634acb57f251f1bad079c49f9fd931b0c78",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_cae897fb"
+      }
+    },
+    {
+      "segment_id": "1958bc43",
+      "source_content": "Of course, we can define some simplification functions or modify the constructors to simplify the functions. For example, we may simplify the result of addition. Adding 0 to any number is still that number, so we can just keep the number; and when adding two numbers, we can simplify them before computing with other variables. Lastly, if there's an integer on the right, we can move it to the left to avoid writing each optimization rule twice.",
+      "source_content_hash": "c2e39acbf33f1a3bb7a4420bcc0f9443af381c3ed0e12ad04794346b15736ed9",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "もちろん、いくつかの簡略化関数を定義したり、コンストラクタを変更して関数を簡略化したりできます。例えば、加算の結果を簡略化できます。0を任意の数に加えてもその数は変わらないので、その数を保持するだけです。また、2つの数を加算する場合、他の変数と計算する前にそれらを簡略化できます。最後に、右側に整数がある場合、左側に移動して各最適化ルールを2回記述するのを避けられます。"
+      }
+    },
+    {
+      "segment_id": "1a63b635",
+      "source_content": "```moonbit\nfn Symbol::op_add_simplified(f1 : Symbol, f2 : Symbol) -> Symbol {\n  match (f1, f2) {\n    (Constant(0.0), a) => a\n      (Constant(a), Constant(b)) => Constant(a + b)\n      (a, Constant(_) as const) => const + a\n      (Mul(n, Var(x1)), Mul(m, Var(x2))) =>\n        if x1 == x2 {\n          Mul(m + n, Var(x1))\n        } else {\n          Add(f1, f2)\n        }\n      _ => Add(f1, f2)\n  } }\n```",
+      "source_content_hash": "dd2d10ff0147394ca7e342b533e4c0325db1d24da99d1330862875fdf1845ceb",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_1a63b635"
+      }
+    },
+    {
+      "segment_id": "1ecf0882",
+      "source_content": "Similarly, we can simplify multiplication. Multiplying 0 by any number is still 0, multiplying 1 by any number is still the number itself, and we can simplify multiplying two numbers, etc.",
+      "source_content_hash": "8b53256f81d9a8cc331063fa16f42bdd013c94612de5ab2c6cdc0ee3ec90ae68",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "同様に、乗算も簡略化できます。0を任意の数で乗算しても0のまま、1を任意の数で乗算してもその数自体のまま、そして2つの数の乗算を簡略化するなどです。"
+      }
+    },
+    {
+      "segment_id": "4c6754b2",
+      "source_content": "```moonbit\nfn Symbol::op_mul_simplified(f1 : Symbol, f2 : Symbol) -> Symbol {\n  match (f1, f2) {\n    (Constant(0.0), _) => Constant(0.0) // 0 * a = 0\n    (Constant(1.0), a) => a             // 1 * a = 1\n    (Constant(a), Constant(b)) => Constant(a * b)\n    (a, Constant(_) as const) => const * a\n    _ => Mul(f1, f2)\n  } }\n```",
+      "source_content_hash": "7b02acf2555f9586012920d86b7fcdc3fdec45e62e827a5df90c46898e883943",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_4c6754b2"
+      }
+    },
+    {
+      "segment_id": "17b50e81",
+      "source_content": "After such simplifications, we get a more concise result. Of course, our example is relatively simple. In practice, more simplification is needed, such as combining like terms, etc.",
+      "source_content_hash": "ccb10e93a0dd2564075543a1aa681b61a7e7f5ab53fcb4be7170eba110b70139",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "このような簡略化の後、より簡潔な結果が得られます。もちろん、私たちの例は比較的単純です。実際には、同類項の結合など、さらなる簡略化が必要です。"
+      }
+    },
+    {
+      "segment_id": "3ad9440a",
+      "source_content": "```moonbit\nlet diff_0_simplified : Symbol = Mul(Constant(5.0), Var(0))\n```",
+      "source_content_hash": "8ae0d7d9475926725b434be55177a26785c72e95c073ed44d6f098ca61df1d4b",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_3ad9440a"
+      }
+    },
+    {
+      "segment_id": "2f2d5f01",
+      "source_content": "## Automatic Differentiation",
+      "source_content_hash": "0a27cc0987510be5d63b5fa569e6f165af88ca0a026eddc10c35869871da7ba5",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "## 自動微分"
+      }
+    },
+    {
+      "segment_id": "44285072",
+      "source_content": "Now, let's take a look at automatic differentiation. We first define the operations we want to implement through an interface, which includes constant constructor, addition, and multiplication. We also want to get the value of the current computation.",
+      "source_content_hash": "95806f98a252840a1d0aaaac99e7b436cd585c27f4c4ca77f7f2cca9b100b574",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "では、自動微分を見ていきましょう。まず、インターフェースを通じて実装したい操作を定義します。これには定数コンストラクタ、加算、乗算が含まれます。また、現在の計算の値を取得することも求めます。"
+      }
+    },
+    {
+      "segment_id": "5680b15c",
+      "source_content": "```moonbit\ntrait Number  {\n  constant(Double) -> Self\n  op_add(Self, Self) -> Self\n  op_mul(Self, Self) -> Self\n  value(Self) -> Double // Get the value of the current computation\n}\n```",
+      "source_content_hash": "a0bd964d783ffc299d619ce2d4777bb9c15ce0afa71b09efc309af3d19c05cf6",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_5680b15c"
+      }
+    },
+    {
+      "segment_id": "39f476dc",
+      "source_content": "With this interface, we can use the native control flow of the language for computation and dynamically generate computation graphs. In the following example, we can choose an expression to compute based on the current value of $y$, and when we differentiate, we differentiate the corresponding expression.",
+      "source_content_hash": "45236c119bcb63d1eb7c62635feebf12492ff8b42ff5807da35c3eee47ae3e4d",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "このインターフェースを使用すると、言語のネイティブな制御フローを計算に使用でき、動的に計算グラフを生成できます。次の例では、$y$の現在値に基づいて計算する式を選択でき、微分する際には対応する式を微分します。"
+      }
+    },
+    {
+      "segment_id": "8ecb92db",
+      "source_content": "```moonbit\nfn max[N : Number](x : N, y : N) -> N {\n  if x.value() > y.value() { x } else { y }\n}\n\nfn relu[N : Number](x : N) -> N {\nmax(x, N::constant(0.0))\n}\n```",
+      "source_content_hash": "dbf2af9979f9bc37d32fe8710a9d7639f36a649baf9f15476d91888e9a9f5181",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_8ecb92db"
+      }
+    },
+    {
+      "segment_id": "2b5df263",
+      "source_content": "### Forward Differentiation",
+      "source_content_hash": "57e9a8b591f128a3e0aaa695acf0f79b38c370e17a8d330f66421bf1f6f1b19a",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "### 前方微分"
+      }
+    },
+    {
+      "segment_id": "e29bd639",
+      "source_content": "We will start with forward differentiation. It is relatively straightforward that it directly uses the derivative rules to simultaneously calculate $f(a)$ and $f'(a)$. The reason for calculating both of them instead of just the derivative is simple: when differentiating the product of two functions, we need to know the current values of both functions for computation, so we need to compute both the value and the derivative at the same time. Mathematically, this corresponds to the concept of `dual number` in linear algebra. You are encouraged to dive deeper into it if you find it interesting. Let's construct a struct containing dual numbers, with one field being the value of the current node and the other being the derivative of the current node. It is very simple to construct from constants: the value is the constant, and the derivative is zero. It is also very straightforward to get the current value where we just access the corresponding variable. Here we add a helper function. For a variable, besides its value, we also need to determine if it is the variable to differentiate, and if so, its derivative is 1, otherwise, it is 0, as previously explained.",
+      "source_content_hash": "e8a2bea24bdf5a5b65438a6c6d9e4ef09c5aee22384b131ddadaf13b852c7972",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "まず、前方微分から始めます。これは比較的単純で、導関数の規則を直接使用して$f(a)$と$f'(a)$を同時に計算します。導関数だけではなく両方を計算する理由は単純です：2つの関数の積を微分する場合、計算のために両方の関数の現在の値が必要になるため、値と導関数を同時に計算する必要があるからです。数学的には、これは線形代数における`双対数`の概念に対応します。興味があれば、さらに深く掘り下げることをお勧めします。双対数を含む構造体を構築しましょう。1つのフィールドは現在のノードの値、もう1つは現在のノードの導関数です。定数からの構築は非常に簡単です：値は定数そのもので、導関数はゼロです。現在の値を取得するのも非常に直感的で、対応する変数にアクセスするだけです。ここではヘルパー関数を追加します。変数の場合、その値に加えて、微分対象の変数かどうかを判定する必要があります。微分対象であれば導関数は1、そうでなければ0です。これは前述の通りです。"
+      }
+    },
+    {
+      "segment_id": "44ecd2e3",
+      "source_content": "```moonbit\nstruct Forward {\n  value : Double      // Current node value f\n  derivative : Double // Current node derivative f'\n} derive(Show)\n\nfn Forward::constant(d : Double) -> Forward { { value: d, derivative: 0.0 } }\nfn Forward::value(f : Forward) -> Double { f.value }\n\n// determine if to differentiate the current variable\nfn Forward::var(d : Double, diff : Bool) -> Forward {\n  { value : d, derivative : if diff { 1.0 } else { 0.0 } }\n}\n```",
+      "source_content_hash": "fda5bf399e99db1937445b067f37d2caa50fbd09bb191c1cfeff9a3f32744693",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_44ecd2e3"
+      }
+    },
+    {
+      "segment_id": "015c0c6e",
+      "source_content": "Next, let's define methods for addition and multiplication, using the derivative rules to directly calculate derivatives. For example, the value of the sum of two functions $f$ and $g$ is the sum of their values, and the derivative is the sum of their derivatives, as shown in line 4. For the product of two functions $f$ and $g$, the value is the product of their values, and the derivative is as introduced before: $f \\times g' + g \\times f'$. In this way, we directly calculate the derivatives without creating any intermediate data structures.",
+      "source_content_hash": "c575f7f59ef0d8f782c2418eb2d92b61df64841a4f542f7818dbb4edefd6fba6",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "次に、加算と乗算のメソッドを定義します。導関数の規則を使用して導関数を直接計算します。例えば、2つの関数$f$と$g$の和の値はそれらの値の和であり、導関数はそれらの導関数の和です（4行目に示されています）。2つの関数$f$と$g$の積の場合、値はそれらの値の積であり、導関数は前に紹介した通り：$f \\times g' + g \\times f'$です。このようにして、中間データ構造を作成することなく、直接導関数を計算します。"
+      }
+    },
+    {
+      "segment_id": "bb86adcb",
+      "source_content": "```moonbit\nfn Forward::op_add(f : Forward, g : Forward) -> Forward { {\n  value : f.value + g.value,\n  derivative : f.derivative + g.derivative // f' + g'\n} }\n\nfn Forward::op_mul(f : Forward, g : Forward) -> Forward { {\n  value : f.value * g.value,\n  derivative : f.value * g.derivative + g.value * f.derivative // f * g' + g * f'\n} }\n```",
+      "source_content_hash": "405cb4d75082b235e128b855b43cdce9b7ff0e24a5cc7df3c374a7b611832019",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_bb86adcb"
+      }
+    },
+    {
+      "segment_id": "09512450",
+      "source_content": "Finally, we use the previously defined example with conditionals to calculate derivatives. Note that forward differentiation can only compute the derivative with respect to one input parameter at a time, making it suitable for cases where there are more output parameters than input parameters. In neural networks, however, we typically have a large number of input parameters and one output. Therefore, we need to use the backward differentiation introduced next.",
+      "source_content_hash": "54eab039318626f9ef21c6cb8fd5673c157b7cea959e7d4c9e60e1d8bdd0838e",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "最後に、前に定義した条件付きの例を使用して導関数を計算します。前方微分は一度に1つの入力パラメータに関する導関数しか計算できないことに注意してください。これは、入力パラメータよりも出力パラメータが多い場合に適しています。しかし、ニューラルネットワークでは通常、多数の入力パラメータと1つの出力があります。そのため、次に紹介する後方微分を使用する必要があります。"
+      }
+    },
+    {
+      "segment_id": "af7c5c4e",
+      "source_content": "```moonbit\ntest \"Forward differentiation\" {\n// Forward differentiation with abstraction\n  inspect!(relu(Forward::var(10.0, true)), content=\"{value: 10.0, derivative: 1.0}\")\n  inspect!(relu(Forward::var(-10.0, true)), content=\"{value: 0.0, derivative: 0.0}\")\n// f(x, y) = x * y => df/dy(10, 100)\n  inspect!(Forward::var(10.0, false) * Forward::var(100.0, true), ~content=\"{value: 1000.0, derivative: 10.0}\")\n}\n```",
+      "source_content_hash": "581a8ead9e837a02b2c66131b99a2fdd42bf11525b81218a48665df9c8f5c002",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_af7c5c4e"
+      }
+    },
+    {
+      "segment_id": "dae9676f",
+      "source_content": "### Backward Differentiation",
+      "source_content_hash": "f3e6c0c5bf886ea4bb5aeb1c30f5e7185b4298008c81f55716589267a9dd5f8c",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "### 後方微分"
+      }
+    },
+    {
+      "segment_id": "18ca7861",
+      "source_content": "Backward differentiation utilizes the chain rule for calculation. Suppose we have a function $w$ of $x$, $ y$, $z$, etc., and $x$, $y$, $z$, etc. are functions of $t$. Then the partial derivative of $w$ with respect to $t$ is the partial derivative of $w$ with respect to $x$ times the partial derivative of $x$ with respect to $t$, plus the partial derivative of $w$ with respect to $y$ times the partial derivative of $y$ with respect to $t$, plus the partial derivative of $w$ with respect to $z$ times the partial derivative of $z$ with respect to $t$, and so on.",
+      "source_content_hash": "e28ce8ed538c5124620cbd6dac0bf2845751915a81eb2f637001a1799b9b7f98",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "後方微分は計算に連鎖律を利用します。$x$、$y$、$z$などの関数である$w$があり、$x$、$y$、$z$などが$t$の関数であるとします。このとき、$w$の$t$に関する偏微分は、$w$の$x$に関する偏微分と$x$の$t$に関する偏微分の積、$w$の$y$に関する偏微分と$y$の$t$に関する偏微分の積、$w$の$z$に関する偏微分と$z$の$t$に関する偏微分の積、などを足し合わせたものになります。"
+      }
+    },
+    {
+      "segment_id": "d5f26ef2",
+      "source_content": "- Given $w = f(x, y, z, \\cdots), x = x(t), y = y(t), z = z(t), \\cdots$\n  $\\frac{\\partial w}{\\partial t} = \\frac{\\partial w}{\\partial x} \\frac{\\partial x}{\\partial t} + \\frac{\\partial w}{\\partial y} \\frac{\\partial y}{\\partial t} + \\frac{\\partial w}{\\partial z} \\frac{\\partial z}{\\partial t} + \\cdots$",
+      "source_content_hash": "40807e1dc345ccfa37d8b12ad2b9cc9d2499bc10d53b3cb15cb927551cd9a68d",
+      "node_type": "list",
+      "translatable": true,
+      "translations": {
+        "ja": "- $w = f(x, y, z, \\cdots), x = x(t), y = y(t), z = z(t), \\cdots$ が与えられたとき\n  $\\frac{\\partial w}{\\partial t} = \\frac{\\partial w}{\\partial x} \\frac{\\partial x}{\\partial t} + \\frac{\\partial w}{\\partial y} \\frac{\\partial y}{\\partial t} + \\frac{\\partial w}{\\partial z} \\frac{\\partial z}{\\partial t} + \\cdots$"
+      }
+    },
+    {
+      "segment_id": "09d52457",
+      "source_content": "For example, for $f(x_0, x_1) = x_0 ^ 2 \\times x_1$, we can consider $f$ as a function of $g$ and $h$, where $g$ and $h$ are $x_0 ^ 2$ and $x_1$ respectively. We differentiate each component: the partial derivative of $f$ with respect to $g$ is $h$;  the partial derivative of $f$ with respect to $h$ is $g$;  the partial derivative of $g$ with respect to $x_0$ is $2x_0$, and the partial derivative of $h$ with respect to $x_0$ is 0. Lastly, we combine them using the chain rule to get the result $2x_0x_1$. Backward differentiation is the process where we start with the partial derivative of $f$ with respect to $f$, followed by calculating the partial derivatives of $f$ with respect to the intermediate functions and their partial derivatives with respect to the intermediate functions, until we reach the partial derivatives with respect to the input parameters. This way, by tracing backward and creating the computation graph of $f$ in reverse order, we can compute the derivative of each input node. This is suitable for cases where there are more input parameters than output parameters.",
+      "source_content_hash": "68913061ee4e09706fee3d65106ccc928d91f511e8c8c4bef6f0cbd53aff1e9e",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "例えば、$f(x_0, x_1) = x_0 ^ 2 \\times x_1$ の場合、$f$ を $g$ と $h$ の関数として考えることができます。ここで、$g$ と $h$ はそれぞれ $x_0 ^ 2$ と $x_1$ です。各成分を微分します：$f$ の $g$ に関する偏微分は $h$ です；$f$ の $h$ に関する偏微分は $g$ です；$g$ の $x_0$ に関する偏微分は $2x_0$ で、$h$ の $x_0$ に関する偏微分は 0 です。最後に、連鎖律を使ってこれらを組み合わせると、結果 $2x_0x_1$ が得られます。逆方向微分は、$f$ の $f$ に関する偏微分から始まり、中間関数に対する $f$ の偏微分とそれらの中間関数に対する偏微分を計算していくプロセスです。入力パラメータに関する偏微分に到達するまで、このように逆方向にトレースし、$f$ の計算グラフを逆順に作成することで、各入力ノードの微分を計算できます。これは、出力パラメータよりも入力パラメータが多い場合に適しています。"
+      }
+    },
+    {
+      "segment_id": "5bf5870e",
+      "source_content": "- Example: $f(x_0, x_1) = {x_0} ^ 2 x_1$\n  - Decomposition: $f = g h, g(x_0, x_1) = {x_0} ^ 2, h(x_0, x_1) = x_1$\n  - Differentiation: $\\frac{\\partial f}{\\partial g} = h = x_1, \\frac{\\partial g}{\\partial x_0} = 2x_0, \\frac{\\partial f}{\\partial h} = g = {x_0}^2, \\frac{\\partial h}{\\partial x_0} = 0$\n  - Combination: $\\frac{\\partial f}{\\partial x_0} = \\frac{\\partial f}{\\partial g} \\frac{\\partial g}{\\partial x_0} + \\frac{\\partial f}{\\partial h} \\frac{\\partial h}{\\partial x_0} = x_1 \\times 2x_0 + {x_0}^2 \\times 0 = 2 x_0 x_1$",
+      "source_content_hash": "3b292862d54d98e9e837425af0aac498a396788fa6d8867f8e0f5ed33e1f1611",
+      "node_type": "list",
+      "translatable": true,
+      "translations": {
+        "ja": "- 例: $f(x_0, x_1) = {x_0} ^ 2 x_1$\n  - 分解: $f = g h, g(x_0, x_1) = {x_0} ^ 2, h(x_0, x_1) = x_1$\n  - 微分: $\\frac{\\partial f}{\\partial g} = h = x_1, \\frac{\\partial g}{\\partial x_0} = 2x_0, \\frac{\\partial f}{\\partial h} = g = {x_0}^2, \\frac{\\partial h}{\\partial x_0} = 0$\n  - 結合: $\\frac{\\partial f}{\\partial x_0} = \\frac{\\partial f}{\\partial g} \\frac{\\partial g}{\\partial x_0} + \\frac{\\partial f}{\\partial h} \\frac{\\partial h}{\\partial x_0} = x_1 \\times 2x_0 + {x_0}^2 \\times 0 = 2 x_0 x_1$"
+      }
+    },
+    {
+      "segment_id": "ba12acea",
+      "source_content": "Here we demonstrate an implementation in MoonBit. The backward differentiation node consists of the value of the current node and a function named `backward`. The `backward` function uses the accumulated derivatives from the result to the current node (the parameters) to update the derivatives of all parameters that construct the current node. For example, below, we define a node that represents the input. We use a `Ref` to accumulate the derivatives calculated along all paths. When the backward computation process reaches the end, we add the partial derivative of the function with respect to the current variable to the accumulator. This partial derivative is just the partial derivative of one path in the computation graph. As for constants, they have no input parameters, so the `backward` function does nothing.",
+      "source_content_hash": "6e2746de8be28b113b9b31f5bce544860172611eec4a93a8619ecbe3f89bba5b",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "ここでは、MoonBitでの実装例を示します。逆方向微分ノードは、現在のノードの値と `backward` という名前の関数で構成されます。`backward` 関数は、結果から現在のノードまでの累積微分（パラメータ）を使用して、現在のノードを構築するすべてのパラメータの微分を更新します。例えば、以下では入力を表すノードを定義します。すべての経路で計算された微分を累積するために `Ref` を使用します。逆方向計算プロセスが終端に達すると、関数の現在の変数に関する偏微分をアキュムレータに加算します。この偏微分は、計算グラフ内の1つの経路の偏微分にすぎません。定数の場合、入力パラメータがないため、`backward` 関数は何も行いません。"
+      }
+    },
+    {
+      "segment_id": "9d31dc8f",
+      "source_content": "```moonbit\nstruct Backward {\n  value : Double              // Current node value\n  backward : (Double) -> Unit // Update the partial derivative of the current path\n} derive(Show)\n\nfn Backward::var(value : Double, diff : Ref[Double]) -> Backward {\n  // Update the partial derivative along a computation path df / dvi * dvi / dx\n  { value, backward: fn { d => diff.val = diff.val + d } }\n}\n\nfn Backward::constant(d : Double) -> Backward {\n  { value: d, backward: fn { _ => () } }\n}\n\nfn Backward::backward(b : Backward, d : Double) -> Unit { (b.backward)(d) }\n\nfn Backward::value(backward : Backward) -> Double { backward.value }\n```",
+      "source_content_hash": "a71fc57e46971b3dca18f5b4983ce44d1c339890ee7216cfc80cb1b3f56a30c4",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_9d31dc8f"
+      }
+    },
+    {
+      "segment_id": "9c70c953",
+      "source_content": "Next, let's look at addition and multiplication. Suppose the functions $g$ and $h$ are involved in computation, the current function is $f$, and the final result is $y$, with $x$ as a parameter. We've previously mentioned the partial derivatives of $f$ with respect to $g$ and $h$ and will omit them here. For the accumulated partial derivative of $y$ with respect to $x$, the partial derivative through the path of $f$ and $g$ is the partial derivative of $y$ with respect to $f$ times the partial derivative of $f$ with respect to $g$ times the partial derivative of $g$ with respect to $x$. Here, the partial derivative of $y$ with respect to $f$ corresponds to the parameter $\\textit{diff}$ in the `backward` function. So we can see in line 4 that the parameter we pass to $g$ is $\\textit{diff} \\times 1.0$, which corresponds to the partial derivative of $y$ with respect to $f$ times the partial derivative of $f$ with respect to $g$. We'll pass a similar parameter to $h$. In line 11, according to the derivative rules, the parameter passed to $g$ is $\\textit{diff}$ times the current value of $h$, and the parameter passed to $h$ is $\\textit{diff}$ times the current value of $g$.",
+      "source_content_hash": "de072d57c09ea40af34677fb8871c84c82221456db3e0b289efe56e9bd645f7a",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "次に、加算と乗算について見ていきましょう。関数$g$と$h$が計算に関与し、現在の関数が$f$、最終結果が$y$で、$x$がパラメータであると仮定します。これまでに$f$の$g$と$h$に関する偏微分について説明しましたが、ここでは省略します。$y$の$x$に関する累積偏微分について、$f$と$g$の経路を通る偏微分は、$y$の$f$に関する偏微分×$f$の$g$に関する偏微分×$g$の$x$に関する偏微分となります。ここで、$y$の$f$に関する偏微分は、`backward`関数のパラメータ$\\textit{diff}$に対応します。したがって、4行目で$g$に渡すパラメータが$\\textit{diff} \\times 1.0$であることがわかります。これは$y$の$f$に関する偏微分×$f$の$g$に関する偏微分に対応します。同様のパラメータを$h$にも渡します。11行目では、微分規則に従い、$g$に渡すパラメータは$\\textit{diff}$×$h$の現在値、$h$に渡すパラメータは$\\textit{diff}$×$g$の現在値となります。"
+      }
+    },
+    {
+      "segment_id": "d5f63a23",
+      "source_content": "```moonbit\nfn Backward::op_add(g : Backward, h : Backward) -> Backward {\n  {\n    value: g.value + h.value,\n    backward: fn(diff) { g.backward(diff * 1.0); h.backward(diff * 1.0) },\n  }\n}\n\nfn Backward::op_mul(g : Backward, h : Backward) -> Backward {\n  {\n    value: g.value * h.value,\n    backward: fn(diff) { g.backward(diff * h.value); h.backward(diff * g.value) },\n  }\n}\n```",
+      "source_content_hash": "383614fd2810fa00e908332b9b46b2556e81496223268f875cbfca904cc98ff1",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_d5f63a23"
+      }
+    },
+    {
+      "segment_id": "2f8456b2",
+      "source_content": "Lastly, we'll see how to use it. Let's construct two `Ref`s to store the derivatives of $x$ and $y$. We'll use two accumulators to create two input nodes with input values of 10 and 100 respectively. After that, we use the previous example to conduct calculations, and after the forward computation is completed, we call the backward function. The parameter `1.0` corresponds to the derivative of $f$ with respect to $f$. At this point, the values in both `Ref`s are updated, and we can obtain the derivatives of all input parameters simultaneously.",
+      "source_content_hash": "0cded7dc55d14c451801edfa656af51ad3ed5aa3699c90a5efa0d1ed3294aac1",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "最後に、その使用方法を見ていきます。$x$と$y$の微分を保存するための2つの`Ref`を構築します。入力値がそれぞれ10と100である2つの入力ノードを作成するために、2つのアキュムレータを使用します。その後、前の例を使用して計算を行い、順方向計算が完了した後、backward関数を呼び出します。パラメータ`1.0`は、$f$の$f$に関する微分に対応します。この時点で、両方の`Ref`の値が更新され、すべての入力パラメータの微分を同時に取得できます。"
+      }
+    },
+    {
+      "segment_id": "37cbaa50",
+      "source_content": "```moonbit\ntest \"Backward differentiation\" {\n  let diff_x = Ref::{ val: 0.0 } // Store the derivative of x\n  let diff_y = Ref::{ val: 0.0 } // Store the derivative of y\n  let x = Backward::var(10.0, diff_x)\n  let y = Backward::var(100.0, diff_y)\n  (x * y).backward(1.0) // df / df = 1\n  inspect!(diff_x, content=\"{val: 100.0}\")\n  inspect!(diff_y, content=\"{val: 10.0}\")\n}\n```",
+      "source_content_hash": "d083f9100cfb92f73d72132698f2a7d8eb145c6e48a690a77139c17f7fbd108f",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_37cbaa50"
+      }
+    },
+    {
+      "segment_id": "4e994fc3",
+      "source_content": "Now with backward differentiation, we can try to write a neural network. In this lecture, we'll only demonstrate automatic differentiation and Newton's method to approximate zeros. Let's use the interface to define the functions we saw at the beginning.",
+      "source_content_hash": "5ee52644a5208990f81608b059c98e7fa2cec7d321f9936b303425e611f494b6",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "これで、逆方向微分を使用してニューラルネットワークを記述することができます。この講義では、自動微分とニュートン法を使用して零点を近似する方法のみをデモンストレーションします。最初に見た関数をインターフェースを使用して定義しましょう。"
+      }
+    },
+    {
+      "segment_id": "60e22db4",
+      "source_content": "Then, we'll use Newton's method to find the value. Since there is only one parameter, we'll use forward differentiation.",
+      "source_content_hash": "814f0993c8d0dea1ade42d908f6ea232f2b1588cbe90dd88f01d2d7155428d13",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "次に、ニュートン法を使用して値を求めます。パラメータが1つしかないため、順方向微分を使用します。"
+      }
+    },
+    {
+      "segment_id": "af22f0d4",
+      "source_content": "- $f = x^3 - 10 x^2 + x + 1$\n\n  ```moonbit\n  fn example_newton[N : Number](x : N) -> N {\n    x * x * x + N::constant(-10.0) * x * x + x + N::constant(1.0)\n  }\n  ```",
+      "source_content_hash": "3d551814bf1a94c5f08be6a6fa232f31fe91c2d6dc20f3063ab03cc02d84add7",
+      "node_type": "list",
+      "translatable": true,
+      "translations": {
+        "ja": "- $f = x^3 - 10 x^2 + x + 1$\n\n  ```moonbit\n  fn example_newton[N : Number](x : N) -> N {\n    x * x * x + N::constant(-10.0) * x * x + x + N::constant(1.0)\n  }\n  ```"
+      }
+    },
+    {
+      "segment_id": "5e0ab881",
+      "source_content": "To approximate zeros with Newton's method:",
+      "source_content_hash": "98b4f90bc666d49fdb105ca3179e943ae4bd236dcda3d22a42144f9417807946",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "ニュートン法で零点を近似するには:"
+      }
+    },
+    {
+      "segment_id": "6f94024b",
+      "source_content": "- First, define $x$ as the iteration variable with an initial value of 1.0. Since $x$ is the variable with respect to which we are differentiating, we'll set the second parameter to be true.\n- Second, define an infinite loop.\n- Third, in line 5, compute the value and derivative of the function corresponding to $x$.\n- Fourth, in line 6, if the value divided by the derivative (i.e., the step size we want to approximate) is small enough, it indicates that we are very close to zero, and we terminate the loop.\n- Last, in line 7, if the condition is not met, update the value of $x$ to be the previous value minus the value divided by the derivative and then continue the loop.",
+      "source_content_hash": "e0083189b151606832822e84dad7d3f32e4007c455f39465a4da5457a882e1b4",
+      "node_type": "list",
+      "translatable": true,
+      "translations": {
+        "ja": "- まず、反復変数$x$を初期値1.0で定義します。$x$は微分対象の変数であるため、2番目のパラメータをtrueに設定します。\n- 次に、無限ループを定義します。\n- 3番目に、5行目で$x$に対応する関数の値と微分を計算します。\n- 4番目に、6行目で、値÷微分（つまり近似したいステップサイズ）が十分に小さい場合、零点に非常に近いことを示し、ループを終了します。\n- 最後に、7行目で条件が満たされない場合、$x$の値を前の値から値÷微分を引いた値に更新し、ループを続けます。"
+      }
+    },
+    {
+      "segment_id": "45d5dee4",
+      "source_content": "In this way, we iterate through the loop to eventually get an approximate solution.",
+      "source_content_hash": "645f0af9c28dff90847ec88cb81cdafed0af9e8587ead25250b0c26b03cfabdd",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "このようにして、ループを反復することで最終的に近似解を得ます。"
+      }
+    },
+    {
+      "segment_id": "163514c3",
+      "source_content": "- $x_{n+1} = x_n - \\frac{f(x_n)}{f'(x_n)}$",
+      "source_content_hash": "0957f6a649e2e1c25d378777f680bd63a55ec7d49bc3edd207db4fc5f1d62f94",
+      "node_type": "list",
+      "translatable": true,
+      "translations": {
+        "ja": "- $x_{n+1} = x_n - \\frac{f(x_n)}{f'(x_n)}$"
+      }
+    },
+    {
+      "segment_id": "f24a5721",
+      "source_content": "```moonbit\ntest \"Newton's method\" {\n  (loop Forward::var(1.0, true) { // initial value\n    x => {\n      let { value, derivative } = example_newton(x)\n      if (value / derivative).abs() < 1.0e-9 {\n        break x.value // end the loop and have x.value as the value of the loop body\n      }\n      continue Forward::var(x.value - value / derivative, true)\n    }\n  } |> assert_eq!(0.37851665401644224))\n}\n```",
+      "source_content_hash": "5188550487fc9d651ab8b2c1b7341248eb1260ef328a2a18e12fd0b334f8f0c2",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_f24a5721"
+      }
+    },
+    {
+      "segment_id": "c48a3f55",
+      "source_content": "## Summary",
+      "source_content_hash": "30ac03ff33731529441be8fbe52a3bd0d4c5ec830e806d54692168ebb7f98ada",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "## まとめ"
+      }
+    },
+    {
+      "segment_id": "d6c9e4cd",
+      "source_content": "To summarize, in this lecture we introduced the concept of automatic differentiation. We presented symbolic differentiation and two different implementations of automatic differentiation. For students interested in learning more, we recommend the *3Blue1Brown* series on deep learning (including topics like [gradient descent](https://www.youtube.com/watch?v=IHZwWFHWa-w), [backpropagation algorithms](https://www.youtube.com/watch?v=Ilg3gGewQ5U)), and try to write your own neural network.",
+      "source_content_hash": "4574a1f20260ef30d450fedcf7f48bee49a40250534dcc9249e6432a29722b4f",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "まとめとして、この講義では自動微分の概念を紹介しました。記号微分と2種類の自動微分の実装について説明しました。さらに学びたい学生向けには、*3Blue1Brown*の深層学習シリーズ（[勾配降下法](https://www.youtube.com/watch?v=IHZwWFHWa-w)、[誤差逆伝播法](https://www.youtube.com/watch?v=Ilg3gGewQ5U)などのトピックを含む）を視聴し、独自のニューラルネットワークを実装してみることをお勧めします。"
+      }
+    }
+  ],
+  "target_i18n_subpath": "docusaurus-plugin-content-docs/current/12-autodiff.md",
+  "last_updated_timestamp": "2025-06-06T05:19:35.743025+00:00",
+  "schema_version": "1.0",
+  "translated_versions": {
+    "ja": "b0c36a4f7828762ac304645b52cb79dd6203b3964c1b6a274f218baa1a34c8ce"
+  }
+}

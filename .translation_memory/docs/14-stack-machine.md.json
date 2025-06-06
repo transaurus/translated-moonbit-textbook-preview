@@ -1,0 +1,832 @@
+{
+  "source_file_path_relative_to_docusaurus_root": "docs/14-stack-machine.md",
+  "source_file_content_hash": "53fa5ba4cb0c43d6b74328154f6818982b709416cc8ad2bb9a8f96b6f1f10e7d",
+  "segments": [
+    {
+      "segment_id": "76e4a56a",
+      "source_content": "# 14. Case Study: Stack Machine",
+      "source_content_hash": "e200dbca9e35f6c0609e7b87f01408c51e1283b06a8d2c0aa7970e282c44548a",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "# 14. ケーススタディ: スタックマシン"
+      }
+    },
+    {
+      "segment_id": "faebdc62",
+      "source_content": "In this chapter, we are going to implement a simple stack-based virtual machine based on WebAssembly.",
+      "source_content_hash": "3c6d8e622854a07729a3ed1a1ea247871231774efbb664b471dc0a17ef4ac47d",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "この章では、WebAssemblyをベースにしたシンプルなスタックベースの仮想マシンを実装します。"
+      }
+    },
+    {
+      "segment_id": "f85bbfb4",
+      "source_content": "## Compilation vs Interpretation",
+      "source_content_hash": "9c080f65418ca5d36eede85f57ad2a8fa4e6eec0303fbf0970e4c2852bba3c71",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "## コンパイル vs インタプリテーション"
+      }
+    },
+    {
+      "segment_id": "6ef78e84",
+      "source_content": "Before explaining the idea of a virtual machine, let's explain two concepts: compilation and interpretation. As we all know, the code we write everyday are in text format, while what computers can really execute are binary instructions. There is a compilation process in between. Compilation is the use of a compiler to convert the source code into the target programs, so that we can execute the program with various inputs to obtain the output we expect. Many languages, such as C, are compiled languages. However, for some languages, we don't compile and execute the code directly, but instead input the source code to an interpreter, and let it read the code while simultaneously performing the actions accordingly. Such languages, e.g., JavaScript and Python, are called interpreted languages. Broadly speaking, the CPU is also a kind of interpreter.",
+      "source_content_hash": "2bc973a958622c6e3bc7e291d1511b48fd337009cb53ca2d1a67c021ccb109ec",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "仮想マシンの概念を説明する前に、まずコンパイルとインタプリテーションという2つの概念を説明します。ご存知の通り、私たちが日常的に書くコードはテキスト形式ですが、コンピュータが実際に実行できるのはバイナリ命令です。この間にはコンパイルプロセスが存在します。コンパイルとは、コンパイラを使用してソースコードをターゲットプログラムに変換するプロセスであり、様々な入力を与えてプログラムを実行し、期待する出力を得ることができます。C言語など多くの言語はコンパイル型言語です。一方、JavaScriptやPythonなどの言語では、ソースコードを直接コンパイルして実行するのではなく、インタプリタに入力し、コードを読みながら同時にそれに応じた動作を実行させます。このような言語はインタプリタ型言語と呼ばれます。広義には、CPUも一種のインタプリタと言えます。"
+      }
+    },
+    {
+      "segment_id": "53eaf0e1",
+      "source_content": "Let's extend the topic a bit for interested students. In fact, the interpreter and the compiler are not completely separate concepts. We can transform the interpreter into a compiler through a two-way mapping. The concept used here is partial computation, which is a program optimization technique, that is, to specialize the computation based on known information. For an extreme example, if your interpreter is a calculator and your program is an arithmetic expression, then you can use these two pieces of information to directly calculate the value corresponding to the program, thus obtaining a target program. This target program is equivalent to the compiled program, and you only need to input data to get the output program.",
+      "source_content_hash": "6b7b85b877b7563aeef1dd0ba18e93e809d71af7cdd4289ba3de1cf032ee7a56",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "興味のある学生向けに、話題を少し広げましょう。実は、インタプリタとコンパイラは完全に分離した概念ではありません。双方向のマッピングを通じて、インタプリタをコンパイラに変換することができます。ここで使用される概念は部分計算であり、既知の情報に基づいて計算を特殊化するプログラム最適化技術です。極端な例を挙げると、インタプリタが電卓で、プログラムが算術式である場合、これら2つの情報を使用してプログラムに対応する値を直接計算し、ターゲットプログラムを得ることができます。このターゲットプログラムはコンパイルされたプログラムと等価であり、データを入力するだけで出力プログラムを得ることができます。"
+      }
+    },
+    {
+      "segment_id": "8a5f6a7b",
+      "source_content": "## Virtual Machines",
+      "source_content_hash": "691414e14de27c1a2704c3fb2cd5885fa3b7bf9c9db9cc0d7fc8584093f6411d",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "## 仮想マシン"
+      }
+    },
+    {
+      "segment_id": "180bddb1",
+      "source_content": "In addition to compilation and interpretation, another way is to combine the two. A typical example is Java. The Java Virtual Machine (JVM) was created to achieve the purpose of \"writing once and running everywhere\". It has a platform-independent instruction set and different interpreters for different platforms. To execute a Java program, the first step is to compile from the source code to the instruction set, and then use the interpreter to interpret the instructions.",
+      "source_content_hash": "8ef33cb5773f5da3d1b7717313188410afe69da6e3fdf5fce26043713f3699a4",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "コンパイルとインタプリテーションに加えて、もう1つの方法はこれら2つを組み合わせることです。典型的な例はJavaです。Java仮想マシン（JVM）は「一度書けばどこでも実行できる」という目的を達成するために作成されました。プラットフォームに依存しない命令セットと、異なるプラットフォーム用の異なるインタプリタを持っています。Javaプログラムを実行するには、まずソースコードから命令セットにコンパイルし、その後インタプリタを使用して命令を解釈します。"
+      }
+    },
+    {
+      "segment_id": "cf898102",
+      "source_content": "There are two common types of virtual machines: one is the stack-based virtual machine, where operands are stored on a stack following the Last-In First-Out (LIFO) principle; the other is the register-based virtual machine, where operands are stored in registers like what actually happens in a normal computer. The stack-based virtual machine is simpler to implement and has a smaller code size, while the register-based virtual machine is closer to the actual computer organization and has higher performance.",
+      "source_content_hash": "5fb487043a0919abc43ee79acfeb231ae450c1d7e5fcad09d5c6a541757c7699",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "仮想マシンには主に2つのタイプがあります。1つはスタックベースの仮想マシンで、オペランドが後入れ先出し（LIFO）の原則に従ってスタックに格納されます。もう1つはレジスタベースの仮想マシンで、オペランドが通常のコンピュータと同様にレジスタに格納されます。スタックベースの仮想マシンは実装が簡単でコードサイズが小さい一方、レジスタベースの仮想マシンは実際のコンピュータの構成に近く、パフォーマンスが高いです。"
+      }
+    },
+    {
+      "segment_id": "42ad8e83",
+      "source_content": "Taking the `max` function as an example,",
+      "source_content_hash": "7b92345f86dbdc1598de672dea35d0be392a8b45fafd0d223f1356dbc91ce3aa",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "`max`関数を例にとると、"
+      }
+    },
+    {
+      "segment_id": "034de896",
+      "source_content": "- Lua VM (register-based):\n\n  ```text\n  MOVE   2 0 0 ; R(2) = R(0)\n  LT     0 0 1 ; R(0) < R(1)?\n  JMP    1     ; JUMP -> 5 (4 + 1)\n  MOVE   2 1 0 ; R(2) = R(1)\n  RETURN 2 2 0 ; return R(2)\n  RETURN 0 1 0 ; return\n  ```\n\n- WebAssembly VM (stack-based):\n\n  ```wasm\n  local.get $a local.set $m                     ;; let mut m = a\n  local.get $a local.get $b i32.lt_s            ;; if a < b {\n  if local.get $b local.set $m end              ;; m = b }\n  local.get $m                                  ;; m\n  ```",
+      "source_content_hash": "7a18bda5d01e78e872a023df5d72924d14116066e73d22118e010d5d0a0bbca2",
+      "node_type": "list",
+      "translatable": true,
+      "translations": {
+        "ja": "- Lua VM（レジスタベース）:\n\n  ```text\n  MOVE   2 0 0 ; R(2) = R(0)\n  LT     0 0 1 ; R(0) < R(1)?\n  JMP    1     ; JUMP -> 5 (4 + 1)\n  MOVE   2 1 0 ; R(2) = R(1)\n  RETURN 2 2 0 ; return R(2)\n  RETURN 0 1 0 ; return\n  ```\n\n- WebAssembly VM（スタックベース）:\n\n  ```wasm\n  local.get $a local.set $m                     ;; let mut m = a\n  local.get $a local.get $b i32.lt_s            ;; if a < b {\n  if local.get $b local.set $m end              ;; m = b }\n  local.get $m                                  ;; m\n  ```"
+      }
+    },
+    {
+      "segment_id": "62a6890b",
+      "source_content": "## WebAssembly",
+      "source_content_hash": "24c3dfe433fa60e0984c8881f88957d62189e19ebd43e0ccf8c876965e4412d8",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "## WebAssembly"
+      }
+    },
+    {
+      "segment_id": "3cfe6286",
+      "source_content": "Now, let's give a brief introduction to WebAssembly. As its name suggests, it is a virtual instruction set, which was initially used on the web, but since it is an instruction set, it can also be used on other platforms as long as a virtual machine is implemented, so there are also runtimes like [Wasmtime](https://github.com/bytecodealliance/wasmtime), [WAMR](https://github.com/bytecodealliance/wasm-micro-runtime), [WasmEdge](https://wasmedge.org/), etc. It is also the first backend of MoonBit. One of its major features is that its instruction set also has a type system which guarantees security.",
+      "source_content_hash": "30499877c6e9fd8d3b4ddc147b36917a0605a169b23ee7878f74b0ff1c759f01",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "ここで、WebAssemblyについて簡単に紹介します。その名が示す通り、これは仮想命令セットであり、当初はウェブ上で使用されていました。しかし、命令セットであるため、仮想マシンが実装されていれば他のプラットフォームでも使用できます。そのため、[Wasmtime](https://github.com/bytecodealliance/wasmtime)、[WAMR](https://github.com/bytecodealliance/wasm-micro-runtime)、[WasmEdge](https://wasmedge.org/)などのランタイムも存在します。また、これはMoonBitの最初のバックエンドでもあります。その主な特徴の1つは、命令セットにも型システムがあり、安全性が保証されていることです。"
+      }
+    },
+    {
+      "segment_id": "1042b50d",
+      "source_content": "Here, we will only consider a subset of WebAssembly where the only data type is 32-bit signed integers, and we will use non-zero integers to represent `true` and zero to represent `false` in conditional statements. Also, we will only consider very limited subset of instructions as follows:",
+      "source_content_hash": "de21605bfeb039819e4af89e02cd06e7ee406e515d11484667321d4d6e93e6da",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "ここでは、WebAssemblyのサブセットのみを考慮します。データ型は32ビット符号付き整数のみとし、条件文では非ゼロ整数を`true`、ゼロを`false`として表現します。また、以下の非常に限られた命令セットのみを扱います："
+      }
+    },
+    {
+      "segment_id": "4c077b92",
+      "source_content": "- Create a static constant: `const`\n- Arithmetic operations: `add`, `minus`, `equal`, `modulo`\n- Function call: `call`\n- Get/set the values of local variables: `local.get`, `local.set`\n- Conditional statement: `if/else`",
+      "source_content_hash": "c090cbf043da5716c6cc97fe94c2a7fa303d911b588cdc867717d2a06dbf8416",
+      "node_type": "list",
+      "translatable": true,
+      "translations": {
+        "ja": "- 静的定数の作成: `const`\n- 算術演算: `add`, `minus`, `equal`, `modulo`\n- 関数呼び出し: `call`\n- ローカル変数の値の取得/設定: `local.get`, `local.set`\n- 条件文: `if/else`"
+      }
+    },
+    {
+      "segment_id": "c504c207",
+      "source_content": "They can be represented with MoonBit as follows:",
+      "source_content_hash": "eb66b09eecccf0b3ab7608d485887f6031e31e52762cdf8aeaeb3af714a995d1",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "これらはMoonBitで以下のように表現できます："
+      }
+    },
+    {
+      "segment_id": "ac961110",
+      "source_content": "```moonbit\nenum Value { I32(Int) }\n\nenum Instruction {\n  Const(Value)                         // Create a static constant\n  Add; Sub; Modulo; Equal              // Arithmetic operations\n  Call(String)                         // Function call\n  Local_Get(String); Local_Set(String) // Get/set the values of local variables\n  If(Int, @immut/list.T[Instruction], @immut/list.T[Instruction]) // Conditional statement\n}\n```",
+      "source_content_hash": "78193c6b6b04ab51220ea6d90bd55c393a0c5084dd233663f5f730ef02d6bf7e",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_ac961110"
+      }
+    },
+    {
+      "segment_id": "5dae11e3",
+      "source_content": "The above definition is basically a one-to-one copy from WebAssembly. It is worth noting that `If` takes an integer and two instruction lists as its parameters. The integer represents the number of results to be put on the stack after the `if/else` block ends, and the two instruction lists correspond to the cases when the condition is `true` and `false`, respectively.",
+      "source_content_hash": "838a46f40457ccc73dbf622b174fa96f013194bdeebce00929d6aa416e0912db",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "上記の定義は基本的にWebAssemblyから一対一でコピーしたものです。注目すべきは、`If`が整数と2つの命令リストをパラメータとして取ることです。整数は`if/else`ブロック終了後にスタックに置かれる結果の数を表し、2つの命令リストはそれぞれ条件が`true`と`false`の場合に対応します。"
+      }
+    },
+    {
+      "segment_id": "0bb95128",
+      "source_content": "Similarly, we can also easily define the structures of functions and programs:",
+      "source_content_hash": "eaae4dd6ed697474b7d9fa4bc80c72c0bce5167a7ff6d18ae3ed39d41b3312e6",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "同様に、関数とプログラムの構造も簡単に定義できます："
+      }
+    },
+    {
+      "segment_id": "29ad5b0e",
+      "source_content": "```moonbit\nstruct Function {\n  name : String\n  params : @immut/list.T[String]; result : Int; locals : @immut/list.T[String]\n  instructions : @immut/list.T[Instruction]\n}\n\nstruct Program {\n  functions : @immut/list.T[Function]\n  start : Option[String]\n}\n```",
+      "source_content_hash": "a2e12da3df2bbf64968956979937de2e1a025b86b1c3cef4e35bd4a649a77394",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_29ad5b0e"
+      }
+    },
+    {
+      "segment_id": "6270d577",
+      "source_content": "A function has a name, a list of parameters, a result, a list of local variables, and a list of instructions representing the function body. A program includes multiple function definitions and an optional function as the entry point.",
+      "source_content_hash": "3d447213368bc5cda8dba29f50cb10cd07ea52b188bf38ec74f1700789551066",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "関数には名前、パラメータリスト、結果、ローカル変数リスト、および関数本体を表す命令リストがあります。プログラムには複数の関数定義と、エントリポイントとしてのオプションの関数が含まれます。"
+      }
+    },
+    {
+      "segment_id": "a4bf4268",
+      "source_content": "### Examples",
+      "source_content_hash": "867cdb3f99fdd95a8de7b853c784c665d03b3d7a5595ff26714f56e203fb4a81",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "### 例"
+      }
+    },
+    {
+      "segment_id": "ec619944",
+      "source_content": "Now, let's take a look at some examples.",
+      "source_content_hash": "06fcf875ea89d6b4bda9a7f4f270f00babaef6458e82082f2d491d08ecf101e8",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "それでは、いくつかの例を見てみましょう。"
+      }
+    },
+    {
+      "segment_id": "2e771fd0",
+      "source_content": "#### Basic Arithmetic Calculations",
+      "source_content_hash": "eae56f6b9f24091831b2b210523fa858e44753ee65146916eb04dda39f749432",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "#### 基本的な算術計算"
+      }
+    },
+    {
+      "segment_id": "0750bfa1",
+      "source_content": "Taking `1 + 2` as an example, we have a stack which is initially empty. The first thing we need to do is to push the operands as static constants to the stack using the `Const` instruction. Then, we use the `Add` instruction to add them up. It consumes two operands from the top of the stack and stores their sum back to the top of the stack. Thus, after the operation, the top element of the stack is `3`.",
+      "source_content_hash": "e73d8375ac8776d1f775608b89002c749203a14c10c6f5f1a92969682b9f0103",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "`1 + 2`を例にとると、最初は空のスタックがあります。最初に行うことは、`Const`命令を使用してオペランドを静的定数としてスタックにプッシュすることです。次に、`Add`命令を使用してそれらを加算します。これはスタックのトップから2つのオペランドを消費し、それらの和をスタックのトップに戻します。したがって、操作後、スタックのトップ要素は`3`になります。"
+      }
+    },
+    {
+      "segment_id": "f8065412",
+      "source_content": "```moonbit no-check\n@immut/list.of([ Const(I32(1)), Const(I32(2)), Add ])\n```",
+      "source_content_hash": "4bd1cb18bf5d5acb9a5fc6b0b505544a0c57e5b937a13e168c071642dfa28552",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_f8065412"
+      }
+    },
+    {
+      "segment_id": "a311e967",
+      "source_content": "![](/pics/add.drawio.webp)",
+      "source_content_hash": "0dd3baafada6e7c51bbadc32e186456328a1b4cb110db8a0cc2f80d8c16a973f",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "![](/pics/add.drawio.webp)"
+      }
+    },
+    {
+      "segment_id": "f8edb6d2",
+      "source_content": "#### Functions and Local Variables",
+      "source_content_hash": "689111a4290ac32a28c99c53944d66b70e20fce82ee47975e39e2e78e0b9428a",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "#### 関数とローカル変数"
+      }
+    },
+    {
+      "segment_id": "1862c5fe",
+      "source_content": "In a function, we need to get the values of its arguments. The following example is a function that takes two parameters and returns their sum as the result:",
+      "source_content_hash": "8319925fbb9ccedb858473512bc229c7beb1985451b994c5bd55a2d47d66b0a6",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "関数内では、その引数の値を取得する必要があります。次の例は、2つのパラメータを取り、それらの和を結果として返す関数です："
+      }
+    },
+    {
+      "segment_id": "a476a172",
+      "source_content": "```moonbit no-check\nadd(a : Int, b : Int) { a + b }\n```",
+      "source_content_hash": "10f20fd8eee5e2c5be5616c00c5ae253c571630e446e78cd0216554552e231ad",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_a476a172"
+      }
+    },
+    {
+      "segment_id": "c1eaf30b",
+      "source_content": "We should use the `Local_Get` instruction to get the values of `a` and `b` and push them to the stack. Then we could use the `Add` instruction to perform the calculation just like what we did in our last example.",
+      "source_content_hash": "02273cb050f83496df32e38e227ba4b0b18e8ab768ae2f7aab6f916c1c573df7",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "`a`と`b`の値を取得してスタックにプッシュするには、`Local_Get`命令を使用する必要があります。その後、前の例で行ったように、`Add`命令を使用して計算を実行できます。"
+      }
+    },
+    {
+      "segment_id": "c4c0fc07",
+      "source_content": "```moonbit no-check\n@immut/list.of([ Local_Get(\"a\"), Local_Get(\"b\"), Add ])\n```",
+      "source_content_hash": "958b1bbef78e0fd94fca24fa18f3746d1c7001ec5d796ac0fd5c816eeef37d7c",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_c4c0fc07"
+      }
+    },
+    {
+      "segment_id": "0801d969",
+      "source_content": "![](/pics/local.drawio.webp)",
+      "source_content_hash": "c85ae954dc638248591bb1ae1b20db6d257fa05b4f0234304d7762f80e4a0e20",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "![](/pics/local.drawio.webp)"
+      }
+    },
+    {
+      "segment_id": "3c19e221",
+      "source_content": "To set the value of an local variable, we can use the `Local_Set` instruction.",
+      "source_content_hash": "27e3b48c59f5275d9a17f0c72511198dc3d6083e7838c846572bddff489e397b",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "ローカル変数の値を設定するには、`Local_Set`命令を使用できます。"
+      }
+    },
+    {
+      "segment_id": "7974af84",
+      "source_content": "#### Function Calls",
+      "source_content_hash": "e9801a57d230398ac1c58ca7cb2fb57f2727d09779ce1908454a6efd51db9f9d",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "#### 関数呼び出し"
+      }
+    },
+    {
+      "segment_id": "44aaa880",
+      "source_content": "After the function `add` is defined, we can call it to perform some calculations. Just like what we did in our first example, we first put `1` and `2` on the stack. Then, instead of using the `Add` instruction, we call the `add` function we defined using the `Call` instruction. At this time, according to the number of function parameters, the corresponding number of elements on the top of the stack will be consumed, bound to local variables in order, and an element representing the function call will be pushed to the stack. It separates the original stack elements from the function's own data, and also records the number of its return values. After the function call is finished, according to the number of return values, we take out the elements from the top of the stack, remove the element for the function call, and then put the original top elements back. After that, that we get the calculation result at the place where the function is called.",
+      "source_content_hash": "961bb5676a8a6e848eea6822e892ef458673ae5462c7da768f6106b4865ca2d1",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "関数`add`を定義した後、それを呼び出していくつかの計算を実行できます。最初の例で行ったように、まず`1`と`2`をスタックに置きます。次に、`Add`命令を使用する代わりに、`Call`命令を使用して定義した`add`関数を呼び出します。この時、関数パラメータの数に応じて、スタックのトップから対応する数の要素が消費され、順番にローカル変数にバインドされ、関数呼び出しを表す要素がスタックにプッシュされます。これは元のスタック要素と関数自身のデータを分離し、その戻り値の数も記録します。関数呼び出しが終了すると、戻り値の数に応じて、スタックのトップから要素を取り出し、関数呼び出しの要素を削除し、元のトップ要素を戻します。その後、関数が呼び出された場所で計算結果を取得します。"
+      }
+    },
+    {
+      "segment_id": "353ca453",
+      "source_content": "```moonbit no-check\n@immut/list.Ts::[ Const(I32(1)), Const(I32(2)), Call(\"add\") ]\n```",
+      "source_content_hash": "070b76eab715ee0d5bcb3fde5342a40a7676e0706f2813c0ebc5c4e670fb1a1b",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_353ca453"
+      }
+    },
+    {
+      "segment_id": "f38d1cb0",
+      "source_content": "![](/pics/return.drawio.webp)",
+      "source_content_hash": "ec981eb18de7ffcb23da0de7bee9a58642b4b989277648968e5366fedd92f4aa",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "![](/pics/return.drawio.webp)"
+      }
+    },
+    {
+      "segment_id": "47516512",
+      "source_content": "#### Conditional Statements",
+      "source_content_hash": "7f94ac164915eabab475a7a115fa24801aae05ccbf45193c5580ba96b1e42d4e",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "#### 条件文"
+      }
+    },
+    {
+      "segment_id": "6fc234cf",
+      "source_content": "For conditional statements, as we introduced earlier, we use a 32-bit integer to represent `true` or `false`. When we execute the `If` statement, we take out the top element of the stack. If it is non-zero, the `then` branch will be executed; otherwise, the `else` branch will be executed. It is worth noting that each code block in Wasm has parameter types and return value types, corresponding to the elements to be consumed from the top of the stack when entering the code block, and the elements to be put on the top of the stack when exiting the code block. For example, when we enter the `if/else` block, there is no input, so we assume that the stack is empty when we perform calculations inside the block, no matter what is on the stack originally, it is irrelevant to the current code block. And we declared to return an integer, so when we normally end the execution, there must be one and only one integer in the current calculation environment.",
+      "source_content_hash": "44f74870a59c162a96ad3f1fd3d9e32b825653d7ce062c6fe6d48e6e981130ab",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "条件文については、先に紹介した通り、32ビット整数を用いて`true`または`false`を表現します。`If`文を実行する際には、スタックの最上位の要素を取り出します。それが非ゼロの場合、`then`ブランチが実行され、ゼロの場合には`else`ブランチが実行されます。注目すべき点は、Wasmにおける各コードブロックにはパラメータ型と戻り値型があり、コードブロックに入る際にスタックの最上位から消費される要素と、コードブロックを抜ける際にスタックの最上位に置かれる要素に対応していることです。例えば、`if/else`ブロックに入る際には入力がないため、ブロック内の計算を行う際にはスタックが空であると仮定します。元々スタック上に何があったとしても、現在のコードブロックとは無関係です。また、整数を1つ返すと宣言しているため、正常に実行を終了する際には、現在の計算環境に整数が1つだけ存在している必要があります。"
+      }
+    },
+    {
+      "segment_id": "a3a1b8eb",
+      "source_content": "```moonbit no-check\n@immut/list.of([\n Const(I32(1)), Const(I32(0)), Equal,\n If(1, @immut/list.of([Const(I32(1))]), @immut/list.of([Const(I32(0))]))\n])\n```",
+      "source_content_hash": "cfd177dd00719d826f8f3573b54b0123ebe33fc163acb706c419703e8732660e",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_a3a1b8eb"
+      }
+    },
+    {
+      "segment_id": "1ecf0882",
+      "source_content": "![](/pics/if.drawio.webp)",
+      "source_content_hash": "4973c1f96bf6cb7a8ed75a1b5e07f5ceecb3ec40fd0105cdd1d3795a61b0bad1",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "![](/pics/if.drawio.webp)"
+      }
+    },
+    {
+      "segment_id": "c6868a9f",
+      "source_content": "#### A Complete A + B Program",
+      "source_content_hash": "5cdcfbf7edbc7e746a89ed0c7823406be4656d4a2a3f10c28cefefc2ba81ccdd",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "#### 完全なA + Bプログラム"
+      }
+    },
+    {
+      "segment_id": "bb1346b6",
+      "source_content": "We use the knowledge we just introduced to implement a program that calculates the sum of two integers. The definition of the `add` function has been shown before. Now, we also add a `test_add` function as the main entry of the program, in which the only thing to pay attention to is that after calling the `add` function, we call the `print_int` function. It is a special function and we did not mention how to define input and output in Wasm, because these functions need to be implemented by external functions, and Wasm itself can be considered as a program running in a sandbox.",
+      "source_content_hash": "7265754fb278870b1971215951bdc6967ba769c7e8017f854caa97f572539efd",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "ここまでに紹介した知識を使って、2つの整数の和を計算するプログラムを実装します。`add`関数の定義は既に示しました。ここではさらに、プログラムのメインエントリとして`test_add`関数を追加します。この関数で唯一注意すべき点は、`add`関数を呼び出した後に`print_int`関数を呼び出すことです。これは特別な関数であり、Wasmで入出力をどのように定義するかについては言及しませんでした。これらの関数は外部関数によって実装される必要があり、Wasm自体はサンドボックス内で動作するプログラムと考えることができます。"
+      }
+    },
+    {
+      "segment_id": "8a061704",
+      "source_content": "```moonbit expr\nlet program = Program::{\n\n  start: Some(\"test_add\"), // Program entry point\n\n  functions: @immut/list.of([\n    Function::{\n      name: \"add\", // Addition function\n      params: @immut/list.of([\"a\", \"b\"]), result: 1, locals: @immut/list.of([]),\n      instructions: @immut/list.of([Local_Get(\"a\"), Local_Get(\"b\"), Add]),\n    },\n    Function::{\n      name: \"test_add\", // calculate add and output\n      params: @immut/list.of([]), result: 0, locals: @immut/list.of([]), // no input or output\n      // \"print_int\" is a special function\n      instructions: @immut/list.of([Const(I32(0)), Const(I32(1)), Call(\"add\"), Call(\"print_int\")]),\n    },\n  ]),\n}\n```",
+      "source_content_hash": "a744d487153d849b568179eeea119613775e5784f5260b0ea1f10ffa029b407f",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_8a061704"
+      }
+    },
+    {
+      "segment_id": "d4eab4a6",
+      "source_content": "## Implementing a Compiler",
+      "source_content_hash": "cd81b31582d2397d107b13f9d070d90debd13066de43128b65ef83ed00e15d09",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "## コンパイラの実装"
+      }
+    },
+    {
+      "segment_id": "0ddaa835",
+      "source_content": "The following is the target program in WebAssembly we want to obtain.",
+      "source_content_hash": "efc644f54751f9a752b08daf8d23d7fb909813758b6223823ed955e8aa6d0895",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "以下は、私たちが得たいWebAssemblyのターゲットプログラムです。"
+      }
+    },
+    {
+      "segment_id": "b5ea89c4",
+      "source_content": "```wasm\n;; Multiple functions\n;; Wasm itself only defines operations; interaction depends on external functions\n(func $print_int (import \"spectest\" \"print_int\") (param i32))\n\n(func $add (export \"add\") ;; Export function to be directly used by runtime\n  (param $a i32) (param $b i32) (result i32 ) ;; (a : Int, b : Int) -> Int\n  local.get $a local.get $b i32.add ;;\n)\n\n(func $test_add (export \"test_add\") (result ) ;; Entry function with no input or output\n  i32.const 0 i32.const 1 call $add call $print_int\n)\n\n(start $test_add)\n```",
+      "source_content_hash": "b6447e8494aaa5804177cbe71874e383258bc6660c817775ab22e988d80e9dcd",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_b5ea89c4"
+      }
+    },
+    {
+      "segment_id": "e5821418",
+      "source_content": "You can compare it with the program written in MoonBit before, and you will find that the correspondence is almost one-to-one.",
+      "source_content_hash": "1b3ca413505533358c16f5d98765f317bde8eb99704c1c64d7780b3a9872cf4b",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "これを以前MoonBitで書いたプログラムと比較すると、対応がほぼ1対1であることがわかります。"
+      }
+    },
+    {
+      "segment_id": "4e2e17c5",
+      "source_content": "The next thing we need to do is to write a compiler, which should be simple because the instructions we defined with MoonBit is almost a one-to-one copy of WebAssembly instructions.",
+      "source_content_hash": "ad6fcf2f9334e1de9806164f34b3a31578d848bef1a3dbe42850e44c16f82be7",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "次に必要なのはコンパイラを書くことですが、これは簡単なはずです。なぜなら、MoonBitで定義した命令はWebAssemblyの命令とほぼ1対1で対応しているからです。"
+      }
+    },
+    {
+      "segment_id": "24128ec4",
+      "source_content": "| Instruction                                 | WebAssembly Instruction                            |\n| ------------------------------------------- | -------------------------------------------------- |\n| `Const(I32(0))`                             | `i32.const 0`                                      |\n| `Add`                                       | `i32.add`                                          |\n| `Local_Get(\"a\")`                            | `local.get $a`                                     |\n| `Local_Set(\"a\")`                            | `local.set $a`                                     |\n| `Call(\"add\")`                               | `call $add`                                        |\n| `If(1, @immut/list.of([Const(I32(0))]), @immut/list.of([Const(I32(1))]))` | `if (result i32) i32.const 0 else i32.const 1 end` |",
+      "source_content_hash": "df42432622ff5af146c2e5e1c2d15f872bc57920061326b181b3ab64011db007",
+      "node_type": "table",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_24128ec4"
+      }
+    },
+    {
+      "segment_id": "3799844b",
+      "source_content": "What we need to do is simply string conversion. However, it should be noted that when implementing the compiler, we should not directly use string concatenation, but make use of the built-in `Buffer` data structure. When adding new content to it, we do not need to allocate new memory every time. Thus, compared with naive string concatenation, the memory allocation operation can be reduced.",
+      "source_content_hash": "87f2f39127148cb6aa540d732c1fafeb480a1a326888e906cc9d1b372d092171",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "必要なのは単なる文字列変換です。ただし、コンパイラを実装する際には、文字列連結を直接使用するのではなく、組み込みの`Buffer`データ構造を利用すべきです。新しい内容を追加する際に毎回新しいメモリを割り当てる必要がなく、単純な文字列連結と比べてメモリ割り当て操作を減らすことができます。"
+      }
+    },
+    {
+      "segment_id": "ec2ce541",
+      "source_content": "```moonbit no-check\nfn Function::to_wasm(self : Function, buffer : Buffer) -> Unit\nfn Program::to_wasm(self : Program, buffer : Buffer) -> Unit\nfn Instruction::to_wasm(self : Instruction, buffer : Buffer) -> Unit {\n  match self {\n    Add => buffer.write_string(\"i32.add \")\n    Local_Get(val) => buffer.write_string(\"local.get $\\{val} \")\n    _ => buffer.write_string(\"...\")\n  }\n}\n```",
+      "source_content_hash": "a913716b2620b4b903f289f822e089d082b3a7db0db29b9169b15cc33baa1a27",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_ec2ce541"
+      }
+    },
+    {
+      "segment_id": "1f9058cd",
+      "source_content": "Of course, WebAssembly not only has a text format (WAT), but also has a binary format. [Here](https://webassembly.github.io/wabt/demo/wat2wasm/) is a useful tool that converts WAT to binary WASM. Those who are interested can also check the [WebAssembly Specification](https://webassembly.github.io/spec/core/index.html).",
+      "source_content_hash": "f31737924bb4c1d2d9e6725eb850bcefe9ff7752a68dbd83cfd0cf7bdac3fd30",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "もちろん、WebAssemblyにはテキスト形式（WAT）だけでなく、バイナリ形式もあります。[こちら](https://webassembly.github.io/wabt/demo/wat2wasm/)はWATをバイナリWASMに変換する便利なツールです。興味のある方は、[WebAssembly仕様](https://webassembly.github.io/spec/core/index.html)も参照してください。"
+      }
+    },
+    {
+      "segment_id": "ce712201",
+      "source_content": "| Text Format   | Binary Format                                          |\n| ------------- | ------------------------------------------------------ |\n| `i32.const`   | 0x41                                                   |\n| `i32.add`     | 0x6A                                                   |\n| `local.get`   | 0x20                                                   |\n| `local.set`   | 0x21                                                   |\n| `call $add`   | 0x10                                                   |\n| `if else end` | 0x04 (vec[instructions]) 0x05 (vec[instructions]) 0x0B |",
+      "source_content_hash": "0070e72de14b5ba2f6dd2abd98e6391e59bb5ede234a0dce3b4be45a6e04d12c",
+      "node_type": "table",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_ce712201"
+      }
+    },
+    {
+      "segment_id": "c7ab93a8",
+      "source_content": "### Multi-Level Compilation",
+      "source_content_hash": "ec437da6a47c6c5867b958b655ada2f09146f090b314fb6aa24f24692e342100",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "### マルチレベルコンパイル"
+      }
+    },
+    {
+      "segment_id": "9ede513a",
+      "source_content": "In [Chapter 11](./parser), we introduced the syntax parser. At that time, we used it to parse basic arithmetic expressions, which were so simple that with constant folding, they can be entirely completed during compilation. However, for a program, constant folding is obviously not the norm, and it must be compiled to a backend for execution. Now, after introducing WebAssembly, we can fill in the last piece of the puzzle. We start with strings, perform lexical analysis to obtain a token stream. Then we use the syntax parser to obtain an abstract syntax tree. From this step, we compile to the WebAssembly instruction set. Finally, we can feed it to various runtime environments for execution. Of course, thanks to the \"tagless final\" technique we introduced, the abstract syntax tree may also be simplified.",
+      "source_content_hash": "05233d99d026abad9f741adefc1413ffb9f6518a969af3835c57caa32448d5c6",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "[第11章](./parser)では、構文解析器を紹介しました。当時は基本的な算術式を解析するために使用しましたが、それらは非常に単純で、定数畳み込みによってコンパイル時に完全に処理できました。しかし、プログラムにとって定数畳み込みは明らかに通常のケースではなく、実行のためにバックエンドにコンパイルする必要があります。WebAssemblyを紹介したことで、最後のピースを埋めることができます。文字列から始め、字句解析を行ってトークンストリームを取得します。次に構文解析器を使用して抽象構文木を取得します。この段階から、WebAssembly命令セットにコンパイルします。最後に、さまざまな実行環境に渡して実行できます。もちろん、紹介した「タグレスファイナル」技術のおかげで、抽象構文木が簡略化される可能性もあります。"
+      }
+    },
+    {
+      "segment_id": "49be422b",
+      "source_content": "<center><p>String → Token Stream → (Abstract Syntax Tree) → Wasm IR → Compile/Run</p></center>",
+      "source_content_hash": "6463bce9215c2b83f0b7b75d4fc1b4a4f3226cbadf1dc1b898a8920c5311931f",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "<center><p>文字列 → トークンストリーム → (抽象構文木) → Wasm IR → コンパイル/実行</p></center>"
+      }
+    },
+    {
+      "segment_id": "01902900",
+      "source_content": "The following is the definition of the syntax trees for basic arithmetic expressions adopted from [Chapter 11](./parser).",
+      "source_content_hash": "a5e4774a7e6bc03f352fa90260ebf33364446f6850a18796bb2f1c27b914ff46",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "以下は、[第11章](./parser)から採用した基本的な算術式の構文木の定義です。"
+      }
+    },
+    {
+      "segment_id": "4d54a1e8",
+      "source_content": "```moonbit\nenum Expression {\n  Number(Int)\n  Plus(Expression, Expression)\n  Minus(Expression, Expression)\n  Multiply(Expression, Expression)\n  Divide(Expression, Expression)\n}\n```",
+      "source_content_hash": "9bd7996460f1a294623ef0e9c7dfeec47955846adf73b5c658397ca769a34453",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_4d54a1e8"
+      }
+    },
+    {
+      "segment_id": "8f4e752e",
+      "source_content": "Therefore, we can use a simple recursive function that performs pattern matching on the AST and translates it into the corresponding sequence of WebAssembly instructions. For example, an integer is translated into a single constant instruction, and binary operations require recursive translation of the two operands followed by the instruction for the operation itself. It can be seen that we have used the operator overloading feature of MoonBit here.",
+      "source_content_hash": "1d5331d96cf02ddeab73f7f341edc60bf521749b6b8e0cc9f466f96e515b3777",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "したがって、ASTに対してパターンマッチングを行い、対応するWebAssembly命令列に変換する単純な再帰関数を使用できます。例えば、整数は単一の定数命令に変換され、二項演算では2つのオペランドを再帰的に変換した後、演算自体の命令を追加します。ここではMoonBitの演算子オーバーロード機能を利用していることがわかります。"
+      }
+    },
+    {
+      "segment_id": "43c34a84",
+      "source_content": "```moonbit\nfn compile_expression(expression : Expression) -> @immut/list.T[Instruction] {\n  match expression {\n      Number(i) => @immut/list.of([Const(I32(i))])\n      Plus(a, b) => compile_expression(a) + compile_expression(b) + @immut/list.of([Add])\n      Minus(a, b) => compile_expression(a) + compile_expression(b) + @immut/list.of([Sub])\n      _ => @immut/list.of([])\n  }\n}\n```",
+      "source_content_hash": "104058bcced24ec9436a27d37099f86915c601c94287a172b656f87f912a38ac",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_43c34a84"
+      }
+    },
+    {
+      "segment_id": "f7d4d765",
+      "source_content": "## Implementing an Interpreter",
+      "source_content_hash": "b20d53f16525c3e5127cd1f7120ea4129f6efb33d851dbe435c0716d5b8c35b2",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "## インタプリタの実装"
+      }
+    },
+    {
+      "segment_id": "13440cd7",
+      "source_content": "Now, let's take a look at interpretation. We will build an interpreter to directly interpret our previous program. Here, we need two data structures: an operand stack and an instruction queue. On the operand stack, in addition to storing the values involved in the calculation, we also store the variables stored in the environment before the function is called. The instruction queue stores to instructions to be executed. We will also expand on the original instruction set with some control instructions, such as the `EndOfFrame` instruction.",
+      "source_content_hash": "41b64d76436ea30aea03b4113146647d74aa193db632d4dd9fa8de639993e938",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "次に、解釈実行について見ていきましょう。前のプログラムを直接解釈するインタプリタを構築します。ここでは、オペランドスタックと命令キューという2つのデータ構造が必要です。オペランドスタックには、計算に使用される値に加えて、関数呼び出し前に環境に保存されていた変数も格納されます。命令キューには実行されるべき命令が格納されます。また、元の命令セットを拡張して、`EndOfFrame`命令などの制御命令を追加します。"
+      }
+    },
+    {
+      "segment_id": "5d3138c7",
+      "source_content": "The `EndOfFrame` instruction has an integer parameter for the return values of the function. Since we only have integers as our basic data type, we only need to know the the number of return values. The entire program environment includes the program definition, as well as the operand stack, instruction queue, and local variables in the current environment.",
+      "source_content_hash": "a7a255054bff33c690504cbb13cecd55746abd59fe2ab53255f892353c6ae8d5",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "`EndOfFrame`命令には、関数の戻り値の数を示す整数パラメータがあります。基本データ型として整数しか持たないため、戻り値の数だけを知る必要があります。プログラム環境全体には、プログラム定義に加えて、オペランドスタック、命令キュー、現在の環境のローカル変数が含まれます。"
+      }
+    },
+    {
+      "segment_id": "7b9b1777",
+      "source_content": "```moonbit\nenum StackValue {\n  Val(Value) // Ordinary value\n  Func(@immut/hashmap.T[String, Value]) // Function stack, stores previous local variables\n}\nenum AdministrativeInstruction {\n  Plain(Instruction) // Ordinary instruction\n  EndOfFrame(Int) // Function end instruction\n}\nstruct State {\n  program : Program\n  stack : @immut/list.T[StackValue]\n  locals : @immut/hashmap.T[String, Value]\n  instructions : @immut/list.T[AdministrativeInstruction]\n}\n```",
+      "source_content_hash": "ac04b3459309dba5acd38aae85e32c99e7e123d70dda8e6b4e9a57a3a16c8188",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_7b9b1777"
+      }
+    },
+    {
+      "segment_id": "52d45a2c",
+      "source_content": "What we need to do now is calculate the next state based on the previous state by pattern matching on the current instruction and data stack. Since errors may occur, the returned state should be wrapped by `Option`. If the match is successful, like the `Add` instruction here, there should be two consecutive integers representing the operands at the top of the stack, then we can calculate the next state. If all matches fail, it means something went wrong, and we use a wildcard to handle such cases and return a `None`.",
+      "source_content_hash": "6b3440aa18c16cea26a77d58ec91e125c8490b6ee30df687c191cfbdb5213b58",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "現在必要なのは、現在の命令とデータスタックに対してパターンマッチングを行い、前の状態から次の状態を計算することです。エラーが発生する可能性があるため、返される状態は`Option`でラップされます。ここで示す`Add`命令のようにマッチが成功した場合、スタックの最上部にオペランドを表す2つの連続した整数があるはずで、次の状態を計算できます。すべてのマッチが失敗した場合、何か問題が発生したことを意味し、ワイルドカードを使用してそのようなケースを処理し、`None`を返します。"
+      }
+    },
+    {
+      "segment_id": "d1748707",
+      "source_content": "```moonbit\nfn evaluate(state : State, stdout : Buffer) -> Option[State] {\n  match (state.instructions, state.stack) {\n    (Cons(Plain(Add), tl), Cons(Val(I32(b)), Cons(Val(I32(a)), rest))) =>\n      Some(\n        State::{ ..state, instructions: tl, stack: Cons(Val(I32(a + b)), rest) },\n      )\n    _ => None\n  }\n}\n```",
+      "source_content_hash": "0ac73643a63d08ab25a29e4962f668e46cf809452659f5da4d2a36b3cec13a85",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_d1748707"
+      }
+    },
+    {
+      "segment_id": "7eb5b32d",
+      "source_content": "![](/pics/interp_add.drawio.webp)",
+      "source_content_hash": "d79bff640e1983627cee6672b80053b31c6b876b09ed2e55458cd0fc68618822",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "![](/pics/interp_add.drawio.webp)"
+      }
+    },
+    {
+      "segment_id": "850ec775",
+      "source_content": "For conditional statement, we need to take out the code of the corresponding branch from the stack and add it to the instruction queue. It should be noted that the stored instructions should not be not expanded, so we perform a mapping here.",
+      "source_content_hash": "ca59c1ae353801e824da7c775c3d49002af0c77a75f0e709c8cca398eaf5434e",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "条件文の場合、スタックから対応する分岐のコードを取り出し、命令キューに追加する必要があります。保存された命令は展開されないように注意が必要で、ここではマッピングを行います。"
+      }
+    },
+    {
+      "segment_id": "7e9a9732",
+      "source_content": "```moonbit no-check\n(Cons(Plain(If(_, then, else_)), tl), Cons(Val(I32(i)), rest)) =>\n  Some(State::{..state,\n      stack: rest,\n      instructions: (if i != 0 { then } else { else_ }).map(\n        AdministrativeInstruction::Plain,\n      ).concat(tl)})\n```",
+      "source_content_hash": "aaab272dbc45bcb35287455c501d2a0a9e8998ce51fb3453c62f0a38e229c523",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_7e9a9732"
+      }
+    },
+    {
+      "segment_id": "8517ac25",
+      "source_content": "![](/pics/interp_if.drawio.webp)",
+      "source_content_hash": "bd50c2ca98cd3bf9ca033beee500c96a9ee169451ef30bd098a246026305ad44",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "![](/pics/interp_if.drawio.webp)"
+      }
+    },
+    {
+      "segment_id": "5e0ab881",
+      "source_content": "Next is the function call. As we mentioned earlier, without external APIs, WebAssembly cannot perform input and output. To solve this problem, we specially handle the function calls for `print_int`. If a call is detected, we directly output its value to our cache.",
+      "source_content_hash": "660589004893455cdbea9dbdcaed97444c40c60c1bccab22ee3c23b8a259ae0a",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "次に関数呼び出しです。前述のように、外部APIなしではWebAssemblyは入出力を実行できません。この問題を解決するため、`print_int`の関数呼び出しを特別に処理します。呼び出しが検出されると、その値を直接キャッシュに出力します。"
+      }
+    },
+    {
+      "segment_id": "7a5ad31f",
+      "source_content": "```moonbit no-check\n(Cons(Plain(Call(\"print_int\")), tl), Cons(Val(I32(i)), rest)) => {\n  stdout.write_string(i.to_string())\n  Some(State::{ ..state, stack: rest, instructions: tl })\n}\n```",
+      "source_content_hash": "1fc8623b389004df46c8d0eeac1abd97d325e42762665d4500b3347776d907aa",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_7a5ad31f"
+      }
+    },
+    {
+      "segment_id": "d83b50df",
+      "source_content": "![](/pics/interp_print_int.drawio.webp)",
+      "source_content_hash": "b05419540a9ea4d4fc88ed05ab6628585df4e01028a619a69b62741ea37711a9",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "![](/pics/interp_print_int.drawio.webp)"
+      }
+    },
+    {
+      "segment_id": "b16b56a2",
+      "source_content": "For ordinary function calls, we need to save the current environment and then enter the new environment for the call. That is why we need to add the `EndOfFrame` instruction. In terms of data, we need to take a certain number of elements from the top of the current stack according to the number of function parameters to become the new function call environment. After that, we add a function stack on the stack, which stores the current environment variables.",
+      "source_content_hash": "e15a6b4e403148baba9c64a2edc7fe5fcee9ebdadde4110c7b2b1e4159714245",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "通常の関数呼び出しでは、現在の環境を保存し、呼び出しのための新しい環境に入る必要があります。そのため`EndOfFrame`命令を追加する必要があります。データに関しては、関数パラメータの数に応じて現在のスタックの最上部から一定数の要素を取り出し、新しい関数呼び出し環境とします。その後、現在の環境変数を保存する関数スタックをスタックに追加します。"
+      }
+    },
+    {
+      "segment_id": "27f3a471",
+      "source_content": "![](/pics/interp_call.drawio.webp)",
+      "source_content_hash": "3794b8b708d68d44c230590f88813fc95916f1f153af2d77fdffa3ef1d4ac151",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "![](/pics/interp_call.drawio.webp)"
+      }
+    },
+    {
+      "segment_id": "9929329e",
+      "source_content": "After execution, it should be encountering the control instruction to return the function at this time. We take out the elements from the top of the stack according to the number of return values stored in the instruction, clear the current environment, until the function stack that was previously stored. We restore the original environment from it, and then continue the calculation.",
+      "source_content_hash": "b876d84f6006c73d55498db136fee1c959763802dedf3ad479f766dc97742d0b",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "実行後、この時点で関数を返す制御命令に遭遇するはずです。命令に保存されている戻り値の数に応じてスタックの最上部から要素を取り出し、以前に保存されていた関数スタックが見つかるまで現在の環境をクリアします。そこから元の環境を復元し、計算を続行します。"
+      }
+    },
+    {
+      "segment_id": "1dffcdf5",
+      "source_content": "![](/pics/interp_end_call.drawio.webp)",
+      "source_content_hash": "24d2e70fe63e7e6c977c3f4e6b51ec696beadb486f3637161f48605e6af7f3df",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "![](/pics/interp_end_call.drawio.webp)"
+      }
+    },
+    {
+      "segment_id": "89da6bb6",
+      "source_content": "## Summary",
+      "source_content_hash": "30ac03ff33731529441be8fbe52a3bd0d4c5ec830e806d54692168ebb7f98ada",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "## まとめ"
+      }
+    },
+    {
+      "segment_id": "e8bf4d18",
+      "source_content": "In this chapter we",
+      "source_content_hash": "9b264d8dfb5556cb425461b5b08de388fc97d30775867e0bc4cccda8974819d0",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "この章では以下のことを行いました:"
+      }
+    },
+    {
+      "segment_id": "24c2f6a9",
+      "source_content": "- Learned the structure of a stack-based virtual machine\n- Introduced a subset of the WebAssembly instruction set\n- Implemented a compiler\n- Implemented an interpreter",
+      "source_content_hash": "4a5e4766a98d356dd1de453275840c1af685dddc5ef6331ff349f7977275b4cc",
+      "node_type": "list",
+      "translatable": true,
+      "translations": {
+        "ja": "- スタックベース仮想マシンの構造を学びました\n- WebAssembly命令セットのサブセットを紹介しました\n- コンパイラを実装しました\n- インタプリタを実装しました"
+      }
+    },
+    {
+      "segment_id": "d6c9e4cd",
+      "source_content": "Interested readers may try to expand the definition of functions in the syntax parser, or add the `return` instruction to the instruction set.",
+      "source_content_hash": "a6c512fba4551289ed903809ce07229d11debad432ff7c3d00b70309f1dbf604",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "興味のある読者は、構文解析器での関数定義の拡張や、命令セットへの`return`命令の追加を試みるとよいでしょう。"
+      }
+    }
+  ],
+  "target_i18n_subpath": "docusaurus-plugin-content-docs/current/14-stack-machine.md",
+  "last_updated_timestamp": "2025-06-06T05:19:35.747774+00:00",
+  "schema_version": "1.0",
+  "translated_versions": {
+    "ja": "53fa5ba4cb0c43d6b74328154f6818982b709416cc8ad2bb9a8f96b6f1f10e7d"
+  }
+}

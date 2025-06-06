@@ -1,0 +1,592 @@
+{
+  "source_file_path_relative_to_docusaurus_root": "docs/08-queues.md",
+  "source_file_content_hash": "b8848d123705b1a75ce9681d3aadcafa731a05dc52b304fad22491e4b09b66e4",
+  "segments": [
+    {
+      "segment_id": "76e4a56a",
+      "source_content": "# 8. Queues",
+      "source_content_hash": "bd62e26d80a8f1a43da3b303c1394cb3fb2482150b2effb6a16a34a2bc61e5d0",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "# 8. キュー"
+      }
+    },
+    {
+      "segment_id": "faebdc62",
+      "source_content": "Queues are a fundamental data structure in computer science, following the First-In-First-Out (FIFO) principle, meaning the first element added to the queue will be the first one to be removed. The chapter will explore two primary methods of implementing queues: circular queues and singly linked lists. Additionally, it will also introduce tail calls and tail recursion, which are essential for optimizing recursive functions.",
+      "source_content_hash": "30236fae83388bf5990f23b50945f2f662a79c258fdfa4b5b5d917d51c170264",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "キューはコンピュータサイエンスにおける基本的なデータ構造で、先入れ先出し（FIFO）の原則に従います。つまり、キューに最初に追加された要素が最初に取り除かれます。この章では、キューの実装方法として主に2つの方法、循環キューと単方向リンクリストを探求します。また、再帰関数の最適化に不可欠な末尾呼び出しと末尾再帰についても紹介します。"
+      }
+    },
+    {
+      "segment_id": "f85bbfb4",
+      "source_content": "## Basic Operations",
+      "source_content_hash": "f19a46e409e78b2c0d31954c415b73d681db42f8fafe530a12882162853e0b73",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "## 基本操作"
+      }
+    },
+    {
+      "segment_id": "6ef78e84",
+      "source_content": "A queue should support the following basic operations:",
+      "source_content_hash": "9d567624165de467bfa955de5bfdd67a00285c32c18652a92575b9ff37d66b92",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "キューは以下の基本操作をサポートする必要があります："
+      }
+    },
+    {
+      "segment_id": "71d8dc9b",
+      "source_content": "```moonbit no-check\nstruct Queue { .. }\n\nfn make() -> Queue // Creates an empty queue.\nfn push(self: Queue, t: Int) -> Queue // Adds an integer element to the queue.\nfn pop(self: Queue) -> Queue // Removes an element from the queue.\nfn peek(self: Queue) -> Int // Views the front element of the queue.\nfn length(self: Queue) -> Int // Obtains the length of the queue.\n```",
+      "source_content_hash": "0e3f6602aa2559113b91072836b19e9f9e9c9a4bd0e76257b63e6f26ee67743d",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_71d8dc9b"
+      }
+    },
+    {
+      "segment_id": "f6168993",
+      "source_content": "The `pop` and `push` operations will directly modify the original queue. For convenience, we also return the modified queue, so that we can easily make chain calls.",
+      "source_content_hash": "eb88a7c141358b5f4f734dca527c8a537d244c9bec7f072909bc3f630e1ca006",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "`pop`と`push`操作は元のキューを直接変更します。利便性のため、変更後のキューを返すようにしており、これによりチェーン呼び出しが容易になります。"
+      }
+    },
+    {
+      "segment_id": "cbbebf8e",
+      "source_content": "```moonbit no-check\nmake().push(1).push(2).push(3).pop().pop().length() // 1\n```",
+      "source_content_hash": "d111484e36f2a99f95274ef52e109a99e82e8245b6fced242ad5799e93eb1920",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_cbbebf8e"
+      }
+    },
+    {
+      "segment_id": "ed7dde9c",
+      "source_content": "## Circular Queues",
+      "source_content_hash": "f797c4145d025c4f8359d95bd10ae1cc56eede5f9ca234f5a9bdef16766a0942",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "## 循環キュー"
+      }
+    },
+    {
+      "segment_id": "a76548f8",
+      "source_content": "Circular queues are usually implemented using arrays, which provide a continuous storage space where each position can be modified. Once an array is allocated, its length remains fixed.",
+      "source_content_hash": "9dcf9c04645281390a8c8a9ada6369ef3f0a600f6dceecca0b1804601beb7a11",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "循環キューは通常、配列を使用して実装されます。配列は連続した記憶領域を提供し、各位置を変更可能です。一度割り当てられた配列の長さは固定されます。"
+      }
+    },
+    {
+      "segment_id": "4b1d2d7d",
+      "source_content": "The following code snippet shows the basic usage of the built-in `Array` in MoonBit. It is worth noting that its index starts from 0, and we will later learn the benefits of doing so.",
+      "source_content_hash": "17229470bab652a51c19221b1d294bb48df5f5c48d71d23f7f1a6da6b7b889ca",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "以下のコードスニペットは、MoonBitの組み込み`Array`の基本的な使用方法を示しています。インデックスが0から始まることに注意してください。この利点については後で学びます。"
+      }
+    },
+    {
+      "segment_id": "cb57d798",
+      "source_content": "```moonbit expr\nlet a: Array[Int] = Array::make(5, 0)\na[0] = 1\na[1] = 2\nprintln(a) // Output: [1, 2, 0, 0, 0]\n```",
+      "source_content_hash": "b396f35fcd705717a4302d83cd599fc5b804fa82d796b11160ae336666862ed4",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_cb57d798"
+      }
+    },
+    {
+      "segment_id": "135468ee",
+      "source_content": "When implementing a circular queue, we keep track of the `start` and `end` indices. Whenever a new element is pushed, we move the `end` index one step forward. The `pop` operation clears the element at the position of `start` and moves it one step forward. If the index exceeds the length of the array, we wrap it back to the beginning.",
+      "source_content_hash": "ccd21543ecc9300b5e865744c4a4c0b1ebd6bf0e34fdd537c9084c9ef90581d2",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "循環キューの実装では、`start`と`end`インデックスを追跡します。新しい要素がプッシュされるたびに、`end`インデックスを1つ進めます。`pop`操作は`start`位置の要素をクリアし、`start`を1つ進めます。インデックスが配列の長さを超えた場合、先頭に戻ります。"
+      }
+    },
+    {
+      "segment_id": "33331f27",
+      "source_content": "The following diagram is a demonstration of these operations. First, we create an empty queue by calling `make()`. At this point, the `start` and `end` indices both point to the first element. Then, we push an element into the queue by calling `push(1)`. The element `1` is then added to the position pointed to by `end`, and the `end` index is updated. Afterwards, we call `push(2)` to push another element into the queue, and finally call `pop()` to pop out the first element we have pushed.",
+      "source_content_hash": "be07ec9ada77ee936a503f351305d78c90fa5ddee5bae5a25e0f2d3d252851c3",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "以下の図はこれらの操作のデモンストレーションです。まず、`make()`を呼び出して空のキューを作成します。この時点で、`start`と`end`インデックスはともに最初の要素を指しています。次に、`push(1)`を呼び出して要素`1`をキューに追加します。要素`1`は`end`が指す位置に追加され、`end`インデックスが更新されます。その後、`push(2)`を呼び出して別の要素をキューに追加し、最後に`pop()`を呼び出して最初にプッシュした要素を取り出します。"
+      }
+    },
+    {
+      "segment_id": "50746522",
+      "source_content": "![](/pics/circle_list.drawio.webp)",
+      "source_content_hash": "97afceefadcfe7088baa396258138b2f3a90851e0f3fceb9faa992ae59d513b4",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "![](/pics/circle_list.drawio.webp)"
+      }
+    },
+    {
+      "segment_id": "95e9ba12",
+      "source_content": "Now, let's take a look at another situation when we are close to the end of the array. At this point, `end` points to the position of the last element of the array. When we push an element, `end` cannot move forward, so we wrap it back to the beginning of the array. Then, we perform two `pop` operations. Similarly, when `start` exceeds the length of the array, it returns to the beginning of the list.",
+      "source_content_hash": "50b2a4ef7f66e013583e119e8412617ecf83fbcaaa8ded138e31d2c3fca5b6d6",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "次に、配列の終端に近い場合の別の状況を見てみましょう。この時点で、`end`は配列の最後の要素の位置を指しています。要素をプッシュする際、`end`はこれ以上進めないため、配列の先頭に戻ります。その後、2回の`pop`操作を実行します。同様に、`start`が配列の長さを超えた場合、リストの先頭に戻ります。"
+      }
+    },
+    {
+      "segment_id": "8af76f3d",
+      "source_content": "![](/pics/circle_list_back.drawio.webp)",
+      "source_content_hash": "4248a743adb6229fbe7ec196f7413b5b57697ed44cd52b4ff09560e3eecc01ab",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "![](/pics/circle_list_back.drawio.webp)"
+      }
+    },
+    {
+      "segment_id": "a9d49f92",
+      "source_content": "With the above basic ideas in mind, we can easily define the `Queue` struct and implement the `push` operation as follows:",
+      "source_content_hash": "09aeb95abe4ab5f6e5a024fe36129dcd4cf4181fbb12e29044206540ed022cab",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "上記の基本的な考え方を踏まえると、`Queue`構造体を簡単に定義し、`push`操作を以下のように実装できます："
+      }
+    },
+    {
+      "segment_id": "95318d95",
+      "source_content": "```moonbit\nstruct Queue {\n  mut array: Array[Int]\n  mut start: Int\n  mut end: Int // end points to the empty position at the end of the queue\n  mut length: Int\n}\n\nfn push(self: Queue, t: Int) -> Queue {\n  self.array[self.end] = t\n  self.end = (self.end + 1) % self.array.length() // wrap around to the start of the array if beyond the end\n  self.length = self.length + 1\n  self\n}\n```",
+      "source_content_hash": "2aa235cd4073b4ab601ea1f60cdb964806780e5d611663f36b879be9726108ee",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_95318d95"
+      }
+    },
+    {
+      "segment_id": "531437ca",
+      "source_content": "Now, we can easily see the benefit of using `0` as the starting index of an array: we can conveniently achieve the \"circular\" effect with the `%` operation.",
+      "source_content_hash": "0d077b27c0312215e88b3f0aeee7921922a77dc01d2097310fde4fba28257478",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "ここで、配列の開始インデックスとして`0`を使用する利点が明らかになります：`%`演算を用いて簡単に「循環」効果を実現できます。"
+      }
+    },
+    {
+      "segment_id": "06e24cc0",
+      "source_content": "However, the above implementation has a potential issue, which is that the number of elements in the queue may exceed the length of the array. When we know the upper limit of the number of elements, we can avoid this issue by defining an array that is long enough. If we cannot know the upper limit in advance, we can \"expand\" the array by replacing it with a longer array. A sample implementation is as follows:",
+      "source_content_hash": "cd3b6b0c6ce7119820163a16b2a45a8f2651d7368c9b7315e735ce46e8731de4",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "ただし、上記の実装には潜在的な問題があります。それは、キュー内の要素数が配列の長さを超える可能性があることです。要素数の上限がわかっている場合、十分な長さの配列を定義することでこの問題を回避できます。事前に上限がわからない場合は、より長い配列に「拡張」することで対応できます。サンプル実装は以下の通りです："
+      }
+    },
+    {
+      "segment_id": "7d13cf22",
+      "source_content": "```moonbit\nfn _push(self: Queue, t: Int) -> Queue {\n  if self.length == self.array.length() {\n    let new_array: Array[Int] = Array::make(self.array.length() * 2, 0)\n    let mut i = 0\n    while i < self.array.length() {\n      new_array[i] = self.array[(self.start + i) % self.array.length()]\n      i = i + 1\n    }\n    self.start = 0\n    self.end = self.array.length()\n    self.array = new_array\n  }\n  self.push(t)\n}\n```",
+      "source_content_hash": "b27058026e976950e99ed4c839120b2ec856b46305d1544cc799e88074080c37",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_7d13cf22"
+      }
+    },
+    {
+      "segment_id": "8126f763",
+      "source_content": "When we pop out an element, we remove the element pointed to by `start`, move `start` forward, and update the length.",
+      "source_content_hash": "d6e1a15f37ca5437262cff4498c9d3ab8bf53e8526a70ff6cc2e37f05096b9ff",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "要素を取り出す際、`start`が指す要素を削除し、`start`を進め、長さを更新します。"
+      }
+    },
+    {
+      "segment_id": "f6563256",
+      "source_content": "```moonbit\nfn pop(self: Queue) -> Queue {\n  self.array[self.start] = 0\n  self.start = (self.start + 1) % self.array.length()\n  self.length = self.length - 1\n  self\n}\n```",
+      "source_content_hash": "e04955b6d31f063bda3d545c9b85f911ef5f571d340fca99e13d2f839d140547",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_f6563256"
+      }
+    },
+    {
+      "segment_id": "eb51d107",
+      "source_content": "The `length` function simply returns the current `length` field of the queue, since it is dynamically maintained.",
+      "source_content_hash": "d1c75afb687cdc4fa79b402456355af97c2fba68c992242d551720a829d055aa",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "`length`関数は、動的に維持されているキューの現在の`length`フィールドを単に返します。"
+      }
+    },
+    {
+      "segment_id": "dc73c0d2",
+      "source_content": "```moonbit\nfn length(self: Queue) -> Int {\n  self.length\n}\n```",
+      "source_content_hash": "d6938dc027725f40c1ce540fe08c3cedc90c7448bc986781717a6a692511caf3",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_dc73c0d2"
+      }
+    },
+    {
+      "segment_id": "c7c92a79",
+      "source_content": "### Generic Circular Queues",
+      "source_content_hash": "6acf2948986cb7df33f82583bbde956fac32335f8aceb72ea0fe511e8059a3a7",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "### ジェネリックな循環キュー"
+      }
+    },
+    {
+      "segment_id": "f0984c2a",
+      "source_content": "Sometimes, we may want the elements in the queue to be of a type other than `Int`. With MoonBit's generic mechanism, we can easily define a generic version of the `Queue` struct.",
+      "source_content_hash": "7eb0f0a625e86ffe7af30f2d5e8552c5651533b96aea14bc15dcece2b1dbe927",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "時には、キュー内の要素を`Int`型以外にしたい場合があります。MoonBitのジェネリック機構を利用すれば、`Queue`構造体のジェネリック版を簡単に定義できます。"
+      }
+    },
+    {
+      "segment_id": "7ded566f",
+      "source_content": "```moonbit no-check\nstruct Queue[T] {\n  mut array: Array[T]\n  mut start: Int\n  mut end: Int // end points to the empty position at the end of the queue\n  mut length: Int\n}\n```",
+      "source_content_hash": "c59eb84dffc7f6800c6037fc647ab34a6538f792d37142b6306bc9cf5c199d40",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_7ded566f"
+      }
+    },
+    {
+      "segment_id": "1958bc43",
+      "source_content": "However, when implementing the `make` operation, how do we specify the initial value for the array? There are two options: one is to wrap the values with `Option` and use `Option::None` as the initial value; the other option is to use the default value of the type itself. How to define and utilize this default value will be discussed in Chapter 9.",
+      "source_content_hash": "2f9701557983199a50d93359a652b26a14ad9345c551c18d2d921830c2a58f54",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "しかし、`make`操作を実装する際に、配列の初期値をどのように指定すればよいでしょうか？選択肢は2つあります。1つは`Option`で値をラップし、`Option::None`を初期値として使用する方法。もう1つは型自体のデフォルト値を使用する方法です。このデフォルト値をどのように定義し利用するかについては、第9章で議論します。"
+      }
+    },
+    {
+      "segment_id": "1a63b635",
+      "source_content": "```moonbit no-check\nfn make[T]() -> Queue[T] {\n  {\n    array: Array::make(5, T::default()), // Initialize the array with the default value of the type\n    start: 0,\n    end: 0,\n    length: 0\n  }\n}\n```",
+      "source_content_hash": "b9118044496613efefa07eceac5b891c113bf4d6f1d8545155e93fd78b0f98da",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_1a63b635"
+      }
+    },
+    {
+      "segment_id": "47cd8dd6",
+      "source_content": "## Singly Linked Lists",
+      "source_content_hash": "b059245b9baad559ed5d7311657c38f24c1c1f431ac614e677fb7958b74cb5f8",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "## 単方向リンクリスト"
+      }
+    },
+    {
+      "segment_id": "692c6053",
+      "source_content": "Singly linked lists are composed of nodes, where each node contains a value and a mutable reference to the next node.",
+      "source_content_hash": "ab55251e27a382486c6ec7b201c4367a7f0f34d115e3caa1a2664438e923f184",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "単方向リンクリストはノードで構成されており、各ノードは値と次のノードへの可変参照を含んでいます。"
+      }
+    },
+    {
+      "segment_id": "383fbdd2",
+      "source_content": "`Node[T]` is a generic struct that represents a node in a linked list. It has two fields: `val` and `next`. The `val` field is used to store the value of the node, and its type is `T`, which can be any valid data type. The `next` field represents the reference to the next node in the linked list. It is an optional field that can either hold a reference to the next node or be empty (`None`), indicating the end of the linked list.",
+      "source_content_hash": "fd1832141697621b1a86268710c76bf09984d6c5465469093c50cb3eadccdb9a",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "`Node[T]`はリンクリストのノードを表すジェネリック構造体です。`val`と`next`の2つのフィールドを持ちます。`val`フィールドはノードの値を格納するために使用され、その型は任意の有効なデータ型である`T`です。`next`フィールドはリンクリストにおける次のノードへの参照を表します。これはオプショナルフィールドで、次のノードへの参照を保持するか、空（`None`）にすることができ、後者の場合はリンクリストの終端を示します。"
+      }
+    },
+    {
+      "segment_id": "8d1b00fd",
+      "source_content": "```moonbit\nstruct Node[T] {\n  val : T\n  mut next : Option[Node[T]]\n}\n```",
+      "source_content_hash": "6c73217c11544cdc1ed0278f2b44f93bf0f22d650bf5465f9f216e517689c576",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_8d1b00fd"
+      }
+    },
+    {
+      "segment_id": "9e90a9b3",
+      "source_content": "`LinkedList[T]` is a generic struct that represents a linked list. It has two mutable fields: `head` and `tail`. The `head` field represents the reference to the first node (head) of the linked list and is initially set to `None` when the linked list is empty. The `tail` field represents the reference to the last node (tail) of the linked list and is also initially set to `None`. The presence of the `tail` field allows for efficient appending of new nodes to the end of the linked list.",
+      "source_content_hash": "ec3f89f76187a788d17fd3f388327807899fd3b9a70c648d38f42752e71830c3",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "`LinkedList[T]`はリンクリストを表すジェネリック構造体です。`head`と`tail`という2つの可変フィールドを持ちます。`head`フィールドはリンクリストの最初のノード（先頭）への参照を表し、リンクリストが空のときは最初に`None`に設定されます。`tail`フィールドはリンクリストの最後のノード（末尾）への参照を表し、同様に最初は`None`に設定されます。`tail`フィールドがあることで、リンクリストの末尾への新しいノードの追加を効率的に行うことができます。"
+      }
+    },
+    {
+      "segment_id": "a4a107b4",
+      "source_content": "```moonbit\nstruct LinkedList[T] {\n  mut head : Option[Node[T]]\n  mut tail : Option[Node[T]]\n}\n```",
+      "source_content_hash": "16e0cfb6c5258f9ffa385a9b14a29760030981ed8e7ec38424040ef1fffd81e2",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_a4a107b4"
+      }
+    },
+    {
+      "segment_id": "42d9ca67",
+      "source_content": "The implementation of `make` is trivial:",
+      "source_content_hash": "33aeff27da634af4f6bdb22869b00312d7c1f4683c33f6c4397bb0aad00f30d8",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "`make`の実装は自明です："
+      }
+    },
+    {
+      "segment_id": "68d4860d",
+      "source_content": "```moonbit\nfn LinkedList::make[T]() -> LinkedList[T] {\n  { head: None, tail: None }\n}\n```",
+      "source_content_hash": "6c297cac563951e26de8485440d00754439ab6304339f0fa71a1c428d64364a7",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_68d4860d"
+      }
+    },
+    {
+      "segment_id": "d2a3d4c7",
+      "source_content": "When we push elements, we first check whether the linked list is empty. If not, add it to the end of the queue and maintain the linked list relationship.",
+      "source_content_hash": "48f53f9ebfe102b159bf2d0f4ce4b81088ccc2cc7fb78e1ee68c000dc0bc7b0f",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "要素をプッシュするとき、まずリンクリストが空かどうかを確認します。空でない場合、キューの末尾に追加し、リンクリストの関係を維持します。"
+      }
+    },
+    {
+      "segment_id": "75daf40d",
+      "source_content": "```moonbit\nfn push[T](self: LinkedList[T], value: T) -> LinkedList[T] {\n  let node = { val: value, next: None }\n  match self.tail {\n    None => {\n      self.head = Some(node)\n      self.tail = Some(node)\n    }\n    Some(n) => {\n      n.next = Some(node)\n      self.tail = Some(node)\n    }\n  }\n  self\n}\n```",
+      "source_content_hash": "33ffc1fa260ad3635ce7b6429efc2cd10498310f04466901ac07c4ec6d96fdeb",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_75daf40d"
+      }
+    },
+    {
+      "segment_id": "39c48ff7",
+      "source_content": "The following diagram is a simple demonstration. When we create a linked list by calling `make()`, both the `head` and `tail` are empty. When we push an element using `push(1)`, we create a new node and point both the `head` and `tail` to this node. When we push more elements, say `push(2)` and then `push(3)`, we need to update the `next` field of the current `tail` node to point to the new node. The `tail` node of the linked list should always point to the latest node.",
+      "source_content_hash": "2ced2504ea75e3b05124e3f269497cdca6236c4a9b609ee754c2039f59e1c531",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "以下の図は簡単なデモンストレーションです。`make()`を呼び出してリンクリストを作成すると、`head`と`tail`の両方が空になります。`push(1)`を使用して要素をプッシュすると、新しいノードを作成し、`head`と`tail`の両方をこのノードに向けます。さらに要素をプッシュする場合、例えば`push(2)`、そして`push(3)`を呼び出すと、現在の`tail`ノードの`next`フィールドを更新して新しいノードを指すようにする必要があります。リンクリストの`tail`ノードは常に最新のノードを指すようにします。"
+      }
+    },
+    {
+      "segment_id": "e29bd639",
+      "source_content": "![](/pics/linked_list.drawio.webp)",
+      "source_content_hash": "8c315b32482a474420f5eaf9117d86967654e1c23ac765bc34984b4bd263259b",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "![](/pics/linked_list.drawio.webp)"
+      }
+    },
+    {
+      "segment_id": "e5821418",
+      "source_content": "![](/pics/linked_list_2.drawio.webp)",
+      "source_content_hash": "15e14cd3cd33492ec73cc4fdadae31d4eb6b0198aaeb379ed5822ea5f1642194",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "![](/pics/linked_list_2.drawio.webp)"
+      }
+    },
+    {
+      "segment_id": "4e2e17c5",
+      "source_content": "To get the length of the list, we can either record it in the struct as we did for circular queues, or we can use a naive recursive function to calculate it.",
+      "source_content_hash": "39eb4f2bb4270dacee44735d2afd18dd3f0450d1293debef4f12d1c5fc06bd26",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "リストの長さを取得するには、循環キューで行ったように構造体に記録するか、あるいは単純な再帰関数を使用して計算することができます。"
+      }
+    },
+    {
+      "segment_id": "bea1601a",
+      "source_content": "```moonbit\nfn length[T](self : LinkedList[T]) -> Int {\n  fn aux(node : Option[Node[T]]) -> Int {\n    match node {\n      None => 0\n      Some(node) => 1 + aux(node.next)\n    }\n  }\n  aux(self.head)\n}\n```",
+      "source_content_hash": "203492902d767578c212f292d6e6ec5433830ec3a8b0377a6dc6ad3c8ef4cb87",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_bea1601a"
+      }
+    },
+    {
+      "segment_id": "4d7a4554",
+      "source_content": "### Stack Overflow",
+      "source_content_hash": "0ed39a40630b32ba2b7312000d6543fe730ff8c54ec5664201d8cb65330cacb0",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "### スタックオーバーフロー"
+      }
+    },
+    {
+      "segment_id": "38f964f1",
+      "source_content": "However, if the list is too long, the above implementation may lead to a stack overflow.",
+      "source_content_hash": "cdefd0aedc186849894926ca2313b5ba9f8e5561b3641b16065bc764d617250f",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "しかし、リストが長すぎる場合、上記の実装ではスタックオーバーフローが発生する可能性があります。"
+      }
+    },
+    {
+      "segment_id": "117486ca",
+      "source_content": "```moonbit no-check\nfn init {\n  let list = make()\n  let mut i = 0\n  while i < 100000 {\n    let _ = list.push(i)\n    i += 1\n  }\n  println(list.length())\n}\n```",
+      "source_content_hash": "5759f0ba6a952f25c7ed7cc08fd29cf7817b813ca149ab692251800ecf9b01fd",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_117486ca"
+      }
+    },
+    {
+      "segment_id": "d75361e3",
+      "source_content": "![](/pics/overflow.webp)",
+      "source_content_hash": "bc85dc147e9c21a4451cd071540c9a1a86758062fac92e6ebcd2e2ba4ac978b6",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "![](/pics/overflow.webp)"
+      }
+    },
+    {
+      "segment_id": "c277c3c0",
+      "source_content": "The cause of a stack overflow is that, whenever we call a function recursively, the data (or environments) waiting to be calculated in the current layer of function call is temporarily saved in a memory space called the \"stack\". When we return to the current layer from a deeper recursion, the data saved in the stack space will be recovered to continue the calculation of the current function. In our case, each time we call `aux` recursively, we will store the information for the partial expression `1 + ...` in the stack space, so that we can continue the calculation after we returned from the recursive calls.",
+      "source_content_hash": "27b3f7f025064805d8440c87975eecf65730f79429f0c023000f37a3075b7f88",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "スタックオーバーフローの原因は、関数を再帰的に呼び出すたびに、現在の関数呼び出し層で計算待ちのデータ（または環境）が「スタック」と呼ばれるメモリ空間に一時的に保存されることです。より深い再帰から現在の層に戻るとき、スタック空間に保存されたデータが復元され、現在の関数の計算が続行されます。このケースでは、`aux`を再帰的に呼び出すたびに、部分式`1 + ...`の情報をスタック空間に保存するため、再帰呼び出しから戻った後に計算を続行できるようになります。"
+      }
+    },
+    {
+      "segment_id": "5eedf0a1",
+      "source_content": "However, the size of the stack space is limited. Therefore, if we store data on the stack every time we recurse, the stack will overflow as long as the number of recursive layers is large enough.",
+      "source_content_hash": "bda0e93ef80986b92d3116b5c1ccd184853d3a74ad6404fe5f82b5114afdd9e5",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "しかし、スタック領域のサイズには限界があります。そのため、再帰のたびにデータをスタックに保存すると、再帰の階層が十分に深くなった時点でスタックオーバーフローが発生します。"
+      }
+    },
+    {
+      "segment_id": "c7ab93a8",
+      "source_content": "### Taill Calls and Tail Recursion",
+      "source_content_hash": "8d3dbe11e876307c740891efd7b84a2b7ceb57ff6aa8e74cbc72ab65ae04c4a7",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "### 末尾呼び出しと末尾再帰"
+      }
+    },
+    {
+      "segment_id": "9ede513a",
+      "source_content": "To avoid the stack overflow issues, we can rewrite recursive functions as loops to avoid using stack space. Alternatively, we can adjust the recursive function's implementation so that each recursion does not need to preserve any environment on the stack. To achieve this, we need to ensure that the last operation of a function is a function call, known as a tail call. And if the last operation is a recursive call to the function itself, it is called tail recursion. Since the result of the function call is the final result of the computation, we don't need to preserve the current computation environment.",
+      "source_content_hash": "5690ce32bd2e4d37a9b445486ef94e91419b3379ca45cfdc03d51080f7007536",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "スタックオーバーフローの問題を回避するためには、再帰関数をループに書き換えてスタック領域を使用しないようにする方法があります。あるいは、再帰関数の実装を調整して、各再帰呼び出しでスタックに環境を保存する必要がないようにすることも可能です。これを実現するには、関数の最後の操作が関数呼び出し（末尾呼び出し）であることを保証する必要があります。特に、最後の操作が関数自身の再帰呼び出しである場合、それは末尾再帰と呼ばれます。関数呼び出しの結果が計算の最終結果となるため、現在の計算環境を保存する必要がなくなります。"
+      }
+    },
+    {
+      "segment_id": "49be422b",
+      "source_content": "As shown in the code below, we can rewrite the `length` function to make it tail recursive:",
+      "source_content_hash": "91fb16449935a80cb5dcfff7ebeb2920c1bf8d693bc075b074bf9eff767910b8",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "以下のコードに示すように、`length`関数を末尾再帰になるように書き換えることができます："
+      }
+    },
+    {
+      "segment_id": "5ad8d2b2",
+      "source_content": "```moonbit\nfn length_[T](self: LinkedList[T]) -> Int {\n  fn aux2(node: Option[Node[T]], cumul: Int) -> Int {\n    match node {\n      None => cumul\n      Some(node) => aux2(node.next, 1 + cumul)\n    }\n  }\n  // tail recursive\n  aux2(self.head, 0)\n}\n```",
+      "source_content_hash": "2c8e90ba2bcce5e1fc6311fab791279a2751b9cce18a237f9056c2b080d027dc",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_5ad8d2b2"
+      }
+    },
+    {
+      "segment_id": "4033c370",
+      "source_content": "The optimized `length_` function uses tail recursion to calculate the length of the linked list without risking a stack overflow. The `aux2` function uses an accumulator `cumul` to keep track of the length as it traverses the list. The last function call in each iteration is `aux2` itself, so we can call it recursively as many times as we want without encountering a stack overflow issue.",
+      "source_content_hash": "0aa858e1a9e1884a629695a8b598640c54e7d4886ea8db144c9e7c6344cd30c9",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "最適化された`length_`関数は、末尾再帰を使用して連結リストの長さを計算し、スタックオーバーフローのリスクを回避します。`aux2`関数は、アキュムレータ`cumul`を使用してリストを走査しながら長さを追跡します。各反復の最後の関数呼び出しは`aux2`自身であるため、スタックオーバーフローの問題を起こすことなく、必要な回数だけ再帰的に呼び出すことができます。"
+      }
+    },
+    {
+      "segment_id": "5f4381f8",
+      "source_content": "## Summary",
+      "source_content_hash": "30ac03ff33731529441be8fbe52a3bd0d4c5ec830e806d54692168ebb7f98ada",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "## まとめ"
+      }
+    },
+    {
+      "segment_id": "80dbdeb8",
+      "source_content": "This chapter covers the design and implementation of two basic types of queues, i.e., circular queues and singly linked lists. It also highlights the importance of understanding and utilizing tail calls and tail recursion to optimize recursive functions and prevent stack overflow, ultimately leading to more efficient and stable program performance.",
+      "source_content_hash": "ec2bb017c8a9fbd66c97bbf331253053fbd43682df90acec9f31e6d037b98099",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "この章では、循環キューと単方向連結リストという2つの基本的なキュー型の設計と実装について説明しました。また、再帰関数を最適化し、スタックオーバーフローを防ぐために末尾呼び出しと末尾再帰を理解・活用することの重要性にも触れ、より効率的で安定したプログラム性能を実現する方法を紹介しました。"
+      }
+    }
+  ],
+  "target_i18n_subpath": "docusaurus-plugin-content-docs/current/08-queues.md",
+  "last_updated_timestamp": "2025-06-06T05:19:35.744799+00:00",
+  "schema_version": "1.0",
+  "translated_versions": {
+    "ja": "b8848d123705b1a75ce9681d3aadcafa731a05dc52b304fad22491e4b09b66e4"
+  }
+}

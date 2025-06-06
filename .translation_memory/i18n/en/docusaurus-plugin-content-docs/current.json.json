@@ -1,0 +1,31 @@
+{
+  "source_file_path_relative_to_docusaurus_root": "i18n/en/docusaurus-plugin-content-docs/current.json",
+  "source_file_content_hash": "536f0e9abeb1d66b1d3cacb47cee8943bb7be487655c526dab56c06fac463212",
+  "segments": [
+    {
+      "segment_id": "version.label",
+      "source_content": "Next",
+      "source_content_hash": "1ff57a29d7c9d11bdf61c1b80f2b289b44c1ea844824d4b94a0d52b6ba5fc858",
+      "node_type": "json_message",
+      "translatable": true,
+      "translations": {
+        "ja": "次へ"
+      },
+      "metadata": {
+        "json_description": "The label for version current"
+      }
+    }
+  ],
+  "original_json_structure": {
+    "version.label": {
+      "message": "Next",
+      "description": "The label for version current"
+    }
+  },
+  "target_i18n_subpath": "docusaurus-plugin-content-docs/current.json",
+  "last_updated_timestamp": "2025-06-06T05:19:35.739507+00:00",
+  "schema_version": "1.0",
+  "translated_versions": {
+    "ja": "536f0e9abeb1d66b1d3cacb47cee8943bb7be487655c526dab56c06fac463212"
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "source_file_path_relative_to_docusaurus_root": "blog/2019-05-28-first-blog-post.md",
+  "source_file_content_hash": "136a8db099744cff12bb1c2f1b19adb9511bfae9aec9e63b43e163eb4d0cd166",
+  "segments": [
+    {
+      "segment_id": "58cfcc64",
+      "source_content": "---\nslug: first-blog-post\ntitle: First Blog Post\nauthors:\n  name: Gao Wei\n  title: Docusaurus Core Team\n  url: https://github.com/wgao19\n  image_url: https://github.com/wgao19.png\ntags: [hola, docusaurus]\n---",
+      "source_content_hash": "6d8c77f003cdc8cb3dc9bf85193867047a26ad209607c5666bea021f9e3dd6ed",
+      "node_type": "yaml",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_58cfcc64"
+      }
+    },
+    {
+      "segment_id": "8d66f911",
+      "source_content": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque elementum dignissim ultricies. Fusce rhoncus ipsum tempor eros aliquam consequat. Lorem ipsum dolor sit amet",
+      "source_content_hash": "ba49e69624abf9d793fd2bcd695d281b23e64462c112abe45947d5c88bf25076",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "Lorem ipsum dolor（ロレム・イプサム・ドロール）は、ラテン語のダミーテキストで、印刷・出版業界で使用される標準的なプレースホルダー文章です。これは見た目の確認やレイアウトテストのために用いられ、実際の意味を持たないテキストです。この文章は、視覚的な要素の配置やフォント、スペーシングなどのデザイン要素を評価する目的で使用されます。"
+      }
+    }
+  ],
+  "target_i18n_subpath": "docusaurus-plugin-content-blog/2019-05-28-first-blog-post.md",
+  "last_updated_timestamp": "2025-06-06T05:19:35.741395+00:00",
+  "schema_version": "1.0",
+  "translated_versions": {
+    "ja": "136a8db099744cff12bb1c2f1b19adb9511bfae9aec9e63b43e163eb4d0cd166"
+  }
+}

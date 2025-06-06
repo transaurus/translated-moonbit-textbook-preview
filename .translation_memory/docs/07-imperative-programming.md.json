@@ -1,0 +1,642 @@
+{
+  "source_file_path_relative_to_docusaurus_root": "docs/07-imperative-programming.md",
+  "source_file_content_hash": "14b99c9aa6330102e946fdd5d5e22f0922de3cb7c066621fe2795e621276a350",
+  "segments": [
+    {
+      "segment_id": "76e4a56a",
+      "source_content": "# 7. Imperative Programming",
+      "source_content_hash": "edd6d6a1cc0761baebeca089b4a142037356d6d802b8d1a9ae9d365fc858f6bd",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "# 7. 命令型プログラミング"
+      }
+    },
+    {
+      "segment_id": "adbc947a",
+      "source_content": "## Functional vs Imperative Programming",
+      "source_content_hash": "659348b8f1b6eda8ba5fa142aabcd413d4c7a1e84ed92f8fdfa7a3dca8132a1e",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "## 関数型プログラミング vs 命令型プログラミング"
+      }
+    },
+    {
+      "segment_id": "e7ec8f99",
+      "source_content": "In the previous chapters, we used the functional programming paradigm, where the same input always produces the same output. Functional programs typically exhibit the property of referential transparency. That is, we can replace a function call with its result without changing the program's behavior.",
+      "source_content_hash": "ef30f65d85d7acdd5417e76f8f5e330d9311f51f5e26520d27c29ee2bc17cc72",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "これまでの章では、同じ入力に対して常に同じ出力を返す関数型プログラミングのパラダイムを使用してきました。関数型プログラムは一般に参照透過性の性質を示します。つまり、プログラムの動作を変えることなく、関数呼び出しをその結果で置き換えることができます。"
+      }
+    },
+    {
+      "segment_id": "6ef78e84",
+      "source_content": "Consider the example below. We can declare a variable `x` and assign it the result of an expression, like `1 + 1`. This is straightforward and mirrors what we do in mathematics. We can also define a function `square` that takes an integer and returns its square. When we call `square(x)`, we get the result `4`, just like if we replaced `square(x)` with `{ 2 * 2 }`.",
+      "source_content_hash": "c8019beadfda0e734665dfccb850304376453a0b31f26d0bab44c7a37fc2a162",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "以下の例を考えてみましょう。変数`x`を宣言し、`1 + 1`のような式の結果を代入することができます。これは直感的で、数学で行うことと似ています。また、整数を受け取りその平方を返す関数`square`を定義することもできます。`square(x)`を呼び出すと、`{ 2 * 2 }`で置き換えた場合と同じく、結果として`4`が得られます。"
+      }
+    },
+    {
+      "segment_id": "71d8dc9b",
+      "source_content": "```moonbit expr\nlet x: Int = 1 + 1 // x can be directly replaced with 2\nfn square(x: Int) -> Int { x * x };\nlet z: Int = square(x) // can be replaced with { 2 * 2 }, still resulting in 4\n```",
+      "source_content_hash": "574204643a526f5712048f9df7e6b8189716305261254a4fe329ab6f5b00678e",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_71d8dc9b"
+      }
+    },
+    {
+      "segment_id": "cf898102",
+      "source_content": "However, in the real world, we often need our programs to do more than just calculations. We might need them to read from a file, write to the screen, or change data in memory. These actions are called \"side effects,\" and they can make our programs behave differently each time they run, even with the same input. This breaks the referential transparency, making our programs harder to understand and predict.",
+      "source_content_hash": "2780c9f0b33c347244a3134c28e5cac8a94988759f28dfcdf442037932b5b27e",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "しかし、現実の世界では、プログラムに計算以上のことを行わせる必要がしばしばあります。ファイルからの読み込み、画面への書き込み、メモリ内のデータ変更などです。これらの動作は「副作用」と呼ばれ、プログラムが同じ入力でも実行ごとに異なる動作をする可能性があります。これにより参照透過性が破壊され、プログラムの理解と予測が難しくなります。"
+      }
+    },
+    {
+      "segment_id": "42ad8e83",
+      "source_content": "In this chapter, we will learn the basic concepts of imperative programming. It is a paradigm of programming where we give the computer a set of commands to execute, much like giving instructions to a person. It's about telling the computer exactly what to do, step by step. This is different from functional programming, where you define what you want in terms of mathematical functions.",
+      "source_content_hash": "84ae32687d0f81a7060a38f27b066bc962affbf9219bb31f87e7703f18ae6ba3",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "この章では、命令型プログラミングの基本概念を学びます。これは、人間に指示を与えるようにコンピュータに実行すべき一連のコマンドを与えるプログラミングパラダイムです。数学的な関数を用いて求めたいものを定義する関数型プログラミングとは異なり、コンピュータに実行すべきことを正確に段階的に指示することに重点を置いています。"
+      }
+    },
+    {
+      "segment_id": "aee0e40d",
+      "source_content": "## Commands and Side Effects",
+      "source_content_hash": "017f742226bd6690f90540af7ac528b06073d8e1a1b0ed1046cbc8a423ef9b0b",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "## コマンドと副作用"
+      }
+    },
+    {
+      "segment_id": "f5f6d2ce",
+      "source_content": "In MoonBit, one of the most used commands is `println`, which outputs its arguments to the screen with a new line at the end. The action of \"printing\" is a side effect because it changes the state of the world outside the program. Next, we will explore how side effects challenge the computational model we established in [Chapter 2](./development-environments-expressions).",
+      "source_content_hash": "ac58f56f158fc120a10e8fb0bed7ea7390dd1eeb5aede04cbb3d8d8e68409b82",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "MoonBitで最もよく使われるコマンドの一つが`println`です。これは引数を画面に出力し、末尾に改行を追加します。「印刷」という動作は副作用であり、プログラム外の世界の状態を変更します。次に、副作用が[第2章](./development-environments-expressions)で確立した計算モデルにどのような課題を投げかけるかを見ていきます。"
+      }
+    },
+    {
+      "segment_id": "2fdadb08",
+      "source_content": "In the following example, the value assigned to `x` comes from an expression block, in which the `println` command is executed first, and then the result of the expression `1 + 1` is assigned to `x`. Finally, the value of `z` is the result of `square(x)`, which is `4`. In the whole process, `println` is executed only once.",
+      "source_content_hash": "5b59e0169d6db24d4bb54ea8de352b3a80de12b1ec695fb69610417c17e671fc",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "以下の例では、`x`に代入される値は式ブロックから得られます。このブロックではまず`println`コマンドが実行され、その後式`1 + 1`の結果が`x`に代入されます。最後に、`z`の値は`square(x)`の結果である`4`になります。この過程全体で、`println`は一度だけ実行されます。"
+      }
+    },
+    {
+      "segment_id": "3569d545",
+      "source_content": "```moonbit\nfn square(x: Int) -> Int { x * x }\nfn init {\n  let x: Int = {\n    println(\"hello moonbit\") // Print once\n    1 + 1 // 2\n  }\n  let z: Int = square(x) // 4\n}\n```",
+      "source_content_hash": "564e78d86f1c2542d213f1d6a5ea56b11bb6bdf460632562ca3bc8ccbbe5724a",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_3569d545"
+      }
+    },
+    {
+      "segment_id": "517051a7",
+      "source_content": "![](/pics/print_once.webp)",
+      "source_content_hash": "5069a2914089ae3a9ab20f1b299621cb340dcf76163e746051531ecb0dcce039",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "![](/pics/print_once.webp)"
+      }
+    },
+    {
+      "segment_id": "135468ee",
+      "source_content": "However, if we replace all occurrences of `x` and `square` with their definitions using the method introduced in [Chapter 2](./development-environments-expressions), we will get the following program:",
+      "source_content_hash": "6ba75420ce5a8604b5d50c1bd03ad4ec57bac3ca0e484d6f7447c6f2eac4f0e1",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "しかし、[第2章](./development-environments-expressions)で紹介した方法で`x`と`square`のすべての出現をその定義で置き換えると、次のプログラムが得られます："
+      }
+    },
+    {
+      "segment_id": "a11df754",
+      "source_content": "```moonbit\nfn init {\n  let z: Int = {\n    println(\"hello moonbit\"); // Print once\n    1 + 1 // 2\n  } * {\n    println(\"hello moonbit\"); // Print twice\n    1 + 1 // 2\n  } // 4\n}\n```",
+      "source_content_hash": "5b643befb1821612a10347265b4a89ad3c819e0da99fd4db1e7619d225c4b891",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_a11df754"
+      }
+    },
+    {
+      "segment_id": "f7ef78f9",
+      "source_content": "![](/pics/print_twice.webp)",
+      "source_content_hash": "a3e2035d4ec93e95d85fa6b12c7ae090c05498734bd4737e422c5d5710930293",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "![](/pics/print_twice.webp)"
+      }
+    },
+    {
+      "segment_id": "b36c6338",
+      "source_content": "In functional programming, the two programs should be equivalent, because they compute the same result. However, because of the side effect of `println`, the two programs behave differently: the former produces one line of output, while the latter produces two lines of output. It can be seen that side effects could destroy referential transparency and thus make it more difficult to reason about programs.",
+      "source_content_hash": "4666f8c43b6263c21e185c13f3f4e1082c235e4e5b8198712c64713874839c34",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "関数型プログラミングでは、2つのプログラムは同等であるべきです。なぜなら、同じ結果を計算するからです。しかし、`println`の副作用により、2つのプログラムの動作は異なります：前者は1行の出力を生成しますが、後者は2行の出力を生成します。このように、副作用は参照透過性を破壊し、プログラムの推論をより困難にすることがわかります。"
+      }
+    },
+    {
+      "segment_id": "2c1b51df",
+      "source_content": "### The Unit Type",
+      "source_content_hash": "42de2bf2c597b3429e4b3049750ff64599d618eefa792dc913b2c293eefccbf2",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "### Unit型"
+      }
+    },
+    {
+      "segment_id": "e536ea0d",
+      "source_content": "In [Chapter 2](./development-environments-expressions#unit), we introduced the `Unit` type, but we did not clearly explain its usage at the time. Here, we can see that in imperative programming, commands like `println` are purely for side effects and do not have a return value. However, in MoonBit, commands are just a special sort of expression. Besides performing their side effects, they should also be able to be reduced to a value, which of course needs to have a certain type. In such cases, we use the `Unit` type, which consists of only one value `()` and is thus suitable for representing the absence of a meaningful return value, like a placeholder.",
+      "source_content_hash": "610dac3b3f259eeb07401361faa957aaab134e1e858df2841c8927bde3c42305",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "[第2章](./development-environments-expressions#unit)では`Unit`型を紹介しましたが、当時はその使用法を明確に説明しませんでした。ここでは、命令型プログラミングにおいて`println`のようなコマンドが純粋に副作用のためであり、戻り値を持たないことがわかります。しかし、MoonBitではコマンドは特別な種類の式です。副作用を実行するだけでなく、ある値に還元できる必要があり、当然その値には特定の型が必要です。このような場合、`Unit`型を使用します。この型は唯一の値`()`で構成され、意味のある戻り値がないことを表すプレースホルダーとして適しています。"
+      }
+    },
+    {
+      "segment_id": "40158b4b",
+      "source_content": "In particular, the `let` statement in MoonBit is essentially a command, and its type is also `Unit`. For example:",
+      "source_content_hash": "5d4c1c110cd7f5402e149ec49a6f7ee458fbed8a76293ece9c4331ff558592a1",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "特に、MoonBitの`let`文は本質的にコマンドであり、その型も`Unit`です。例えば："
+      }
+    },
+    {
+      "segment_id": "3adc0ceb",
+      "source_content": "```moonbit\nfn do_nothing() -> Unit {\n  let _x = 0 // The `let` statement is of type `Unit`\n}\n```",
+      "source_content_hash": "d6460508254306d6294894c5ab5e98dd696f94f8a00f03643ac3987e936661c5",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_3adc0ceb"
+      }
+    },
+    {
+      "segment_id": "bd92edfc",
+      "source_content": "## Mutable Variables",
+      "source_content_hash": "3cd6af3f08844fa2b03ffec5bedcfd5c1eba18256857b8947c35fd8cdccfb25f",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "## 可変変数"
+      }
+    },
+    {
+      "segment_id": "7f71ff2a",
+      "source_content": "As we learned in [Chapter 3](./functions-lists-recursion), we can create mutable variables in MoonBit using `let mut`, and update the binding with the command `<variable> = <expression>`, whose type is also `Unit`. For example:",
+      "source_content_hash": "2d17d5f5d23aefc11851fae08594f80e13d37faae7b950b7ae781ce9f543236a",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "[第3章](./functions-lists-recursion)で学んだように、MoonBitでは`let mut`を使用して可変変数を作成でき、`<variable> = <expression>`というコマンドでバインディングを更新できます。このコマンドの型も`Unit`です。例："
+      }
+    },
+    {
+      "segment_id": "4fb3ded8",
+      "source_content": "```moonbit\nfn init {\n  let mut x = 1\n  x = 10 // The assignment operation is a command.\n}\n```",
+      "source_content_hash": "649951cd1338c10240eb7e1f13376176b211c7dee99b27cdb9c57c09b38bc06f",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_4fb3ded8"
+      }
+    },
+    {
+      "segment_id": "e8e162a9",
+      "source_content": "In [Chapter 4](./tuples-structs-enums), we learned about structs. In MoonBit, the fields of a struct are immutable by default, but mutable fields are also supported. To make a filed mutable, we need to mark it with `mut`. For example:",
+      "source_content_hash": "ad98f046624222e5ead08d1627d5fe722d07495d7b27815f7d4040bba0cba3a8",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "[第4章](./tuples-structs-enums)では構造体について学びました。MoonBitでは、構造体のフィールドはデフォルトで不変ですが、可変フィールドもサポートされています。フィールドを可変にするには、`mut`でマークする必要があります。例："
+      }
+    },
+    {
+      "segment_id": "9f4336b3",
+      "source_content": "```moonbit\nstruct Ref[T] { mut val : T }\n\nfn init {\n  let ref: Ref[Int] = { val: 1 } // `ref` itself is just a data binding\n  ref.val = 10 // We can modify the fields of the struct\n  println(ref.val.to_string()) // Output 10\n}\n```",
+      "source_content_hash": "91d56f92db70286c6e67fda3855f8e55a5cb044552d75a879eb4ce3463d4c6e4",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_9f4336b3"
+      }
+    },
+    {
+      "segment_id": "5803caac",
+      "source_content": "The distinction between mutable and immutable data is important because it affects how we think about the data. As shown in the following diagrams, for mutable data, we can think of identifiers as boxes that hold values.",
+      "source_content_hash": "55351edcbc66286ba79c099dcfa35586be79e4ade92258239145bbf5d6a0df29",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "可変データと不変データの区別は重要です。なぜなら、データの考え方に影響を与えるからです。以下の図に示すように、可変データの場合、識別子を値を保持する箱と考えることができます。"
+      }
+    },
+    {
+      "segment_id": "d0b8a6db",
+      "source_content": "- In the first diagram, when we modify a mutable variable, we are essentially updating the value stored in the box.\n- In the second diagram, we use `let` to bind the identifier `ref` to a struct. Thus, the box contains a reference to the struct. When we modify the value in the struct using `ref`, we are updating the value stored in the struct which it points to. The reference itself does not change because it still points to the same struct.\n- In the third diagram, when we define a mutable `ref` and modify it, we are creating a new box and updating the reference to point to the new box.",
+      "source_content_hash": "d80948149d02923be1e51b5f6dc4c4915615195ed8d9c7259fe2179334156094",
+      "node_type": "list",
+      "translatable": true,
+      "translations": {
+        "ja": "- 最初の図では、可変変数を変更する際、実質的に箱に格納された値を更新しています。\n- 2番目の図では、`let`を使用して識別子`ref`を構造体にバインドしています。したがって、箱には構造体への参照が含まれます。`ref`を使用して構造体内の値を変更する場合、それが指す構造体に格納された値を更新しています。参照自体は変化しません。なぜなら、同じ構造体を指し続けるからです。\n- 3番目の図では、可変な`ref`を定義して変更する場合、新しい箱を作成し、参照を新しい箱を指すように更新しています。"
+      }
+    },
+    {
+      "segment_id": "82e90254",
+      "source_content": "![](/pics/ref.drawio.webp)",
+      "source_content_hash": "fcfcd63d138eb70693061ca2dddb9a481cbb26e9f167e5f3386935ba51d22df9",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "![](/pics/ref.drawio.webp)"
+      }
+    },
+    {
+      "segment_id": "e06c002e",
+      "source_content": "### Aliases",
+      "source_content_hash": "60334510e3bec36519ab15b0247966d7cab7ac7d2d9866899805ca892717ffbb",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "### エイリアス"
+      }
+    },
+    {
+      "segment_id": "25212439",
+      "source_content": "Multiple identifiers pointing to the same mutable data structure can be considered aliases, which need to be handled carefully.",
+      "source_content_hash": "e9581e214778c45eeb4d9fe1f87e808cb49fb35cf7a276840559d8dcdad047bf",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "同じ可変データ構造を指す複数の識別子はエイリアスと見なされ、注意深く扱う必要があります。"
+      }
+    },
+    {
+      "segment_id": "d79a4831",
+      "source_content": "In the following example, the `alter` function takes two mutable references to `Ref` structs, `a` and `b`, and modifies the `val` field of `a` to `10` and the `val` field of `b` to `20`. When we call `alter(x, x)`, we are essentially passing the same mutable reference, `x`, twice. As a result, the `val` field of `x` will be changed twice, as both `a` and `b` are just aliases referring to the same `x` reference.",
+      "source_content_hash": "83454455341c5bfe87a34d0692055ceb5ba4c3010b60cc52c0274b271b534b8e",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "次の例では、`alter`関数は`Ref`構造体への2つの可変参照`a`と`b`を取り、`a`の`val`フィールドを`10`に、`b`の`val`フィールドを`20`に変更します。`alter(x, x)`を呼び出すと、実質的に同じ可変参照`x`を2回渡すことになります。結果として、`x`の`val`フィールドは2回変更されます。なぜなら、`a`と`b`はどちらも同じ`x`参照を指すエイリアスだからです。"
+      }
+    },
+    {
+      "segment_id": "64071bcc",
+      "source_content": "```moonbit\nfn alter(a: Ref[Int], b: Ref[Int]) -> Unit {\n  a.val = 10\n  b.val = 20\n}\n\nfn init {\n  let x: Ref[Int] = { val : 1 }\n  alter(x, x)\n  println(x.val.to_string()) // x.val will be changed twice\n}\n```",
+      "source_content_hash": "441823d5bd321aa3be2b9ee8cfa67d69c1527ad3e4cecb52a630d25408547972",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_64071bcc"
+      }
+    },
+    {
+      "segment_id": "44aaa880",
+      "source_content": "![](/pics/alias.drawio.webp)",
+      "source_content_hash": "9454701801c78f06269b735012f164a3118e7861c3373abc7f17c9b363218a62",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "![](/pics/alias.drawio.webp)"
+      }
+    },
+    {
+      "segment_id": "638efb88",
+      "source_content": "## Loops",
+      "source_content_hash": "98a40227baf0915a523aeff4af13610ef848ab372268d8a861148d5ed889f8c2",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "## ループ"
+      }
+    },
+    {
+      "segment_id": "558df877",
+      "source_content": "Loops are a way to repeat a block of code multiple times. In MoonBit, we can use a `while` loop to do this. We start by defining a loop variable, say `i`, and giving it an initial value. Then we check the condition defined in the `while` loop. If the condition is true, we execute the commands inside the `while` loop's body. This process repeats until the condition is no longer true, at which point the loop ends. To avoid an infinite loop, we need to update the loop variable inside the loop body.",
+      "source_content_hash": "d2476ce6740fd95ff61877534e516922a2f39eb36cebf8c20f39611f49fc6a32",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "ループはコードブロックを複数回繰り返す方法です。MoonBitでは、`while`ループを使用してこれを行うことができます。まず、ループ変数（例えば`i`）を定義し、初期値を与えます。次に、`while`ループで定義された条件をチェックします。条件が真の場合、`while`ループの本体にあるコマンドを実行します。このプロセスは、条件が真でなくなるまで繰り返され、その時点でループは終了します。無限ループを避けるために、ループ本体内でループ変数を更新する必要があります。"
+      }
+    },
+    {
+      "segment_id": "6f605d92",
+      "source_content": "```moonbit\nfn init {\n  let mut i = 0\n  while i < 2 {\n    println(\"Output\")\n    i += 1\n  } // Repeat output 2 times\n}\n```",
+      "source_content_hash": "c3228ab9cf6c683d8d78ed5d39968ff8ba05d2dfd4753fc79cc238a9d2ac652c",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_6f605d92"
+      }
+    },
+    {
+      "segment_id": "692c6053",
+      "source_content": "For example, we might want to print the numbers from `0` to `1`. We can do this with a loop that checks if `i` is less than `2`. If it is, we print the current value of `i`, increment `i` by `1`, and then repeat the process. The loop continues until `i` is no longer less than `2`, and then we're done.",
+      "source_content_hash": "b839a432ec69e745f4ea9894cc8e5c878ebc90cedd657ed39f95ab5b87527588",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "例えば、`0`から`1`までの数字を印刷したい場合があります。`i`が`2`未満かどうかをチェックするループでこれを行うことができます。真の場合、`i`の現在の値を印刷し、`i`を`1`増やし、プロセスを繰り返します。ループは`i`が`2`未満でなくなるまで続き、その後終了します。"
+      }
+    },
+    {
+      "segment_id": "c83259bb",
+      "source_content": "### Loops and Recursion",
+      "source_content_hash": "6b34d00eebf254955e9e7246e28d1ec6a40027f47e551caa8d7a2967e10a8cbe",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "### ループと再帰"
+      }
+    },
+    {
+      "segment_id": "14bc6b75",
+      "source_content": "Loops and recursions are equivalent. A loop is a set of instructions that we repeat until a certain condition is met, while recursion is a way of solving a problem by breaking it down into smaller, similar problems. In programming, we can often rewrite a loop as a recursive function and vice versa.",
+      "source_content_hash": "f48e172ad3226d20761385247e92e8ed2adf919a4d698f554b3a229fa3cd31e2",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "ループと再帰は等価です。ループは特定の条件が満たされるまで繰り返す一連の命令であり、再帰は問題をより小さな類似の問題に分解して解決する方法です。プログラミングでは、ループを再帰関数として書き直したり、その逆を行ったりすることがよくあります。"
+      }
+    },
+    {
+      "segment_id": "e478ec2c",
+      "source_content": "For example, let's consider calculating the Fibonacci sequence. We can do this with a loop that keeps track of the last two numbers and updates them as it goes. Alternatively, we can write a recursive function that calls itself with smaller numbers until it reaches the base cases (0 and 1).",
+      "source_content_hash": "67240ca32860671a78f68b47f436fc782ebd072edbc46290f318e9134c78bd26",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "例えば、フィボナッチ数列の計算を考えてみましょう。最後の2つの数字を追跡し、進むにつれて更新するループでこれを行うことができます。あるいは、基本ケース（0と1）に達するまで小さな数字で自身を呼び出す再帰関数を書くこともできます。"
+      }
+    },
+    {
+      "segment_id": "e908327f",
+      "source_content": "```moonbit\n// Loop form\nfn init {\n  let mut i = 0\n  while i < 2 {\n    println(\"Hello!\")\n    i = i + 1\n  }\n}\n```",
+      "source_content_hash": "69ebf90312727304e9aee878a9763b90029d9acb8a943f9c6ab2935067d2eed7",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_e908327f"
+      }
+    },
+    {
+      "segment_id": "cf5bbc3b",
+      "source_content": "```moonbit\n// Recursive form\nfn loop_(i: Int) -> Unit {\n  if i < 2 {\n    println(\"Hello!\")\n    loop_(i + 1)\n  } else { () }\n}\nfn init {\n  loop_(0)\n}\n```",
+      "source_content_hash": "1e47ae3a24232b4f5be8a33c4d62be765944133ec9a432d4332362e4758fe60f",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_cf5bbc3b"
+      }
+    },
+    {
+      "segment_id": "a5905b07",
+      "source_content": "### Controlling Loop Flows",
+      "source_content_hash": "a02a05e75aec5ee9b71ceda63cb1111bdc9baa1f4f51f72dd405c0a23913b40c",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "### ループフローの制御"
+      }
+    },
+    {
+      "segment_id": "fd7ed056",
+      "source_content": "Sometimes we want to control the flow of a loop more precisely. We might want to skip the rest of the current iteration or exit the loop entirely. In MoonBit, we can use `break` to exit a loop early or `continue` to skip the rest of the current iteration and move on to the next one.",
+      "source_content_hash": "603b5013a026c68e52fe5882e23261d6a2c36f2f816fcb6a88255f6c72d1afa1",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "ループの流れをより精密に制御したい場合があります。現在のイテレーションの残りをスキップしたり、ループ全体を終了したりすることがあります。MoonBitでは、`break`を使用してループを早期に終了したり、`continue`を使用して現在のイテレーションの残りをスキップして次のイテレーションに進んだりできます。"
+      }
+    },
+    {
+      "segment_id": "b08ad0b4",
+      "source_content": "For example, if we're printing numbers from `0` to `9`, but we want to skip the number `3`, we can use `continue` in the loop condition. If we want to stop the loop entirely when we reach `3`, we can use `break`.",
+      "source_content_hash": "b2f3ffa1534315713a534cfb3e90dcc1f339c7365d82046ad443ee551837b0e4",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "例えば、0から9までの数字を出力する際に、数字3をスキップしたい場合は、ループ条件内で`continue`を使用できます。3に達した時点でループを完全に停止したい場合は、`break`を使用できます。"
+      }
+    },
+    {
+      "segment_id": "90c0aa8a",
+      "source_content": "```moonbit\nfn print_first_3_break() -> Unit {\n  let mut i = 0\n  while i < 10 {\n    i += 1\n    print(i)\n    println(\" yes\")\n    if i == 3 {\n      break // Skip from 3 onwards\n    } else {\n      println(i.to_string())\n    }\n  }\n}\n```",
+      "source_content_hash": "47d82ac2c475c979e80fc58202070f94cff82e9d5ab0ba4c7ce04581d91c08c9",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_90c0aa8a"
+      }
+    },
+    {
+      "segment_id": "5cf1bce4",
+      "source_content": "The excepted output is",
+      "source_content_hash": "dc1530a652941202a74aa6626ff2c5b29ec3bfc7cd53711f19427eb5195368aa",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "期待される出力は"
+      }
+    },
+    {
+      "segment_id": "d7c0a6db",
+      "source_content": "```text\n1 yes\n2 yes\n```",
+      "source_content_hash": "7a8867944f51186996ea8b4d32531b4a21dbce8714cea6731ed5f897ef96a84a",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_d7c0a6db"
+      }
+    },
+    {
+      "segment_id": "6fad5db5",
+      "source_content": "But if we change `break` to `continue`",
+      "source_content_hash": "4a8d0483b99b47cc89baf8261215e0528877c03a8dad60d74c91e96baff9e3ce",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "しかし、`break`を`continue`に変更すると"
+      }
+    },
+    {
+      "segment_id": "d7631ae3",
+      "source_content": "```moonbit\nfn print_first_3_continue() -> Unit {\n  let mut i = 0\n  while i < 10 {\n    i += 1\n    print(i)\n    println(\" yes\")\n    if i == 3 {\n      continue // go into the next iteration\n    } else {\n      println(i.to_string())\n    }\n  }\n}\n```",
+      "source_content_hash": "92a10232b8c06437690516d194171ebe91e819dcafa5b417bfb238335098dca9",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_d7631ae3"
+      }
+    },
+    {
+      "segment_id": "e4d8cd8a",
+      "source_content": "The excepted output is",
+      "source_content_hash": "dc1530a652941202a74aa6626ff2c5b29ec3bfc7cd53711f19427eb5195368aa",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "期待される出力は"
+      }
+    },
+    {
+      "segment_id": "ff27b4c2",
+      "source_content": "```text\n1 yes\n2 yes\n yes\n yes\n yes\n yes\n yes\n yes\n yes\n```",
+      "source_content_hash": "b930d42a904b08b36c11ff3907494f6571b9b2cd83892bc5d22900169e131b85",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_ff27b4c2"
+      }
+    },
+    {
+      "segment_id": "43ad2e31",
+      "source_content": "## Code Checking and Debugging",
+      "source_content_hash": "cf7c54d77defe121d6d547cf614f8cf4ceca8e032f09be58cfbcf3b8e3fc6055",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "## コードチェックとデバッグ"
+      }
+    },
+    {
+      "segment_id": "01902900",
+      "source_content": "In order to avoid errors, we need to check our code. However, this work does not need to be done entirely by us, the MoonBit extension on VS Code can help us to some extent. Here are some examples:",
+      "source_content_hash": "168d208228fab6c092c11413c51585eb1cd915c2113cd675cd8bd02424a01108",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "エラーを避けるためには、コードをチェックする必要があります。ただし、この作業はすべて自分で行う必要はなく、VS CodeのMoonBit拡張機能がある程度支援してくれます。以下にいくつかの例を示します："
+      }
+    },
+    {
+      "segment_id": "070cad33",
+      "source_content": "- If a mutable variable has not been modified, MoonBit extension will issue a warning, which can help us catch mistakes like forgetting to update a loop counter.\n  ![](/pics/infinite_loop.webp)\n- It also checks whether the return value of a function matches the declared return type, which helps us avoid typing errors.\n  ![](/pics/forget_type.webp)",
+      "source_content_hash": "2ab3c6b15e05a39a43884d13995051ce5183970e967c732d46e676a8d79c42ed",
+      "node_type": "list",
+      "translatable": true,
+      "translations": {
+        "ja": "- 可変変数が変更されていない場合、MoonBit拡張機能は警告を発し、ループカウンタの更新忘れなどのミスを捕捉するのに役立ちます。\n  ![](/pics/infinite_loop.webp)\n- また、関数の戻り値が宣言された戻り型と一致しているかどうかもチェックし、タイプミスを防ぐのに役立ちます。\n  ![](/pics/forget_type.webp)"
+      }
+    },
+    {
+      "segment_id": "d3912b2e",
+      "source_content": "Sometimes, even our code passes the checking by our naked eyes and MoonBit extension, our code may still not behave as expected, which means there are bugs in our code. In that case, we need to debug our code. MoonBit's debugger is a tool that helps you debug your code by showing you what's happening inside your program as it runs. You can pause the program at any point, look at the values of variables, and step through the code one line at a time. This is incredibly useful for understanding complex behavior and fixing bugs.",
+      "source_content_hash": "8d483e39478f671b5eaa6a64eb6812f5517a02bbf71142d02dc647e0e622bab8",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "時には、コードが目視チェックやMoonBit拡張機能のチェックを通過しても、期待通りに動作しないことがあります。これはコードにバグがあることを意味します。そのような場合、コードをデバッグする必要があります。MoonBitのデバッガは、プログラムの実行中に内部で何が起こっているかを表示することで、コードのデバッグを支援するツールです。プログラムを任意の時点で一時停止し、変数の値を確認し、コードを1行ずつステップ実行できます。これは複雑な動作を理解し、バグを修正するのに非常に役立ちます。"
+      }
+    },
+    {
+      "segment_id": "2dbbb313",
+      "source_content": "![](/pics/debugger.webp)",
+      "source_content_hash": "2e550fa46619839c0a080408924c8d5abbc506b026e3df868a375e3410e04425",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "![](/pics/debugger.webp)"
+      }
+    },
+    {
+      "segment_id": "ad8a5f54",
+      "source_content": "## Trade-Offs of Mutable vs Immutable Data",
+      "source_content_hash": "56cacd9f5a860715ec2cb1bb5bd05a678ede21b11a9e267560da699fc833eb6b",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "## 可変データと不変データのトレードオフ"
+      }
+    },
+    {
+      "segment_id": "4033c370",
+      "source_content": "Although mutable data challenges the functional computational model we established before and may introduce some potential problems, it is still widely used in various scenarios. If we want to directly manipulate the external environment, e.g., hardware, it is better to use mutable data structures. When random access is needed, an mutable array typically performs better than a immutable list. Mutable data also makes it easier for us to construct complex data structures, such as graphs. In addition, in-place modification of mutable data can better utilize memory space, as it does not introduce additional space consumption.",
+      "source_content_hash": "ae63b5c6e3f84055b44051e3a7ff316c644a81855fc0b7fb9a64aabc8f1d474d",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "可変データは以前に確立した関数型計算モデルに挑戦し、いくつかの潜在的な問題を引き起こす可能性がありますが、さまざまなシナリオで広く使用されています。外部環境（例えばハードウェア）を直接操作したい場合、可変データ構造を使用する方が適しています。ランダムアクセスが必要な場合、可変配列は通常、不変リストよりも優れたパフォーマンスを発揮します。可変データはまた、グラフなどの複雑なデータ構造を構築するのを容易にします。さらに、可変データのインプレース変更は、追加のメモリ消費を導入しないため、メモリ空間をより効率的に利用できます。"
+      }
+    },
+    {
+      "segment_id": "dfb6fc67",
+      "source_content": "Mutable data is not always in conflict with referential transparency. In the following example, we use a `while` loop and some mutable variables to calculate the `n`th term in the Fibonacci sequence. However, we can still safely replace any occurrence of `fib_mut` with its final result, since it does not produce any side effects.",
+      "source_content_hash": "254443deb5aa6d82c10eb34d00e8578bf394b208b1b37b3cf678dde30703a140",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "可変データが常に参照透過性と衝突するわけではありません。次の例では、`while`ループといくつかの可変変数を使用して、フィボナッチ数列のn番目の項を計算しています。しかし、`fib_mut`の出現をその最終結果に安全に置き換えることができます。なぜなら、副作用を生じないからです。"
+      }
+    },
+    {
+      "segment_id": "2de995af",
+      "source_content": "```moonbit\nfn fib_mut(n: Int) -> Int {\n  let mut acc1 = 0; let mut acc2 = 1; let mut i = 0\n  while i < n  {\n    let t = acc1 + acc2\n    acc1 = acc2;  acc2 = t\n    i = i + 1\n  }\n  acc1\n}\n```",
+      "source_content_hash": "5a335255b74a2bd21d48035622144c7c3a987f012e20c5b95bcc2d7bebdc5a7e",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_2de995af"
+      }
+    },
+    {
+      "segment_id": "50e53dff",
+      "source_content": "## Summary",
+      "source_content_hash": "30ac03ff33731529441be8fbe52a3bd0d4c5ec830e806d54692168ebb7f98ada",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "## まとめ"
+      }
+    },
+    {
+      "segment_id": "f6e7e6a7",
+      "source_content": "In this chapter, we've explored the basics of imperative programming. We've learned about using commands to tell the computer what to do, variables to store values, and loops to repeat actions. Imperative programming is inherently different from functional programming, and it's important to understand the trade-offs between the two. By understanding these concepts, we can choose the right tools for the job and write programs that are both effective and easy to understand.",
+      "source_content_hash": "4bcc1ba1649aed6464c7427c42024d2f00ca1c729e7f41d17b2426b0cab72ae1",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "この章では、命令型プログラミングの基礎を探求しました。コンピュータに何をすべきかを指示するコマンドの使用、値を格納する変数、アクションを繰り返すループについて学びました。命令型プログラミングは関数型プログラミングとは本質的に異なり、両者のトレードオフを理解することが重要です。これらの概念を理解することで、適切なツールを選択し、効果的で理解しやすいプログラムを書くことができます。"
+      }
+    }
+  ],
+  "target_i18n_subpath": "docusaurus-plugin-content-docs/current/07-imperative-programming.md",
+  "last_updated_timestamp": "2025-06-06T05:19:35.748631+00:00",
+  "schema_version": "1.0",
+  "translated_versions": {
+    "ja": "14b99c9aa6330102e946fdd5d5e22f0922de3cb7c066621fe2795e621276a350"
+  }
+}

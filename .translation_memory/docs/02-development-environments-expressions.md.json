@@ -1,0 +1,1332 @@
+{
+  "source_file_path_relative_to_docusaurus_root": "docs/02-development-environments-expressions.md",
+  "source_file_content_hash": "a82cff3ffca8503c0d4c1b959563b8fba2aa09c68cb5441cc2dfd37e24be6bb9",
+  "segments": [
+    {
+      "segment_id": "76e4a56a",
+      "source_content": "# 2. Development Environments & Expressions",
+      "source_content_hash": "80a996fcfe30ab1f4bd279010f11a0ca5cc8d3e3b51096f2946f807fa831a184",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "# 2. 開発環境と式"
+      }
+    },
+    {
+      "segment_id": "adbc947a",
+      "source_content": "## Development Environments",
+      "source_content_hash": "4d42da2659c535fd8869a969591066a64dfa3a98c3422137f5b2eee62e2819f5",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "## 開発環境"
+      }
+    },
+    {
+      "segment_id": "e7ec8f99",
+      "source_content": "Our course is based on MoonBit, a modern, statically-typed, **multi-paradigm** programming language with newbie-friendly lightweight syntax. To learn more about MoonBit, please visit our [website](https://www.moonbitlang.com/).",
+      "source_content_hash": "37229be606285ba9b1398634b800fc017bb89d4bc95c4ca95aa1dd76abcbf2a2",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "本コースは、モダンで静的型付けの**マルチパラダイム**プログラミング言語であるMoonBitをベースとしています。MoonBitは初心者にも優しい軽量な構文を備えています。MoonBitについて詳しく知りたい場合は、[公式ウェブサイト](https://www.moonbitlang.com/)をご覧ください。"
+      }
+    },
+    {
+      "segment_id": "6ef78e84",
+      "source_content": "MoonBit's development tools mainly consist of two parts: the VS Code extension and the command-line tool.",
+      "source_content_hash": "b8feb1617fbe6e0a687559a287667e06a1530a924d4b96da04029c4552c0f597",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "MoonBitの開発ツールは主に2つの部分で構成されています：VS Code拡張機能とコマンドラインツールです。"
+      }
+    },
+    {
+      "segment_id": "53eaf0e1",
+      "source_content": "The extension is based on the widely used editor, VS Code, and provides a coding environment, a language server, and a package-level building tool. The language server provides useful features such as syntax highlighting, variable reference and definition jumping, automatic code completion, and program running and debugging. A package in MoonBit is a structure organizing multiple source files. In a package, functions defined in different source files are mutually accessible, making it easy for developers to work on various projects, especially those of a small scale.",
+      "source_content_hash": "035efebb2bf6e54d8e5524d7450fb93f64e3db43725a1b57e14dfc4447e5b32c",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "拡張機能は広く使われているエディタであるVS Codeを基盤としており、コーディング環境、言語サーバー、パッケージレベルのビルドツールを提供します。言語サーバーは、シンタックスハイライト、変数の参照と定義へのジャンプ、自動コード補完、プログラムの実行とデバッグなどの便利な機能を提供します。MoonBitにおけるパッケージは、複数のソースファイルを整理する構造です。パッケージ内では、異なるソースファイルで定義された関数が相互にアクセス可能であり、特に小規模なプロジェクトで開発者が作業しやすくなっています。"
+      }
+    },
+    {
+      "segment_id": "8ac585fb",
+      "source_content": "The command-line tool provides project-level development support, including building, testing, and dependency management. A project in MoonBit typically consists of multiple mutually-dependent packages. You may also import other packages to use features implemented by other developers.",
+      "source_content_hash": "62e3fea40e7fa68fb40f6577ee3e6b3350255073530aeb179badcac6e660ce48",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "コマンドラインツールは、プロジェクトレベルの開発サポートを提供します。これにはビルド、テスト、依存関係管理が含まれます。MoonBitのプロジェクトは通常、相互に依存する複数のパッケージで構成されます。他の開発者が実装した機能を使用するために、他のパッケージをインポートすることも可能です。"
+      }
+    },
+    {
+      "segment_id": "180bddb1",
+      "source_content": "In later chapters, we will provide a detailed introduction to projects and packages. For now, we will focus on the package level.",
+      "source_content_hash": "65b46e8baab04741ee603284efa38ec6b6097033a79ffcd01847eee309813def",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "後の章では、プロジェクトとパッケージについて詳しく紹介します。今のところ、パッケージレベルに焦点を当てます。"
+      }
+    },
+    {
+      "segment_id": "cf898102",
+      "source_content": "It is worth mentioning that, VS Code offers a zero-install web-based version. Therefore, at least three types of development environments are supported: browser-based environment (e.g., VS Code for the Web), cloud-native environment (e.g., Coding, Gitpod, and GitHub.dev), and local environment. For this course, any one of them is appropriate.",
+      "source_content_hash": "dd5b3ed72b8ebb4e34fc2b59835c6880791526a86600c4c8456658b4ae53c5d7",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "特筆すべきは、VS Codeにはインストール不要のWebベース版が用意されていることです。したがって、少なくとも3種類の開発環境がサポートされています：ブラウザベース環境（例：VS Code for the Web）、クラウドネイティブ環境（例：Coding、Gitpod、GitHub.dev）、ローカル環境です。本コースでは、いずれの環境も適しています。"
+      }
+    },
+    {
+      "segment_id": "3daf1b88",
+      "source_content": "### Browser-Based Environment",
+      "source_content_hash": "d85bbe478b386c022209cf6a6bb35aaa80853e97914ba7480eb219bb98265cd4",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "### ブラウザベース環境"
+      }
+    },
+    {
+      "segment_id": "f6168993",
+      "source_content": "Visit [try.moonbitlang.com](https://try.moonbitlang.com), or click the \"Try\" tab on our [Website](https://moonbitlang.com). Currently, the environment offers various features, including file creation, code execution and sharing. Besides, sample programs are provided for beginners to learn MoonBit.",
+      "source_content_hash": "859b83f480f8fe60a2e60c9b3e3116e96c21e0076058d7aa512eeaa657ae2a18",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "[try.moonbitlang.com](https://try.moonbitlang.com)にアクセスするか、[公式ウェブサイト](https://moonbitlang.com)の「Try」タブをクリックしてください。現在、この環境ではファイル作成、コード実行、共有などのさまざまな機能が提供されています。また、MoonBitを学ぶためのサンプルプログラムも用意されています。"
+      }
+    },
+    {
+      "segment_id": "f5f6d2ce",
+      "source_content": "Currently, this environment does not save user data, including all the files created and edited by users. Therefore, to prevent the loss of valuable code, it is highly recommended to create a local backup.",
+      "source_content_hash": "d816e2ae0f1c553d1891fa76d2600f34a0cdfc87fe6969f2c848eedde8ee5420",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "現在、この環境ではユーザーデータ（ユーザーが作成・編集したすべてのファイルを含む）は保存されません。そのため、貴重なコードを失わないように、ローカルバックアップを作成することを強く推奨します。"
+      }
+    },
+    {
+      "segment_id": "40f9552a",
+      "source_content": "### Cloud-Native Environment",
+      "source_content_hash": "93fafef036f2eb84f1fd92bc6d32b3f37952cf23696486792ea16bb77e21895e",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "### クラウドネイティブ環境"
+      }
+    },
+    {
+      "segment_id": "f2c2bdd0",
+      "source_content": "Cloud-native environments are typically based on remote servers. Unlike traditional servers, they are usually not charged on a monthly basis but rather on-demand.",
+      "source_content_hash": "4de1a91435c4c07f28f619e4fbf23f8b2c085b072d350e068b3648a38b416f9b",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "クラウドネイティブ環境は通常、リモートサーバーを基盤としています。従来のサーバーとは異なり、月額課金ではなくオンデマンドで課金されることが一般的です。"
+      }
+    },
+    {
+      "segment_id": "a76548f8",
+      "source_content": "These servers are provided by different cloud server providers. However, the general setup procedures for a MoonBit development environment remain the same: create or clone a repository, launch the environment, and then install the \"MoonBit Language\" extension.",
+      "source_content_hash": "d4003550330e619ab4cf21efa06a4ed355417dc42b73171d4e155ebc7fa9ef16",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "これらのサーバーはさまざまなクラウドサーバープロバイダーによって提供されています。ただし、MoonBit開発環境の一般的なセットアップ手順は同じです：リポジトリを作成またはクローンし、環境を起動し、「MoonBit Language」拡張機能をインストールします。"
+      }
+    },
+    {
+      "segment_id": "4b1d2d7d",
+      "source_content": "Advanced users may also install the [command-line tools](https://www.moonbitlang.com/download/) or clone the [cloud-native development template](https://github.com/peter-jerry-ye/moonbit-template). For further guidance, please refer to the [_MoonBit's Build System Tutorial_](https://www.moonbitlang.com/docs/build-system-tutorial/).",
+      "source_content_hash": "4b295040ce80cb9d5663921908b30da9c1e1b0e2729b228c3f540e422d9eb1dc",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "上級ユーザーは、[コマンドラインツール](https://www.moonbitlang.com/download/)をインストールするか、[クラウドネイティブ開発テンプレート](https://github.com/peter-jerry-ye/moonbit-template)をクローンすることも可能です。詳細なガイダンスについては、[_MoonBitのビルドシステムチュートリアル_](https://www.moonbitlang.com/docs/build-system-tutorial/)を参照してください。"
+      }
+    },
+    {
+      "segment_id": "48847fd4",
+      "source_content": "### Local Environment",
+      "source_content_hash": "6533b910d3fea92954acac7d69aa7fc2ed6cc778fe9734c2a171cc8dd0553eaa",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "### ローカル環境"
+      }
+    },
+    {
+      "segment_id": "4daf5cdd",
+      "source_content": "To set up a local environment for MoonBit, you can begin by installing [VS Code](https://code.visualstudio.com/) or [VS Codium](https://vscodium.com/) as the code editor. Afterwards, you can follow the same procedure as in the cloud-native environment to install the MoonBit extension and command-line tools.",
+      "source_content_hash": "066b3f8f72e1ae211c60ca637846be7e73ef266c32008a402143d53c6fe2aeb6",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "MoonBitのローカル環境をセットアップするには、まず[VS Code](https://code.visualstudio.com/)または[VS Codium](https://vscodium.com/)をコードエディタとしてインストールします。その後、クラウドネイティブ環境と同様の手順でMoonBit拡張機能とコマンドラインツールをインストールします。"
+      }
+    },
+    {
+      "segment_id": "f422383e",
+      "source_content": "## Expressions",
+      "source_content_hash": "0c077656c3d06fe09f46cbc0e8bc777323472e85aec4af4c7b3b9668dc4486c1",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "## 式"
+      }
+    },
+    {
+      "segment_id": "97ae4a01",
+      "source_content": "Upon setting up the development environment, let us take a look at the classic program from the preceding chapter:",
+      "source_content_hash": "8fce70df1d2afada8e30b4b9eecdbf9ba56a42c5f5dd092377f9301266d98274",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "開発環境をセットアップしたら、前の章で紹介した古典的なプログラムを見てみましょう："
+      }
+    },
+    {
+      "segment_id": "de8f60af",
+      "source_content": "```moonbit\n// top-level function definition\nfn num_water_bottles(num_bottles: Int, num_exchange: Int) -> Int {\n  // local function definition\n  fn consume(num_bottles, num_drunk) {\n    // conditional expression\n    if num_bottles >= num_exchange {\n      // variable binding\n      let num_bottles = num_bottles - num_exchange + 1\n      let num_drunk = num_drunk + num_exchange\n      // function application\n      consume(num_bottles, num_drunk)\n    } else {\n      num_bottles + num_drunk\n    }\n  }\n  consume(num_bottles, 0)\n}\n\n// test block\ntest {\n  // statements\n  assert_eq!(num_water_bottles(9, 3), 13)\n  assert_eq!(num_water_bottles(15, 4), 19)\n}\n```",
+      "source_content_hash": "0b35e1037244ee02eb85ad121826d7930c14dd5721375d1f2cec71cd27f08163",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_de8f60af"
+      }
+    },
+    {
+      "segment_id": "531437ca",
+      "source_content": "In the above program, a top-level function and a test block are defined. In the top-level function, a local function is defined and invoked. The value of the local function is a conditional expression. In the true branch, two variable bindings are defined, and the local function is called; whereas in the false branch, a simple addition operation is executed. In the test block, two test commands are used to judge the correctness of our program.",
+      "source_content_hash": "05a926ba04bf569013f229d8fe710a4c14b3b8fd72b32c477a6658a862583e82",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "上記のプログラムでは、トップレベル関数とテストブロックが定義されています。トップレベル関数内ではローカル関数が定義され、呼び出されています。ローカル関数の値は条件式です。trueブランチでは2つの変数バインディングが定義され、ローカル関数が呼び出されます。一方、falseブランチでは単純な加算演算が実行されます。テストブロックでは、プログラムの正しさを判断するために2つのテストコマンドが使用されています。"
+      }
+    },
+    {
+      "segment_id": "06e24cc0",
+      "source_content": "Since this program does not generate any output, how exactly is it executed?",
+      "source_content_hash": "5dc5db8fe78c4d1e0184bcc12681a3b837cf91eadb6e81b7fa28689c88480e89",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "このプログラムは何も出力を生成しませんが、実際にはどのように実行されるのでしょうか？"
+      }
+    },
+    {
+      "segment_id": "7f71ff2a",
+      "source_content": "In order to write accurate programs, it is essential to understand how programs are executed. Therefore, it is necessary to establish a computational model that comprehends the process. MoonBit programs can be viewed using an expression-oriented programming approach. They are composed of expressions that represent values, and their execution involves reducing these expressions.",
+      "source_content_hash": "5e88aa2ba7584a785887a9bbde2d6b563b6a8c94694b78b53eca6b47bac21e71",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "正確なプログラムを書くためには、プログラムがどのように実行されるかを理解することが不可欠です。そのためには、その過程を理解する計算モデルを確立する必要があります。MoonBitのプログラムは式指向プログラミングの観点から見ることができます。プログラムは値を表す式で構成されており、その実行はこれらの式を簡約することによって行われます。"
+      }
+    },
+    {
+      "segment_id": "147e8550",
+      "source_content": "In contrast, imperative programming consists of statements that may modify the program's state. For example, statements may include \"create a variable named `x`\", \"assign `5` to `x`\", or \"let `y` point to `x`\", etc.",
+      "source_content_hash": "e5bda2f595ed247118325ba5cd1c19a507fe16ffaa722c5c55d529d0177f0ec0",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "対照的に、命令型プログラミングはプログラムの状態を変更する可能性のある文で構成されています。例えば、「`x`という名前の変数を作成する」、「`x`に`5`を代入する」、「`y`を`x`にポイントさせる」などの文が含まれます。"
+      }
+    },
+    {
+      "segment_id": "883231d4",
+      "source_content": "In the upcoming chapters, we will primarily focus on expression-oriented programming, while further information regarding imperative programming will be introduced in future chapters.",
+      "source_content_hash": "bb57d8600903d9bb77ff76fb75216e9297b9c1684937ed0734f87f0ddb15179d",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "今後の章では主に式指向プログラミングに焦点を当てますが、命令型プログラミングに関する詳細な情報は後の章で紹介されます。"
+      }
+    },
+    {
+      "segment_id": "b051b70c",
+      "source_content": "### Types, Values, and Expressions",
+      "source_content_hash": "e1049a816db14cbf02b8f945afb654aeff154ca37d990b675278e00017a17de2",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "### 型、値、式"
+      }
+    },
+    {
+      "segment_id": "d0dd855b",
+      "source_content": "A **type** corresponds to a set of **values**. For instance, `Int` represents a subset of integers, `Double` represents a subset of real numbers, and `String` represents a collection of strings.",
+      "source_content_hash": "a0317b2aada59ea9fceb85998897e8b78652ffc1a6bd88b21c8ecc41448d06e1",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "**型**は**値**の集合に対応します。例えば、`Int`は整数の部分集合、`Double`は実数の部分集合、`String`は文字列の集合を表します。"
+      }
+    },
+    {
+      "segment_id": "7736989b",
+      "source_content": "An **expression** consists of value-based **operations** and can be reduced to a value. Expressions can be nested using parentheses.",
+      "source_content_hash": "9403476046f0ae9a2c8d215bdb18968ee18bc01c7aec7c20b09614d58416a640",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "**式**は値に基づく**操作**で構成され、値に簡約することができます。式は括弧を使用してネストすることができます。"
+      }
+    },
+    {
+      "segment_id": "6270d577",
+      "source_content": "Following are some examples:",
+      "source_content_hash": "4a83f39c64c08d0711d66dbf9e50d89ef5cb9ca0b761e97f0c2195c5fd27c034",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "以下にいくつかの例を示します："
+      }
+    },
+    {
+      "segment_id": "3e4bc1c5",
+      "source_content": "| Type | Value | Operation | Expression |\n|-----|------|----------|-----------|\n|`Int`|`-1` `0` `1` `2`|`+` `-` `*` `/`|`5` `(3 + y * x)`|\n|`Double`|`0.12` `3.1415`|`+` `-` `*` `/`|`3.0 * (4.0 * a)`|\n|`String`|`\"hello\"` `\"Moonbit\"`|`+`|`\"Hello, \" + \"MoonBit\"`|\n|`Bool`|`true` `false`|`&&` `\\|\\|` `not()`|`not(b1) \\|\\| b2`|",
+      "source_content_hash": "10b0af49b93f6dba94c36c4a39c82c107a8b7b634d590607be45517700301692",
+      "node_type": "table",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_3e4bc1c5"
+      }
+    },
+    {
+      "segment_id": "ec8ed2a1",
+      "source_content": "### Static and Dynamic Type Systems",
+      "source_content_hash": "23edc83ef64a1c1a41db33917b55c568e162ea4f7880dcb52623c39a6cfddf95",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "### 静的型システムと動的型システム"
+      }
+    },
+    {
+      "segment_id": "51867d16",
+      "source_content": "In static type systems, type checking is performed **before** the program is executed, whereas in dynamic type systems, type checking occurs **during** program execution. In other words, the key distinction between dynamic and static type systems lies in whether the program is running or not.",
+      "source_content_hash": "0c2ad6cae41db4814dd79401def52ea2691091d482e3ef4e29c673328ed7cdf1",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "静的型システムでは、型チェックはプログラムが実行される**前に**行われますが、動的型システムでは、型チェックはプログラムの実行**中に**行われます。言い換えると、動的型システムと静的型システムの主な違いは、プログラムが実行中かどうかにあります。"
+      }
+    },
+    {
+      "segment_id": "785750ac",
+      "source_content": "MoonBit has a static type system, where its compiler performs type checking before runtime. This approach aims to minimize the likelihood of encountering runtime errors stemming from the execution of operations on incompatible data types, such as attempting arithmetic calculations on Boolean values. By conducting type checking in advance, MoonBit strives to prevent program interruptions and ensure accurate outcomes.",
+      "source_content_hash": "7be99759322d549d36ec55893c94af90ff827042e942e7a820a3d30ff0567347",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "MoonBitは静的型システムを採用しており、そのコンパイラは実行前に型チェックを行います。このアプローチは、ブール値に対して算術計算を試みるなど、互換性のないデータ型に対する操作の実行から生じるランタイムエラーの可能性を最小限に抑えることを目的としています。事前に型チェックを行うことで、MoonBitはプログラムの中断を防ぎ、正確な結果を保証します。"
+      }
+    },
+    {
+      "segment_id": "82e90254",
+      "source_content": "In MoonBit, each **identifier** can be associated with a unique type with a colon `:`. For example,",
+      "source_content_hash": "3b4a38ccba08cd58b77fc70bd55a3a2b8e7f5556523c7777e9c02b94fcb24242",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "MoonBitでは、各**識別子**はコロン`:`を使用して一意の型と関連付けることができます。例えば、"
+      }
+    },
+    {
+      "segment_id": "dee20070",
+      "source_content": "- `x: Int`\n- `a: Double`\n- `s: String`",
+      "source_content_hash": "f4b7f1536a0b8d4c205977134103441e328587cc9f2c315c68a0a02c51dc30d7",
+      "node_type": "list",
+      "translatable": true,
+      "translations": {
+        "ja": "- `x: Int`\n- `a: Double`\n- `s: String`"
+      }
+    },
+    {
+      "segment_id": "d79a4831",
+      "source_content": "Each MoonBit **expression** also has a unique type determined by its sub-expressions.",
+      "source_content_hash": "b333ae0e0ec929cc526d69bf8f8067376d82ecebf4d09f6dd880bedcca73fb57",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "各MoonBitの**式**も、その部分式によって決定される一意の型を持っています。"
+      }
+    },
+    {
+      "segment_id": "2838eb68",
+      "source_content": "![Type Inference Example height:200px](/pics/well-typed-expression.drawio.webp)",
+      "source_content_hash": "720c54388943d3613cc720a6099bd31f21532596fbd43fa8e4da1e5ed9cb5fd0",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "![型推論の例 height:200px](/pics/well-typed-expression.drawio.webp)"
+      }
+    },
+    {
+      "segment_id": "4be28ed1",
+      "source_content": "As shown, the identifier `a` is of type `Double`, so it can be added to a `Double` value, i.e., 0.2. After that, the `to_int()` function converts the sum to `Int`, enabling it to be added to `x`, which is also of type `Int`. Since the sequence of operations yields an integer as its final value, the expression is of type `Int`.",
+      "source_content_hash": "7978027e9c8ee4d158f727f20ae85d09f7b17698fe42987c5d6be2749c563fd1",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "図に示されているように、識別子`a`は`Double`型であるため、`Double`値（つまり0.2）に加算することができます。その後、`to_int()`関数はその和を`Int`に変換し、`x`（これも`Int`型）に加算できるようにします。操作のシーケンスの結果として最終的な値が整数になるため、この式は`Int`型です。"
+      }
+    },
+    {
+      "segment_id": "0e80209e",
+      "source_content": "The MoonBit compiler uses **type inference** before runtime to ensure correct type usage, and our development tools can also detect type errors and show real-time suggestions during development.",
+      "source_content_hash": "c161f8fa38a4854f68375adc0745e8193606b51fecf21c97bcc792cda43ad58b",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "MoonBitコンパイラは実行前に**型推論**を使用して型の正しい使用を保証し、開発ツールは開発中に型エラーを検出し、リアルタイムの提案を表示することもできます。"
+      }
+    },
+    {
+      "segment_id": "7bc8bb24",
+      "source_content": "![Type Error Example height:200px](/pics/not-well-typed-expression.drawio.webp)",
+      "source_content_hash": "c44e9dfaa3f3e249ac1b4e896890a930251d67f1eb94ce9af9cb37b13b8e134f",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "![型エラーの例 height:200px](/pics/not-well-typed-expression.drawio.webp)"
+      }
+    },
+    {
+      "segment_id": "6693c38c",
+      "source_content": "As shown, the editor highlights type errors using red squiggly lines. In this case, the error arises from attempting to directly add a string `s` and a sub-expression of type `Int`.",
+      "source_content_hash": "b03d27302429db7da491e47855c60f9698c473dfe47094c769bee3a86df4e2ff",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "図に示されているように、エディタは赤い波線を使用して型エラーを強調表示します。この場合、エラーは文字列`s`と`Int`型の部分式を直接加算しようとしたことから発生しています。"
+      }
+    },
+    {
+      "segment_id": "8172a0a5",
+      "source_content": "### Basic Data Types",
+      "source_content_hash": "659b61adf3f003bcdf728047eb6c9c63c7dadcd38abf6de34390405c34b60334",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "### 基本データ型"
+      }
+    },
+    {
+      "segment_id": "1b4de6df",
+      "source_content": "To engage in expression-oriented programming with MoonBit, it is essential to understand the types of values that the language supports. This chapter will introduce basic data types, including Boolean values, integers, floating-point numbers, characters, strings, and tuples. Future chapters will delve into additional data types.",
+      "source_content_hash": "1979f66f6c6c6563b4f170bfd611d92aecafed80522cdc22655a66323c2f344a",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "MoonBitで式指向プログラミングを行うためには、言語がサポートする値の型を理解することが不可欠です。この章では、ブール値、整数、浮動小数点数、文字、文字列、タプルなどの基本データ型を紹介します。追加のデータ型については今後の章で詳しく説明します。"
+      }
+    },
+    {
+      "segment_id": "1958bc43",
+      "source_content": "While this chapter will not explore the underlying implementation of data, such as two's complement, related materials are provided for those interested in further understanding the topic.",
+      "source_content_hash": "ba680562b389624a8e25a25414dcbf034d6ef2f309edf69ed48efc876161b7c6",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "この章では、2の補数などのデータの内部実装については探求しませんが、このトピックをさらに理解したい人のために関連資料を提供します。"
+      }
+    },
+    {
+      "segment_id": "c7fa1e8d",
+      "source_content": "#### Boolean Values",
+      "source_content_hash": "03bbcedfbe8c74e2eab0a2225333c641164fe689c922e75f36d4f540b9bb9349",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "#### ブール値"
+      }
+    },
+    {
+      "segment_id": "a6c928a1",
+      "source_content": "The first data type we will introduce here is the Boolean value, also known as a logical value. It is named after the mathematician George Boole, who is credited with inventing Boolean algebra.",
+      "source_content_hash": "d41e24072bb39b180830ff28dcfedf032a889f23c5b5dcfe8c77fd662876aad4",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "ここで紹介する最初のデータ型はブール値（論理値）です。これは、ブール代数を発明した数学者ジョージ・ブールにちなんで名付けられました。"
+      }
+    },
+    {
+      "segment_id": "b6152880",
+      "source_content": "In MoonBit, the type for Boolean values is `Bool`, and it can only have two possible values: `true` and `false`. The following are three basic operations it supports:",
+      "source_content_hash": "38ef06e6aa7e0243e8434980a5585b12612c2d992cf41c5ba9f5daa2b267bd98",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "MoonBitにおけるブール値の型は`Bool`であり、取り得る値は`true`と`false`の2つだけです。以下に、サポートされている3つの基本操作を示します："
+      }
+    },
+    {
+      "segment_id": "40a587f3",
+      "source_content": "- NOT: true becomes false, false becomes true.\n  - Example: `not(true) == false`\n- AND: both must be true to be true.\n  - Example: `true && false == false`\n- OR: both must be false to be false.\n  - Example: `true || false == true`",
+      "source_content_hash": "863e407e8503eb7a5e3da0e56547e34597a6495e7bcf4ea7ba6f0266dbef9513",
+      "node_type": "list",
+      "translatable": true,
+      "translations": {
+        "ja": "- NOT（否定）：trueはfalseに、falseはtrueになる。\n  - 例：`not(true) == false`\n- AND（論理積）：両方がtrueの場合のみtrueとなる。\n  - 例：`true && false == false`\n- OR（論理和）：両方がfalseの場合のみfalseとなる。\n  - 例：`true || false == true`"
+      }
+    },
+    {
+      "segment_id": "692c6053",
+      "source_content": "In MoonBit, `==` represents a comparison between values. In the above examples, the left-hand side is an expression, and the right-hand side is the expected result. In other words, these examples themselves are expressions of type `Bool`, and we expect their values ​​to be `true`.",
+      "source_content_hash": "780e5ae97d7d716571284f6d54c00860d8c575261375701eda03f4b0446c3d53",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "MoonBitでは、`==`は値の比較を表します。上記の例では、左辺が式、右辺が期待される結果です。つまり、これらの例自体が`Bool`型の式であり、その値が`true`になることを期待しています。"
+      }
+    },
+    {
+      "segment_id": "383fbdd2",
+      "source_content": "The `||` and `&&` operators are short-circuited. This means that if the outcome of the entire expression can be determined, the calculation will be halted, and the result will be immediately returned. For instance, in the case of `true || ...`, it is evident that `true || any value` will always yield true. Therefore, only the left side of the `||` operator needs to be evaluated. Similarly, when evaluating `false && ...`, since it is known that `false && any value` will always be false, the right side is not evaluated either. In this case, if the right side of the operator contains side effects, those side effects may not occur.",
+      "source_content_hash": "442c3db02a7f2873b82d47bd6019ee193d3168c41aed66d078d981370d8ec51a",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "`||`と`&&`演算子は短絡評価されます。これは、式全体の結果が確定した時点で計算が停止され、即座に結果が返されることを意味します。例えば、`true || ...`の場合、`true || 任意の値`は常にtrueとなるため、`||`演算子の左側だけが評価されます。同様に、`false && ...`を評価する場合、`false && 任意の値`は常にfalseとなるため、右側は評価されません。この場合、演算子の右側に副作用を含む式があっても、その副作用は発生しない可能性があります。"
+      }
+    },
+    {
+      "segment_id": "14bc6b75",
+      "source_content": "Quiz: How to define XOR (true if only one is true) using OR, AND, and NOT?",
+      "source_content_hash": "a8dc2a8c9a2d82bea62412e3a83d4acd27246004817a1a9e4388c7e7cff2a970",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "クイズ：OR、AND、NOTを使用してXOR（排他的論理和：片方だけがtrueの場合にtrue）をどのように定義できますか？"
+      }
+    },
+    {
+      "segment_id": "5dba1427",
+      "source_content": "#### Integers",
+      "source_content_hash": "17f422557f4da0dc894ff6cd08b0f7e545ad5d65c055b1bb677823b4cf5c69a9",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "#### 整数"
+      }
+    },
+    {
+      "segment_id": "534ac82e",
+      "source_content": "In mathematics, the set of integers is denoted as $\\mathbb{Z}$ and is considered a countably infinite set. However, in computer science, integers in programming languages typically have a limited range due to hardware constraints.",
+      "source_content_hash": "8b45010d1b913674897b5a87949db2f8349faaf4b7fc08bfe82f1812d7f53377",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "数学では、整数の集合は$\\mathbb{Z}$で表され、可算無限集合と見なされます。しかし、コンピュータサイエンスでは、プログラミング言語の整数は通常、ハードウェアの制約により有限の範囲を持ちます。"
+      }
+    },
+    {
+      "segment_id": "a9c2a503",
+      "source_content": "In MoonBit, there are two integer types, each with a different range:",
+      "source_content_hash": "e681f36c6e46eaa4a8fdd24de79036a7c736c190b133b3813b2467b86e4cc7b1",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "MoonBitには、範囲が異なる2つの整数型があります："
+      }
+    },
+    {
+      "segment_id": "17ca27eb",
+      "source_content": "- Integer `Int`: ranging from $-2^{31}$ to $2^{31}-1$\n- Long integer `Int64`: ranging from $-2^{63}$ to $2^{63}-1$",
+      "source_content_hash": "66b07f03541e8d97930447152b70b7a86f4d022020d2ae1fe153efad103d9538",
+      "node_type": "list",
+      "translatable": true,
+      "translations": {
+        "ja": "- 整数`Int`：$-2^{31}$から$2^{31}-1$までの範囲\n- 長整数`Int64`：$-2^{63}$から$2^{63}-1$までの範囲"
+      }
+    },
+    {
+      "segment_id": "be17ccc3",
+      "source_content": "When dividing two integers in MoonBit, the result is still an integer, representing the quotient. If the division involves negative integers, the operation is performed on their absolute values, and then a negative sign may be assigned to the result. For instance, when dividing $-4$ by $3$, the result is $-1$. However, dividing by zero is still not allowed and will cause a runtime error.",
+      "source_content_hash": "3ed0d8e001cd7db173e671775e6d3af52c49af0c7c8f9b6e539e38922b709ce9",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "MoonBitで2つの整数を除算する場合、結果は依然として整数（商）となります。負の整数が含まれる場合、操作は絶対値に対して行われ、その後結果に負号が付与される場合があります。例えば、$-4$を$3$で割ると、結果は$-1$になります。ただし、ゼロ除算は許可されておらず、実行時エラーが発生します。"
+      }
+    },
+    {
+      "segment_id": "ad3e22c6",
+      "source_content": "Since integers have a limited range, performing operations that exceed this range can lead to an **overflow**. In such cases, the result will still be a value within the range, but it may not be the expected result. For example, $2147483647 + 1$ results in $-2147483648$.",
+      "source_content_hash": "2d8b27f8db28141e36597597b28c65aa99968806884035eff3700b25fa91c18f",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "整数には有限の範囲があるため、この範囲を超える操作を行うと**オーバーフロー**が発生する可能性があります。この場合、結果は依然として範囲内の値になりますが、期待通りの結果ではないかもしれません。例えば、$2147483647 + 1$は$-2147483648$という結果になります。"
+      }
+    },
+    {
+      "segment_id": "3e8f45da",
+      "source_content": "In MoonBit, integers can only perform arithmetic operations with integers, and long integers can only perform arithmetic operations with long integers. However, we can use `to_int64()` or `to_int()` to perform type conversion. Besides, when we need to define an `Int64` literal, we can use the suffix `L` to distinguish it from an `Int` literal.",
+      "source_content_hash": "fe22e07db183f66b2c7e2e4bfe6134c3f2b1516058de7392064724360fd64064",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "MoonBitでは、整数は整数とのみ、長整数は長整数とのみ算術演算が可能です。ただし、`to_int64()`や`to_int()`を使用して型変換を行うことができます。また、`Int64`リテラルを定義する必要がある場合、`Int`リテラルと区別するために接尾辞`L`を使用できます。"
+      }
+    },
+    {
+      "segment_id": "4c787c52",
+      "source_content": "It is important to note that if we need to call a function on an integer, we must wrap it in parentheses. For example, `(100).to_int64()` will convert $100$ of type `Int` to $100$ of type `Int64`.",
+      "source_content_hash": "1a35ccbd11a8ee2e251b2fbc184e25263a4b9b44869efcccf47aeb28b8fc9d36",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "注意点として、整数に対して関数を呼び出す必要がある場合、括弧で囲む必要があります。例えば、`(100).to_int64()`は、`Int`型の$100$を`Int64`型の$100$に変換します。"
+      }
+    },
+    {
+      "segment_id": "63565425",
+      "source_content": "Quiz: How to get the average of two positive `Int` values? Be cautious of overflow!",
+      "source_content_hash": "4ba397eaf91fcefba78805e474b70b62cb4309f785df726dda7aa99e536bdfb0",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "クイズ：2つの正の`Int`値の平均をどのように取得しますか？オーバーフローに注意してください！"
+      }
+    },
+    {
+      "segment_id": "c6b2ca77",
+      "source_content": "#### Floating-Point Numbers",
+      "source_content_hash": "57b54c681a54a54ab12c88ceda49abf8ac99af3a2f6ffc81fe62c37a1feef53b",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "#### 浮動小数点数"
+      }
+    },
+    {
+      "segment_id": "dce16ab4",
+      "source_content": "Just like integers have a limited range, computers can only represent finite decimals of floating-point numbers and approximate their values. Internally, they are represented as $b \\times 2^e$ where the significand $b$ and the exponent $e$ are both integers. Thus, in MoonBit, [`0.1 + 0.2 != 0.3`](https://try.moonbitlang.com/#02ce0b43).",
+      "source_content_hash": "fd0cc2d0b94e7d1eca57a42459b234946d62f3ca60a4a52d540ef5b0b8119192",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "整数と同様に有限の範囲を持つように、コンピュータは浮動小数点数の有限小数しか表現できず、その値を近似します。内部的には、仮数$b$と指数$e$がともに整数である$b \\times 2^e$として表現されます。したがって、MoonBitでは[`0.1 + 0.2 != 0.3`](https://try.moonbitlang.com/#02ce0b43)となります。"
+      }
+    },
+    {
+      "segment_id": "6f08f877",
+      "source_content": "In MoonBit, the floating-point type is double-precision: `Double`. It cannot be mixed with other types in calculations. Therefore, `-1.2 + 1` will result in an error. As a solution, we can either use `(1).to_double()` to convert `1` from `Int` to `Double`, or use `(-1.2).to_int()` to convert `-1.2` from `Double` to `Int`. The latter will round off the decimal part of the floating point number, so `-1.2` will be converted to `-1`.",
+      "source_content_hash": "c2e629559afc38be33edec0987bd633000a82fc8d4e7f990fe679da1ee2c0c16",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "MoonBitにおける浮動小数点型は倍精度の`Double`です。他の型との計算では混在できません。そのため、`-1.2 + 1`はエラーになります。解決策として、`(1).to_double()`で`Int`から`Double`へ変換するか、`(-1.2).to_int()`で`Double`から`Int`へ変換できます。後者の場合、浮動小数点数の小数部分は切り捨てられるため、`-1.2`は`-1`に変換されます。"
+      }
+    },
+    {
+      "segment_id": "2dbfc5f7",
+      "source_content": "Quiz: How to compare `0.1 + 0.2` with `0.3` using `Int` and `Double` conversions?",
+      "source_content_hash": "63d468c0a002a6e2cb358bd20985fe872f2e5a36ebed6a09db1e25d44f614658",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "クイズ: `Int`と`Double`の変換を使って、`0.1 + 0.2`と`0.3`を比較するにはどうすればよいでしょうか？"
+      }
+    },
+    {
+      "segment_id": "3f77c6a0",
+      "source_content": "#### Characters and Strings",
+      "source_content_hash": "66c037d534fcf28c4ad4c21ef05e30878e3f09358c41b8743f149c988914f7c2",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "#### 文字と文字列"
+      }
+    },
+    {
+      "segment_id": "39f476dc",
+      "source_content": "Roughly speaking, in computer science, the term \"characters\" refers to various symbols and graphemes, including letters, numbers, East Asian ideographs, and other graphical elements. On the other hand, \"strings\" are sequences of characters.",
+      "source_content_hash": "0ecd4141658451be879615fdcbe7180c3ab3b0188424990c36e7a28db8c31230",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "コンピュータサイエンスにおいて、「文字」とは様々な記号や書記素（字母、数字、東アジアの表意文字、その他の図形的要素）を指します。一方、「文字列」は文字の連続したシーケンスです。"
+      }
+    },
+    {
+      "segment_id": "827eb9a3",
+      "source_content": "In MoonBit, the character type is represented by `Char` and its literals are enclosed in single quotes, e.g., `'a'`. The string type is represented by `String` and its literals are enclosed in double quotes, e.g., `\"Hello!\"`.",
+      "source_content_hash": "86c51471cd2608e3eac485d17be43632c42ec33a6f881b1dfbe99042beaffd83",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "MoonBitでは、文字型は`Char`で表され、リテラルは単一引用符で囲みます（例: `'a'`）。文字列型は`String`で表され、リテラルは二重引用符で囲みます（例: `\"Hello!\"`）。"
+      }
+    },
+    {
+      "segment_id": "62d066b0",
+      "source_content": "In computer science, characters are mapped to numbers through encoding. Various encoding schemes have been used throughout history, and even within the same period, different encoding schemes may be employed in different occasions. One of the most commonly used encoding scheme is the American Standard Code for Information Interchange (ASCII) released in 1963. ASCII defines the mapping of Latin characters and common symbols to the range of 0 to 127. For instance, the capital letters 'A' to 'Z' correspond to the numbers 65 to 90.",
+      "source_content_hash": "0fc75b784336d4cbfdeb00e4cbe90dc984ff63dfe4d6127e8994790c151b03ea",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "コンピュータサイエンスでは、文字はエンコーディングを通じて数値にマッピングされます。歴史的に様々なエンコーディング方式が使用され、同じ時期でも異なる方式が使われることがあります。最も一般的なエンコーディングの一つは、1963年にリリースされたASCII（American Standard Code for Information Interchange）です。ASCIIはラテン文字と一般的な記号を0から127の範囲にマッピングします。例えば、大文字の'A'から'Z'は65から90に対応します。"
+      }
+    },
+    {
+      "segment_id": "89cf7bac",
+      "source_content": "Subsequently, Unicode was introduced with multiple variants like UTF-8 and UTF-16. It has expanded upon the ASCII standard by incorporating characters from other writing systems. For example, in Unicode, the Chinese characters \"月\" and \"兔\" correspond to the numbers 26376 and 20820, respectively.",
+      "source_content_hash": "3a6908101b9e95c533629ca37660409330519e21680878978110c3e28e1b1364",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "その後、Unicodeが導入され、UTF-8やUTF-16などの複数のバリアントがあります。UnicodeはASCII標準を拡張し、他の書記体系の文字を含めています。例えば、Unicodeでは漢字の「月」と「兔」はそれぞれ26376と20820に対応します。"
+      }
+    },
+    {
+      "segment_id": "808b0414",
+      "source_content": "MoonBit's internal character encoding scheme is UTF-16, based on which we can perform type conversion between characters and integers. For example, `Char::from_int(65)` results in `'A'`.",
+      "source_content_hash": "4cb03c7c1caf9760d5ef54bb44553db6ea59c93966b795f709e7e0b4a5ecfccd",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "MoonBitの内部文字エンコーディングはUTF-16を基にしており、文字と整数の間で型変換が可能です。例えば、`Char::from_int(65)`は`'A'`になります。"
+      }
+    },
+    {
+      "segment_id": "61a78cbe",
+      "source_content": "It is important to note that each character in MoonBit corresponds strictly to a code unit of UTF-16. Therefore, `\"MoonBit月兔\".get(7) == '月'` because the character `'月'` corresponds to a single code unit, while `\"🌕\".length() == 2` since the character `'🌕'` has two code units.",
+      "source_content_hash": "4e7ebeceff656d9672dbf6e1d221d323fb0d4ef11a5858c6bf79fa7d5f9bc56c",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "重要な点として、MoonBitの各文字はUTF-16のコードユニットに厳密に対応します。そのため、`\"MoonBit月兔\".get(7) == '月'`となります（文字`'月'`は単一のコードユニットに対応）。一方、`\"🌕\".length() == 2`となります（文字`'🌕'`は2つのコードユニットを持ちます）。"
+      }
+    },
+    {
+      "segment_id": "2b5df263",
+      "source_content": "#### Tuples",
+      "source_content_hash": "7b85baddb39399b3afab6b0db53072d7d9e4b984b2b4c7b63f676ce2e4836830",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "#### タプル"
+      }
+    },
+    {
+      "segment_id": "e29bd639",
+      "source_content": "Sometimes, it is necessary to represent data types that combine multiple pieces of information. For instance, a date can be represented by three numbers, and a person's personal information may include their name and age. In such cases, tuples can be used to combine data of different types with a fixed length. Tuples allow us to group together multiple values into a single entity.",
+      "source_content_hash": "8ca02a7ef08e68dee72dd163b36b1ff1a0fbddfd1ac359dcf0e65c725ef64895",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "複数の情報を組み合わせたデータ型を表現する必要がある場合があります。例えば、日付は3つの数字で表せますし、個人情報は名前と年齢を含むかもしれません。このような場合、異なる型のデータを固定長で組み合わせるためにタプルを使用できます。タプルを使うと、複数の値を単一のエンティティにまとめられます。"
+      }
+    },
+    {
+      "segment_id": "b7b9c9f6",
+      "source_content": "- `(2023, 10, 24): (Int, Int, Int)`\n- `(\"Bob\", 3): (String, Int)`",
+      "source_content_hash": "27c8af468625455f959fd7a2b78cf24fc4295ae02dbedebefdb01093ef7737cc",
+      "node_type": "list",
+      "translatable": true,
+      "translations": {
+        "ja": "- `(2023, 10, 24): (Int, Int, Int)`\n- `(\"Bob\", 3): (String, Int)`"
+      }
+    },
+    {
+      "segment_id": "5cf1bce4",
+      "source_content": "We can access the data by using zero-based indexing.",
+      "source_content_hash": "51c858830ea90647068c3555b04d47cf04484241dcb5789f1403ff5c73f8c1ae",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "データには0ベースのインデックスを使ってアクセスできます。"
+      }
+    },
+    {
+      "segment_id": "92dd525e",
+      "source_content": "- `(2023, 10, 24).0 == 2023`\n- `(2023, 10, 24).1 == 10`",
+      "source_content_hash": "e456a7bb21a7305ccabdeca4100c2e287a45cf92abb1acbc73b4c3355b94da6e",
+      "node_type": "list",
+      "translatable": true,
+      "translations": {
+        "ja": "- `(2023, 10, 24).0 == 2023`\n- `(2023, 10, 24).1 == 10`"
+      }
+    },
+    {
+      "segment_id": "6d457467",
+      "source_content": "#### Unit",
+      "source_content_hash": "80833102f0c58dd546430260a8e03cb832e17e906d13fa09a426ff18a7daeaac",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "#### Unit型"
+      }
+    },
+    {
+      "segment_id": "6fad5db5",
+      "source_content": "In MoonBit, the `Unit` type represents a singular value denoted as `()`. Though seemingly useless, it holds significant implications as it enables the treatment of statements as expressions: in MoonBit, all statements evaluate to `()`.",
+      "source_content_hash": "3856a126f37be16292a5c3f4222f808bdd5bb93f0263208c8617095ad056d1e9",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "MoonBitでは、`Unit`型は`()`で表される単一の値を表します。一見無用に見えますが、重要な意味を持ちます。これは文を式として扱えるようにするためです：MoonBitでは、すべての文は`()`に評価されます。"
+      }
+    },
+    {
+      "segment_id": "dfa23ddf",
+      "source_content": "#### Other Data Types",
+      "source_content_hash": "e73b3f9a5a37b83eccefb71b992f8d7090bb40e1b01d15975df76c3883bfca3a",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "#### その他のデータ型"
+      }
+    },
+    {
+      "segment_id": "f2c67ca5",
+      "source_content": "MoonBit has a rich type system, which includes many other types that we have not yet discussed, such as function types and list types. These types will be explored in detail in future chapters.",
+      "source_content_hash": "dbab6a5c7927a46368ded12aabfbb56743153b3ed4882de88e0464a5ad564c34",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "MoonBitには豊富な型システムがあり、まだ説明していない多くの型（関数型やリスト型など）が含まれています。これらの型については、今後の章で詳しく説明します。"
+      }
+    },
+    {
+      "segment_id": "4d7a4554",
+      "source_content": "### Expression Evaluation",
+      "source_content_hash": "8c525f8a841f35c72e28b37e7ed212fbf8d02defeb9d53a6ddf44a54a37e9d28",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "### 式の評価"
+      }
+    },
+    {
+      "segment_id": "6ac93c98",
+      "source_content": "#### Reduction vs Execution",
+      "source_content_hash": "47740558be32a12dde817939acebd26c2639ffb9f8091126f277b89765b1af56",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "#### 簡約 vs 実行"
+      }
+    },
+    {
+      "segment_id": "b4204c03",
+      "source_content": "MoonBit expressions can be seen as a way of representing **values**, and its evaluation can be seen as a series of **computations** or **reductions**. In contrast, imperative programming can be seen as executing a series of **actions** or **commands**, where each command modifies the state of the machine, e.g.,",
+      "source_content_hash": "520ed81d2060433091917b821c8d59f2777567fab9f06f0098fe20d7ec215a2b",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "MoonBitの式は**値**を表現する方法と見なすことができ、その評価は一連の**計算**または**簡約**と見なすことができます。一方、命令型プログラミングは一連の**アクション**または**コマンド**を実行することと見なすことができ、各コマンドはマシンの状態を変更します。例えば、"
+      }
+    },
+    {
+      "segment_id": "72366150",
+      "source_content": "- Create pointers `x` and `y` and allocate memory, set `x` to 3, set `y` to 4.\n- Set `y` to point to `x`.\n- Increment `x`.",
+      "source_content_hash": "4e5fec7c8062939c3d79f7f5abb95eda884f0575bb673f09d82a41b71a2e122c",
+      "node_type": "list",
+      "translatable": true,
+      "translations": {
+        "ja": "- ポインタ`x`と`y`を作成してメモリを割り当て、`x`を3に、`y`を4に設定する。\n- `y`を`x`を指すように設定する。\n- `x`をインクリメントする。"
+      }
+    },
+    {
+      "segment_id": "b3890715",
+      "source_content": "```mermaid\nflowchart LR\n  subgraph G1[Memory]\n    direction RL\n    G1A1[x]-->G1A2[3]\n    G1B1[y]-->G1B2[4]\n  end\n  subgraph G2[Memory]\n    direction RL\n    G2A1[x]-->G2A2[3]\n    G2B1[y]-->G2A2\n  end\n  subgraph G3[Memory]\n    direction RL\n    G3A1[x]-->G3A2[4]\n    G3B1[y]-->G3A2\n  end\n  G1==>G2\n  G2==>G3\n```",
+      "source_content_hash": "982a7fdd9c475bf32737b7a09ef38bf60faaa867302619b6fed5f77aa91b0b1c",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_b3890715"
+      }
+    },
+    {
+      "segment_id": "228d01d5",
+      "source_content": "We can denote the reduction of an $\\texttt{<expression>}$ to a $\\texttt{<value>}$ as $\\texttt{<expression>} \\Rightarrow \\texttt{<value>}$. For example,",
+      "source_content_hash": "2a3380fcd96b13217d2922f14aa10f27bfb116c2fb899bb1eba458e587f03a40",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "$\\texttt{<式>}$の$\\texttt{<値>}$への簡約を$\\texttt{<式>} \\Rightarrow \\texttt{<値>}$と表記できます。例えば、"
+      }
+    },
+    {
+      "segment_id": "15dde9bf",
+      "source_content": "- $3 \\Rightarrow 3$ (the reduction result of a value is itself)\n- $3 + 4 \\Rightarrow 7$\n- $2 * (4 + 5) \\Rightarrow 18$\n- $\\mathtt{num\\_water\\_bottles}(9, 3) \\Rightarrow 13$",
+      "source_content_hash": "9948c023c09023baac3d8396fd5dfa67565231bb2466c81c4927aa69ec5d5b9a",
+      "node_type": "list",
+      "translatable": true,
+      "translations": {
+        "ja": "- $3 \\Rightarrow 3$（値の簡約結果はそれ自身）\n- $3 + 4 \\Rightarrow 7$\n- $2 * (4 + 5) \\Rightarrow 18$\n- $\\mathtt{num\\_water\\_bottles}(9, 3) \\Rightarrow 13$"
+      }
+    },
+    {
+      "segment_id": "d119b75c",
+      "source_content": "Also, we can break down the process of decomposition $\\Rightarrow$ reduction into **step-by-step** computation, denoted as $\\mapsto$. For example,",
+      "source_content_hash": "64dbedc22b69ae54b4ca16363f69cd1af926767553e5bb70f2fe2c852fc20777",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "また、分解$\\Rightarrow$簡約のプロセスを**ステップバイステップ**の計算に分解でき、$\\mapsto$と表記します。例えば、"
+      }
+    },
+    {
+      "segment_id": "6dc3e423",
+      "source_content": "Therefore, $(2 + 3) * (5 - 2) \\Rightarrow 15$.",
+      "source_content_hash": "d66ed072263afcbb5e980ff3ec9aa1d75da83668746116751e674d5fb65a757b",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "したがって、$(2 + 3) * (5 - 2) \\Rightarrow 15$となります。"
+      }
+    },
+    {
+      "segment_id": "accb07e1",
+      "source_content": "#### Variable Binding",
+      "source_content_hash": "93bcd61f80e1a88632acc58e31e130396b82e4a9783963dcc2eadafb95b36acd",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "#### 変数束縛"
+      }
+    },
+    {
+      "segment_id": "65be34cb",
+      "source_content": "In MoonBit, variable binding can be achieved using the syntax `let <identifier> : <type> = <expression>`. It assigns an identifier to a value that is represented by an expression. In many cases, the type declaration is optional as the compiler can infer it based on the type of the expression.",
+      "source_content_hash": "5cdd55bd7bed948381eb0385051e94e2d5a7440952626899ce9604561daef2f1",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "MoonBitでは、変数束縛は`let <識別子> : <型> = <式>`という構文で実現できます。これは識別子を式で表される値に割り当てます。多くの場合、型宣言はオプションです。コンパイラが式の型に基づいて推論できるためです。"
+      }
+    },
+    {
+      "segment_id": "c5b7e1f6",
+      "source_content": "- `let x = 10`\n- `let y = \"String\"`",
+      "source_content_hash": "868bf22547e22671f50ff7e2148480a010b8a4b91b73ac51991f047da2ba7dab",
+      "node_type": "list",
+      "translatable": true,
+      "translations": {
+        "ja": "- `let x = 10`\n- `let y = \"String\"`"
+      }
+    },
+    {
+      "segment_id": "5d3138c7",
+      "source_content": "Rebinding an identifier in MoonBit will result in shadowing the previous value associated with that identifier, rather than modifying it. This means that the new value assigned to the identifier will take precedence over the previous value within the scope where it is rebound.",
+      "source_content_hash": "41c5f8710ef346f41bbbf29cd203801eeed9b1a11ca623051c5c1fb01e1a3ed9",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "MoonBitで識別子を再束縛すると、以前の値を変更するのではなく、シャドウイングします。つまり、識別子に割り当てられた新しい値が、再束縛されたスコープ内で以前の値よりも優先されます。"
+      }
+    },
+    {
+      "segment_id": "f6e7e6a7",
+      "source_content": "By utilizing variable binding effectively, you can avoid complex nesting of expressions and make the code more readable and maintainable.",
+      "source_content_hash": "b956a66eda532280801d7f423e1f0d4456a584996c65afa708098f1ed140da2f",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "変数束縛を効果的に利用することで、式の複雑なネストを避け、コードをより読みやすく保守しやすくすることができます。"
+      }
+    },
+    {
+      "segment_id": "99e592b0",
+      "source_content": "#### Expression Blocks and Scope",
+      "source_content_hash": "fc4dbe4368b40ff6b180b2eff3c1289626abc60aed395be93b56bb953a7d4473",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "#### 式ブロックとスコープ"
+      }
+    },
+    {
+      "segment_id": "93f7c834",
+      "source_content": "In MoonBit, expression blocks can be defined using the syntax",
+      "source_content_hash": "d36ed21eaca548e67ad605b143e3ed7b8eb3b5a63db77e8750f2bb5a30a0c0ff",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "MoonBitでは、式ブロックは次の構文で定義できます。"
+      }
+    },
+    {
+      "segment_id": "f3924775",
+      "source_content": "```text\n{\n  Variable bindings\n  Variable bindings\n  ……\n  Expression\n}\n```",
+      "source_content_hash": "e9e2fe145d71704d8fc17ce0ab8572f7fd628b5456723fc5f143bee5efaf7ec6",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_f3924775"
+      }
+    },
+    {
+      "segment_id": "2d5a3f2f",
+      "source_content": "The type/value of an expression block is the type/value of the last expression.",
+      "source_content_hash": "483f1fe5ac5aa83105d6a0d26309823899fd347fe2906dede10a07ace6cd5e44",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "式ブロックの型/値は最後の式の型/値です。"
+      }
+    },
+    {
+      "segment_id": "52d45a2c",
+      "source_content": "When a function or identifier is defined outside of any expression block, it is called a top-level definition. Conversely, when a function or identifier is defined within an expression, it is referred to as a local definition.",
+      "source_content_hash": "b8ea98c3aa6196856e9d766cc1b7d1121436ad28187ba3a91934e92a1b17ab14",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "関数や識別子がどの式ブロックの外でも定義されている場合、それはトップレベル定義と呼ばれます。逆に、関数や識別子が式内で定義されている場合、それはローカル定義と呼ばれます。"
+      }
+    },
+    {
+      "segment_id": "53e725dc",
+      "source_content": "The terms \"top-level\" and \"local\" are used to describe the scope in which these definitions are effective. Top-level definitions have a global scope, meaning they are valid throughout the entire file, while local definitions have a limited scope, starting from the point of definition and ending at the completion of the enclosing expression block.",
+      "source_content_hash": "0a56a0a3d70d2363c86ad500249ed4bbd9f0ae2710cf691b74924ad7a99a54b7",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "「トップレベル」と「ローカル」という用語は、これらの定義が有効なスコープを記述するために使用されます。トップレベル定義はグローバルスコープを持ち、ファイル全体で有効です。一方、ローカル定義は限定的なスコープを持ち、定義のポイントから始まり、囲んでいる式ブロックの終了で終わります。"
+      }
+    },
+    {
+      "segment_id": "5014d30c",
+      "source_content": "![height:8cm](/pics/scope.drawio.webp)",
+      "source_content_hash": "67ae84156da37005ad1e54de93d7cedc20f0859dca950dccff6177f91948637c",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "![height:8cm](/pics/scope.drawio.webp)"
+      }
+    },
+    {
+      "segment_id": "e962484d",
+      "source_content": "For example, in the above figure, we have defined two top-level identifiers: `value` and `y`. The value of `value` is determined by the expression block, which includes the bindings of `x`, `tmp`, and `another_tmp`. In `another_tmp`, we have another binding of `tmp`.",
+      "source_content_hash": "c2845c6c76c1fa6e137e471bc7692eb6ca605a95a08de4b187042a6f2c2f4b56",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "例えば、上の図では、2つのトップレベル識別子`value`と`y`を定義しています。`value`の値は、`x`、`tmp`、`another_tmp`の束縛を含む式ブロックによって決定されます。`another_tmp`では、別の`tmp`の束縛があります。"
+      }
+    },
+    {
+      "segment_id": "740d2e67",
+      "source_content": "It is important to note the direction of the arrows. On line 7, the `tmp` refers to the most recent definition of `tmp` on line 5, overshadowing the definition on line 3. However, on line 9, `tmp` refers to the definition on line 3, as it is now outside the scope of the `tmp` defined on line 5.",
+      "source_content_hash": "29341e8d0914aeafbea1e26f5c6e45c37468396043a9efac6a418a43eb23e6b4",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "矢印の方向に注意することが重要です。7行目の`tmp`は、5行目で最も最近定義された`tmp`を参照し、3行目の定義をシャドウします。しかし、9行目の`tmp`は、5行目で定義された`tmp`のスコープ外になったため、3行目の定義を参照します。"
+      }
+    },
+    {
+      "segment_id": "1d7c4366",
+      "source_content": "#### Expression Reduction under Variable Binding",
+      "source_content_hash": "fe37c37608ecd8739c00fe92d0d48012c7a8009256db36bd387889ecb0318698",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "#### 変数束縛下の式簡約"
+      }
+    },
+    {
+      "segment_id": "7fa65ec5",
+      "source_content": "Expression reduction can be broken down into the following steps:",
+      "source_content_hash": "544c9529cd8d4018734e2e868e1186e3f22dadabb5e71dbbd85eb3d4e82df472",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "式簡約は次のステップに分解できます。"
+      }
+    },
+    {
+      "segment_id": "efec3fce",
+      "source_content": "- Reduce the expression on the right-hand side of the variable binding.\n- **Replace** occurrences of identifiers with their reduction results.\n- Omit the variable binding part.\n- Reduce the remaining expressions.",
+      "source_content_hash": "3887ee075edd2acb2a00caf889af65c0495edbac08688dd6a254b1eb982b3ad6",
+      "node_type": "list",
+      "translatable": true,
+      "translations": {
+        "ja": "- 変数束縛の右辺にある式を簡約する。\n- 識別子の出現をその簡約結果で**置換**する。\n- 変数束縛部分を省略する。\n- 残りの式を簡約する。"
+      }
+    },
+    {
+      "segment_id": "60e22db4",
+      "source_content": "Take the following code snippet as an example:",
+      "source_content_hash": "9e58706f0bf9af5f872220871abbad55289810b94fdd3ecf7ed94d59c80ec15f",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "以下のコードスニペットを例として取り上げます："
+      }
+    },
+    {
+      "segment_id": "d0a5d100",
+      "source_content": "```moonbit\nlet value: Int = {\n  let x = 1\n  let tmp = x * 2\n  let another_tmp = {\n    let tmp = x * 3\n\n    tmp\n  }\n  tmp + another_tmp + y\n}\n\nlet y: Int = 10\n```",
+      "source_content_hash": "994bb0643b9ae4a65e8a90ca2c6dae935bfd467ffbb31f9987452487a4abf671",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_d0a5d100"
+      }
+    },
+    {
+      "segment_id": "e020f7ed",
+      "source_content": "First, we can replace all occurrences of `x` and `y` with their values, thereby omitting their variable bindings.",
+      "source_content_hash": "2ed354e2f882de59c422e7f7cc4af148a14d4fcdb8988b79e0f12b9777576825",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "まず、`x`と`y`の出現をそれらの値で置き換え、それらの変数束縛を省略できます。"
+      }
+    },
+    {
+      "segment_id": "36948d49",
+      "source_content": "```moonbit no-check\nlet value: Int = {\n  // Omit the variable binding of x\n  let tmp = 1 * 2 // Replace x\n  let another_tmp = {\n    let tmp = 1 * 3 // Replace x\n\n    tmp\n  }\n  tmp + another_tmp + 10 // Replace y\n}\n\n// Omit the variable binding of y\n```",
+      "source_content_hash": "799a7d872c04d9a2fcd03f625051e11a54341379a3dbc11d8c7372d6c4b6d760",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_36948d49"
+      }
+    },
+    {
+      "segment_id": "0974dfbb",
+      "source_content": "Then, we can reduce the expression for two variable bindings of `tmp`, and replace the occurrences of `tmp` in the expression block of the variable binding of `another_tmp`.",
+      "source_content_hash": "d97df765887f230764585a7f3f791eb8daeaaba336f685d1f24377d304755082",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "次に、`tmp`の2つの変数束縛の式を簡約し、`another_tmp`の変数束縛の式ブロック内の`tmp`の出現を置き換えます。"
+      }
+    },
+    {
+      "segment_id": "30d584f8",
+      "source_content": "```moonbit no-check\nlet value: Int = {\n  let tmp = 2 // Reduce the expression on the right-hand side\n  let another_tmp = {\n    let tmp = 3 // Reduce the expression on the right-hand side\n\n    3 // Replace tmp\n  }\n  tmp + another_tmp + 10\n}\n```",
+      "source_content_hash": "53c71a755b4ba70c9d25fe2aab07789001f9c40d0ffb9d530b29aaf77e92e63a",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_30d584f8"
+      }
+    },
+    {
+      "segment_id": "6c135b48",
+      "source_content": "After that, we can now compute the value of `another_tmp`, which is determined by the last expression in the expression block.",
+      "source_content_hash": "727f2aaf0e96f496b2b7fc47497cb058eaebc6572b77de10d9320653b2da7eca",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "その後、`another_tmp`の値を計算できます。これは式ブロックの最後の式によって決定されます。"
+      }
+    },
+    {
+      "segment_id": "7867f12c",
+      "source_content": "```moonbit no-check\nlet value: Int = {\n\n  let tmp = 2\n  let another_tmp = 3 // Reduce the expression on the right-hand side\n  tmp + another_tmp + 10\n}\n```",
+      "source_content_hash": "6b716eaa8f95d0d69d0d4cd0e5ba183fe44d34c2d25e39eb2102aaaebf2d70bf",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_7867f12c"
+      }
+    },
+    {
+      "segment_id": "c419a086",
+      "source_content": "Thus, the remaining occurrences of identifiers in the expression block of `value` can also be replaced with their values.",
+      "source_content_hash": "b270cb696ba76c89b71dc95a0a457078949c978931c6c0d852021ac1ac539996",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "したがって、`value`の式ブロック内の識別子の残りの出現もそれらの値で置き換えることができます。"
+      }
+    },
+    {
+      "segment_id": "7af0b75a",
+      "source_content": "```moonbit no-check\nlet value: Int = {\n\n  let tmp = 2\n  let another_tmp = 3\n  2 + 3 + 10\n}\n```",
+      "source_content_hash": "713acc0b10847ca949e3fdf5ebc5a900adb954578bd7d103670a5c61674d2aaa",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_7af0b75a"
+      }
+    },
+    {
+      "segment_id": "d67645cb",
+      "source_content": "Finally, we get the value of `value`.",
+      "source_content_hash": "94b506dcfed00f483b75fc84e70f6f294cecaaf263033c5496e9059ad32ebdf8",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "最終的に、`value`の値を取得します。"
+      }
+    },
+    {
+      "segment_id": "3e084726",
+      "source_content": "```moonbit no-check\nlet value: Int = 15\n```",
+      "source_content_hash": "84759119534e5e434e96d5a905d1429bb196346b0143c09f4a0f3e9efb9eab75",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_3e084726"
+      }
+    },
+    {
+      "segment_id": "3f6b512a",
+      "source_content": "#### Conditional Expression",
+      "source_content_hash": "884accb4f984189c1c9decf80223f85a9702a16c9d29fcb6f1a3aab6cab306a3",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "#### 条件式"
+      }
+    },
+    {
+      "segment_id": "e91bdcd9",
+      "source_content": "Conditional expressions enable you to obtain different values ​​based on specified logical conditions.",
+      "source_content_hash": "d3a81be8e7eb43811e83d1d365260bf91743cb4f99786b028f6589c831777ab9",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "条件式を使用すると、指定された論理条件に基づいて異なる値を取得できます。"
+      }
+    },
+    {
+      "segment_id": "4bfb1f31",
+      "source_content": "In MoonBit, its syntax is:",
+      "source_content_hash": "778bc500a57fd3167290454d44767ae59e5aa8ba285d5f6cde7682778facf6b5",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "MoonBitにおける構文は次のとおりです："
+      }
+    },
+    {
+      "segment_id": "253b84c5",
+      "source_content": "```text\nif condition\n  expression block｜if condition is true\nelse\n  expression block｜if condition is false\n```",
+      "source_content_hash": "f6796a1774047f27cd671848966abd3b8a7c118336004e7a5ed287cd90697bce",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_253b84c5"
+      }
+    },
+    {
+      "segment_id": "4da1b99c",
+      "source_content": "In MoonBit, conditional expressions are also expressions and can be used within other expressions. For example,",
+      "source_content_hash": "f69c3ab6b4293575c6fa3e4444588f462943450d7a0e81409ded9117e97c7d23",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "MoonBitでは、条件式も式であり、他の式内で使用できます。例えば、"
+      }
+    },
+    {
+      "segment_id": "d32aca72",
+      "source_content": "- `( if 1 < 100 { 1 } else { 0 } ) * 10`\n- `( if x > y { \"x\" } else { \"y\" } ) + \" is bigger\"`\n- `if 0.1 + 0.2 == 0.3 { \"Great!\" } else { \"C'est la vie :-)\" }`",
+      "source_content_hash": "010aa785c16af832f345e1c604d64cdfb06b6ef429d4577fa10772abebe433c7",
+      "node_type": "list",
+      "translatable": true,
+      "translations": {
+        "ja": "- `( if 1 < 100 { 1 } else { 0 } ) * 10`\n- `( if x > y { \"x\" } else { \"y\" } ) + \" is bigger\"`\n- `if 0.1 + 0.2 == 0.3 { \"Great!\" } else { \"C'est la vie :-)\" }`"
+      }
+    },
+    {
+      "segment_id": "3e2af19c",
+      "source_content": "Expression blocks in branches must have the same type, and the type of the entire conditional expression is determined by the type of an expression block from these branches. The type of the condition must be a Boolean.",
+      "source_content_hash": "2beeb079091c7938e0c61f0ae7fcf5c44fe20c924b99490cea15216f2091406f",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "分岐内の式ブロックは同じ型を持つ必要があり、条件式全体の型はこれらの分岐の式ブロックの型によって決定されます。条件の型はBooleanでなければなりません。"
+      }
+    },
+    {
+      "segment_id": "991164fd",
+      "source_content": "![](/pics/if-else-then.drawio.webp)",
+      "source_content_hash": "b56d474e27a09ab51b28b50e3c48fbd3e008352560b74437cc622e1fa09d4025",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "![](/pics/if-else-then.drawio.webp)"
+      }
+    },
+    {
+      "segment_id": "c4d69fe4",
+      "source_content": "In the above conditional expression, the condition is a `Bool` expression to check the equality of two floating-point numbers; the values ​​of the two branches are both of type `String`, so the entire expression is also of type `String`.",
+      "source_content_hash": "980615687d93ca816774a3d434a785931eece59212d48d739dc340b7fdcfad12",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "上記の条件式では、条件は2つの浮動小数点数の等価性をチェックする`Bool`式です。2つの分岐の値はどちらも`String`型であるため、式全体も`String`型になります。"
+      }
+    },
+    {
+      "segment_id": "e3f3475c",
+      "source_content": "The value of a conditional expression depends on the reduction result of the condition being true or false. For example,",
+      "source_content_hash": "686ea9eb7d9f5a1e4c74bdc9466a62b6f558ded114963e34366797c2cebca472",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "条件式の値は、条件の簡約結果が真か偽かに依存します。例えば、"
+      }
+    },
+    {
+      "segment_id": "ff95ec03",
+      "source_content": "If the true branch ends with a statement, the false branch can be omitted. Implicitly, there is a hidden false branch returning `()`, and therefore the two branches still have the same type, i.e., `Unit`.",
+      "source_content_hash": "b8bd5152ac3b923e7235a73d441f3ad9a71db8259c3d27474f6e53acb80a9fd2",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "真の分岐が文で終わる場合、偽の分岐は省略できます。暗黙的に、`()`を返す隠れた偽の分岐があり、したがって2つの分桁は依然として同じ型（つまり`Unit`）を持ちます。"
+      }
+    },
+    {
+      "segment_id": "72965517",
+      "source_content": "## Summary",
+      "source_content_hash": "30ac03ff33731529441be8fbe52a3bd0d4c5ec830e806d54692168ebb7f98ada",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "## まとめ"
+      }
+    },
+    {
+      "segment_id": "ce99c217",
+      "source_content": "In this chapter, we learned:",
+      "source_content_hash": "8c0d8317a5f36510b9ef59ce126508bbd637fe42d113136de55572ffc01101fd",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "この章では、以下のことを学びました："
+      }
+    },
+    {
+      "segment_id": "c8184508",
+      "source_content": "- How to set up the MoonBit development environment\n  - Browser-based environment\n  - Cloud-native environment\n  - Local environment\n- MoonBit basic data types\n  - Boolean values\n  - Integers and floating-point numbers\n  - Characters and strings\n  - Tuples\n- How to view MoonBit programs in terms of expressions and values, and understand the execution of MoonBit programs by reduction.",
+      "source_content_hash": "31643f4e416880e5ce5e9213ae1a7670855d9f526f99a2e69c7c44a49b3071eb",
+      "node_type": "list",
+      "translatable": true,
+      "translations": {
+        "ja": "- MoonBit開発環境のセットアップ方法\n  - ブラウザベースの環境\n  - クラウドネイティブ環境\n  - ローカル環境\n- MoonBitの基本データ型\n  - ブール値\n  - 整数と浮動小数点数\n  - 文字と文字列\n  - タプル\n- MoonBitプログラムを式と値の観点から見る方法、および簡約によるMoonBitプログラムの実行を理解する方法。"
+      }
+    }
+  ],
+  "target_i18n_subpath": "docusaurus-plugin-content-docs/current/02-development-environments-expressions.md",
+  "last_updated_timestamp": "2025-06-06T05:19:35.746899+00:00",
+  "schema_version": "1.0",
+  "translated_versions": {
+    "ja": "a82cff3ffca8503c0d4c1b959563b8fba2aa09c68cb5441cc2dfd37e24be6bb9"
+  }
+}

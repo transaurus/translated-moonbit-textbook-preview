@@ -1,0 +1,332 @@
+{
+  "source_file_path_relative_to_docusaurus_root": "docs/01-program-design.md",
+  "source_file_content_hash": "ec40242f3afe654612b065b891cf41675e3dd022ae692af9381a9b428ecdfeae",
+  "segments": [
+    {
+      "segment_id": "76e4a56a",
+      "source_content": "# 1. Program Design",
+      "source_content_hash": "e74b6c05046ac4ec4959513c7dcda11eeff8d5adaa1e1309251254adacffe97f",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "# 1. プログラム設計"
+      }
+    },
+    {
+      "segment_id": "adbc947a",
+      "source_content": "## Program Design",
+      "source_content_hash": "b9702e7209dd6b9b8ebb460d109d1f36ba43e2f4574b665ec7d2cd268fc94dee",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "## プログラム設計"
+      }
+    },
+    {
+      "segment_id": "e7ec8f99",
+      "source_content": "Program design involves transforming informal specifications, often presented in natural language that can be ambiguous, into a program. This can be approached from two perspectives: developing a program that _meets_ the specifications, and developing a program _based on_ the specifications. The workflow we will introduce is Test-Driven Development (TDD), which entails converting specifications into test cases and iteratively testing the software throughout the development cycle to ensure it aligns with the specifications.",
+      "source_content_hash": "907fb1ae6cb89ca82d3340dda6c642a3ffbfb9047042eb2659769a76f0059fa9",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "プログラム設計とは、曖昧さを含む自然言語で記述された非公式な仕様をプログラムに変換するプロセスです。このアプローチには2つの視点があります：仕様を「満たす」プログラムを開発することと、仕様を「基に」プログラムを開発することです。ここで紹介するワークフローはテスト駆動開発（TDD）であり、仕様をテストケースに変換し、開発サイクルを通じてソフトウェアを反復的にテストすることで仕様との整合性を確保します。"
+      }
+    },
+    {
+      "segment_id": "a703643c",
+      "source_content": "### Basic Workflow",
+      "source_content_hash": "a7439a4ef19a4862b08966d13aced0722e33eaa5b4c2aba8a322429d74d137d6",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "### 基本的なワークフロー"
+      }
+    },
+    {
+      "segment_id": "53eaf0e1",
+      "source_content": "The workflow of TDD can be broken down into four steps:",
+      "source_content_hash": "3988310e14d9907f6425203539cd1bfae675d652ec16566535dd7d9d528b819e",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "TDDのワークフローは以下の4つのステップに分解できます："
+      }
+    },
+    {
+      "segment_id": "be33979e",
+      "source_content": "- Step 1: Understand the problem\n\n  In this step, it is important to grasp the variables involved and their relationships.\n\n- Step 2: Define the interfaces\n\n  Here, we define how the program should interact with the environment, including interactions with other programs through function interfaces, as well as input/output with users.\n\n- Step 3: Write the test cases\n\n  In this step, we specify the expected behavior for both normal and abnormal inputs. For instance, when you order a beer at a bar, you should receive a beer; when you order a cocktail, you should receive a cocktail instead of a beer. However, what if you order a bowl of fried rice instead?\n\n- Step 4: Implement the program\n\n  When dealing with a large problem, it may be necessary to break it down into smaller subproblems and repeat the above process for each of them.",
+      "source_content_hash": "4edb29ae0c238d5e10ff33409e4c0b365bbdf00321ec93cf4a2c1974cc94c586",
+      "node_type": "list",
+      "translatable": true,
+      "translations": {
+        "ja": "- ステップ1: 問題を理解する\n\n  このステップでは、関連する変数とそれらの関係性を把握することが重要です。\n\n- ステップ2: インターフェースを定義する\n\n  ここでは、プログラムが環境とどのように相互作用するかを定義します。これには他のプログラムとの関数インターフェースを通じた相互作用や、ユーザーとの入出力が含まれます。\n\n- ステップ3: テストケースを作成する\n\n  このステップでは、正常な入力と異常な入力に対する期待される動作を指定します。例えば、バーでビールを注文すればビールを受け取り、カクテルを注文すればビールではなくカクテルを受け取るべきです。しかし、もしチャーハンを注文したらどうなるでしょうか？\n\n- ステップ4: プログラムを実装する\n\n  大きな問題を扱う場合、それを小さなサブ問題に分解し、それぞれに対して上記のプロセスを繰り返す必要があるかもしれません。"
+      }
+    },
+    {
+      "segment_id": "fa430ad4",
+      "source_content": "### An Example of Program Design",
+      "source_content_hash": "07fa4ffd2ebf97cae7ecb87253e1b090f81c6ed377b99be29cc1ec163ae1f23b",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "### プログラム設計の例"
+      }
+    },
+    {
+      "segment_id": "4b1d2d7d",
+      "source_content": "Let's examine this problem (source: [LeetCode 1518](https://leetcode.com/problems/water-bottles/description/)):",
+      "source_content_hash": "36356f4b9ebe759db431c0589d64ff02dd32973945807aed17b5ca98d15cd164",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "この問題を見てみましょう（出典: [LeetCode 1518](https://leetcode.com/problems/water-bottles/description/)）："
+      }
+    },
+    {
+      "segment_id": "4e95fc9d",
+      "source_content": "> There are `num_bottles` water bottles that are initially full of water. You can exchange `num_exchange` empty water bottles from the market with one full water bottle.\n> The operation of drinking a full water bottle turns it into an empty bottle.\n> Given the two integers `num_bottles` and `num_exchange`, return the maximum number of water bottles you can drink.",
+      "source_content_hash": "b61b239b0575604fed132c71221998af80925a828be6228968fc59b6e9e0dd17",
+      "node_type": "blockquote",
+      "translatable": true,
+      "translations": {
+        "ja": "> 最初に水が満たされた`num_bottles`本の水筒があります。市場では`num_exchange`本の空の水筒を1本の満タンの水筒と交換できます。\n> 満タンの水筒を飲む操作は、それを空の水筒に変えます。\n> 2つの整数`num_bottles`と`num_exchange`が与えられたとき、飲むことができる水筒の最大数を返してください。"
+      }
+    },
+    {
+      "segment_id": "f422383e",
+      "source_content": "#### Step 1: Understand the Problem",
+      "source_content_hash": "5a1cefa503d44728b1ca30dc5077ba64729ecae3aa01d5a6c656f7004c86eec7",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "#### ステップ1: 問題を理解する"
+      }
+    },
+    {
+      "segment_id": "97ae4a01",
+      "source_content": "In this problem, two variables are involved:",
+      "source_content_hash": "21ec648387e0d7921fe6437b5d8b5d4be8bfb21c3204fb259502a9ac36b52628",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "この問題では、2つの変数が関与しています："
+      }
+    },
+    {
+      "segment_id": "33808f76",
+      "source_content": "- $N_\\mathrm{bottles}$: The number of full water bottles that we currently have.\n- $N_\\mathrm{drunk}$: The number of empty water bottles that we have drunk.",
+      "source_content_hash": "29c5aa8b110d5c63bd1e1769d99f02d5895a915c6e25097c0abee1bb48541a6c",
+      "node_type": "list",
+      "translatable": true,
+      "translations": {
+        "ja": "- $N_\\mathrm{bottles}$: 現在所有している満タンの水筒の数\n- $N_\\mathrm{drunk}$: 飲んだ空の水筒の数"
+      }
+    },
+    {
+      "segment_id": "50746522",
+      "source_content": "They are related in the following way:",
+      "source_content_hash": "ff4925040761bccd3df476aba48d36debcf880a70e91a44cf0db2fc07d73047f",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "これらは以下のように関連しています："
+      }
+    },
+    {
+      "segment_id": "aa83231c",
+      "source_content": "- Initially, the value for $N_\\mathrm{bottles}$ is given by the input.\n- When $N_\\mathrm{bottles} \\ge$ `num_exchange`, we can drink `num_exchange` of them, exchange them for one full water bottle, and then repeat the process.\n- When $N_\\mathrm{bottles} <$ `num_exchange`, we have to drink them up and quit the process.",
+      "source_content_hash": "ccfd56c55dc4b812f9189c556c48dd5b44e367bc9a9c2240bfc9d896b5ef550b",
+      "node_type": "list",
+      "translatable": true,
+      "translations": {
+        "ja": "- 最初、$N_\\mathrm{bottles}$の値は入力で与えられます\n- $N_\\mathrm{bottles} \\ge$ `num_exchange`の場合、そのうちの`num_exchange`本を飲み、1本の満タンの水筒と交換してこのプロセスを繰り返せます\n- $N_\\mathrm{bottles} <$ `num_exchange`の場合、それらを飲み尽くしてプロセスを終了しなければなりません"
+      }
+    },
+    {
+      "segment_id": "a9d49f92",
+      "source_content": "Our goal is to calculate the maximum number of water bottles we can consume, given `num_bottles` and `num_exchange`.",
+      "source_content_hash": "0062e5c782e164517046db4e30f9c4385670e21c59e8f77f205793c40c4b9823",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "私たちの目標は、`num_bottles`と`num_exchange`が与えられたときに消費できる水筒の最大数を計算することです。"
+      }
+    },
+    {
+      "segment_id": "6d28a77c",
+      "source_content": "#### Step 2: Define the Interfaces",
+      "source_content_hash": "3260ee30ef0376c15c529323eda4c6baab8d60a7651c39725308421b58fef846",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "#### ステップ2: インターフェースを定義する"
+      }
+    },
+    {
+      "segment_id": "f7ef78f9",
+      "source_content": "According to the problem description, there is no need to handle any input or output operations. Instead, we should return an integer that represents the maximum number of bottles based on the two input integers, `num_bottles` and `num_exchange`. Therefore, we can write the following function as the interface:",
+      "source_content_hash": "63c58881da22e169919f46ea3c083bc9c9c2f94fb8d08a8a15a138201f2bf430",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "問題の説明によれば、入出力操作を処理する必要はありません。代わりに、2つの入力整数`num_bottles`と`num_exchange`に基づいて、水筒の最大数を表す整数を返す必要があります。したがって、インターフェースとして以下の関数を記述できます："
+      }
+    },
+    {
+      "segment_id": "3ce8f045",
+      "source_content": "```moonbit expr\nfn num_water_bottles(num_bottles: Int, num_exchange: Int) -> Int {\n  abort(\"To be done\")\n}\n```",
+      "source_content_hash": "be058a734920cbec9a78b86dbdf3d2123ef8d3dc77cd6f078e93f8f5ea15dac3",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_3ce8f045"
+      }
+    },
+    {
+      "segment_id": "40158b4b",
+      "source_content": "In this case, we are only defining the interface since in MoonBit, it is permissible to leave certain parts of the program unimplemented while still being able to compile.",
+      "source_content_hash": "a2e5813cc8f88a38a28b5f19ae31e447e2bbe1be550491962d3ad0ecbe0b573b",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "この場合、MoonBitではプログラムの特定部分を未実装のままにしておいてもコンパイルが可能なため、インターフェースのみを定義しています。"
+      }
+    },
+    {
+      "segment_id": "c431704b",
+      "source_content": "#### Step 3: Write the Test Cases",
+      "source_content_hash": "e0961131ee04cc3c267d5727049a064d1054b691e2fa499132c589b565e37663",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "#### ステップ3: テストケースを作成する"
+      }
+    },
+    {
+      "segment_id": "79ad944d",
+      "source_content": "The process of writing test cases not only helps in validating the solution but also deepens your understanding of the problem. In this case, two sample test cases are provided:",
+      "source_content_hash": "3db2e1254dd15af1b802f8e3b612ea8796a0870bd057731eddd0d15d2ed20f34",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "テストケースを作成するプロセスは、ソリューションを検証するだけでなく、問題への理解を深めるのにも役立ちます。このケースでは、2つのサンプルテストケースが提供されています："
+      }
+    },
+    {
+      "segment_id": "5d4925eb",
+      "source_content": "```moonbit\ntest {\n  assert_eq!(num_water_bottles(9, 3), 13) // 9 + 3 + 1 = 13\n  assert_eq!(num_water_bottles(15, 4), 19)\n}\n```",
+      "source_content_hash": "654e299df42e4812fba88fe4b763f0fb94a67c61689e69b9c351c9d38d939833",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_5d4925eb"
+      }
+    },
+    {
+      "segment_id": "eab056be",
+      "source_content": "Taking the first test case as an example, if there are initially $9$ bottles of water, after consuming $9$ bottles, it is possible to exchange them for $3$ additional bottles. Subsequently, after consuming those $3$ bottles, they can be exchanged for $1$ more bottle. However, it is not possible to make any further exchanges after consuming that $1$ bottle. Therefore, the total number of bottles that can be consumed is $9 + 3 + 1 = 13$.",
+      "source_content_hash": "5eb1ff7778b32cd35197d60e28308f81365443b0b733102dbd27ebab76d47515",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "最初のテストケースを例にとると、最初に$9$本の水のボトルがある場合、$9$本を消費した後、それらを交換して$3$本の追加ボトルを得ることができます。その後、それらの$3$本を消費すると、さらに$1$本を交換できます。しかし、その$1$本を消費した後はそれ以上交換できません。したがって、消費可能なボトルの総数は$9 + 3 + 1 = 13$本となります。"
+      }
+    },
+    {
+      "segment_id": "b1cbdb65",
+      "source_content": "#### Step 4: Implement the Program",
+      "source_content_hash": "8748573cddd5abf2fe027e9fe4931ea58607e20d07c538847b84a91c650fc290",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "#### ステップ4: プログラムの実装"
+      }
+    },
+    {
+      "segment_id": "afa378f7",
+      "source_content": "At this step, it is possible to implement the program and verify it by running the test cases. A possible implementation that directly models the analysis of the problem is presented here.",
+      "source_content_hash": "4f496d51a02b884f4ff70061a8bc7601de891dad146e64e31cf8991ce4d3936d",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "このステップでは、プログラムを実装し、テストケースを実行して検証することが可能です。ここでは、問題の分析を直接モデル化した可能な実装を示します。"
+      }
+    },
+    {
+      "segment_id": "a89f84e1",
+      "source_content": "```moonbit\nfn num_water_bottles(num_bottles: Int, num_exchange: Int) -> Int {\n  fn consume(num_bottles, num_drunk) {\n    if num_bottles >= num_exchange {\n      let num_bottles = num_bottles - num_exchange + 1\n      let num_drunk = num_drunk + num_exchange\n      consume(num_bottles, num_drunk)\n    } else {\n      num_bottles + num_drunk\n    }\n  }\n  consume(num_bottles, 0)\n}\n\ntest {\n  assert_eq!(num_water_bottles(9, 3), 13) // 9 + 3 + 1 = 13\n  assert_eq!(num_water_bottles(15, 4), 19)\n}\n```",
+      "source_content_hash": "394470415449834ce97599ee892f8db85379698054cbbf99adefea1b95f88c0f",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_a89f84e1"
+      }
+    },
+    {
+      "segment_id": "2822251a",
+      "source_content": "The program can be verified by executing it [here](https://try.moonbitlang.com/#79f7b666). If there is no output, it indicates that the program has performed as expected. Alternatively, if we modify the test cases and then rerun the program, an error might be observed.",
+      "source_content_hash": "6689e905302872d2da4af9424c77796e6429fcdaaf643e3ac772d46a9a039c33",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "プログラムは[こちら](https://try.moonbitlang.com/#79f7b666)で実行して検証できます。出力がない場合、プログラムが期待通りに動作したことを示します。あるいは、テストケースを変更してプログラムを再実行すると、エラーが観察されるかもしれません。"
+      }
+    },
+    {
+      "segment_id": "99d0dd9b",
+      "source_content": "### Summary",
+      "source_content_hash": "d5c8772ee38a039dd86292f462cecce9f136ba7f8e9be7acf503f50ee0c63691",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "### まとめ"
+      }
+    },
+    {
+      "segment_id": "d79a4831",
+      "source_content": "It is recommended to adopt a TDD workflow, namely,",
+      "source_content_hash": "936eb7a2093dda852426cf16de5f7d646d366079057adfbcf37811b9876ab968",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "TDD（テスト駆動開発）のワークフローを採用することをお勧めします。具体的には、"
+      }
+    },
+    {
+      "segment_id": "dea0598f",
+      "source_content": "1. Understand the problem\n2. Define the interfaces\n3. Write the test cases\n4. Implement the program",
+      "source_content_hash": "a5bd36923a4546447b1405afbb29eeebfe121b5aa9aba76a8dec97adc97adadc",
+      "node_type": "list",
+      "translatable": true,
+      "translations": {
+        "ja": "1. 問題を理解する\n2. インターフェースを定義する\n3. テストケースを作成する\n4. プログラムを実装する"
+      }
+    },
+    {
+      "segment_id": "a81544fd",
+      "source_content": "Modern software products are typically vast in scale, making TDD a reliable workflow for their development. By creating test cases in advance, developers can efficiently identify and rectify potential errors at an early stage, while also ensuring the seamless integration of new functions without disrupting existing ones.",
+      "source_content_hash": "89996246ce5c5deb72e42620a85fc0fa3c2e219c96fe70890e4f802a2c95338d",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "現代のソフトウェア製品は通常大規模であるため、TDDはその開発において信頼性の高いワークフローです。事前にテストケースを作成することで、開発者は早期に潜在的なエラーを効率的に特定して修正できると同時に、新しい機能を既存の機能を中断することなくシームレスに統合できます。"
+      }
+    },
+    {
+      "segment_id": "0801d969",
+      "source_content": "Quiz: For some abnormal inputs, the sample program for the water bottles problem may fail. Can you identify them? (Hint: In MoonBit, the range of `Int` values is $-2^{31}$ to $2^{31} - 1$.)",
+      "source_content_hash": "b151cd293b2d865c651db8d60a0b21932be53c544bd1835bb453a6494ff77d63",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "クイズ: 水のボトル問題のサンプルプログラムは、いくつかの異常な入力に対して失敗する可能性があります。それらを特定できますか？（ヒント: MoonBitでは、`Int`値の範囲は$-2^{31}$から$2^{31} - 1$です。）"
+      }
+    }
+  ],
+  "target_i18n_subpath": "docusaurus-plugin-content-docs/current/01-program-design.md",
+  "last_updated_timestamp": "2025-06-06T05:19:35.744437+00:00",
+  "schema_version": "1.0",
+  "translated_versions": {
+    "ja": "ec40242f3afe654612b065b891cf41675e3dd022ae692af9381a9b428ecdfeae"
+  }
+}

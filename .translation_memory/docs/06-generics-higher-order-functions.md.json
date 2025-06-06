@@ -1,0 +1,972 @@
+{
+  "source_file_path_relative_to_docusaurus_root": "docs/06-generics-higher-order-functions.md",
+  "source_file_content_hash": "7a411725294d4a33947f6bd0b1086bb72f3620d1edf8ee393c50347b32d20215",
+  "segments": [
+    {
+      "segment_id": "76e4a56a",
+      "source_content": "# 6. Generics & Higher-Order Functions",
+      "source_content_hash": "ad1819a39755d9d592922c2ee6a8462dabe378d2d623fe7057e6072d2e912d46",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "# 6. ジェネリクスと高階関数"
+      }
+    },
+    {
+      "segment_id": "faebdc62",
+      "source_content": "In development, we often encounter similar data structures and similar operations. At such times, we can reuse this information through good abstraction, which not only ensures maintainability but also allows us to ignore some details. Good abstraction should follow two principles: first, it represents same patterns or structures that appear repeatedly in the code; second, it has appropriate semantics. For example, we might need to perform the sum operation on lists of integers on many occasions, hence the repetition. Since summing has appropriate semantics, it is suitable for abstraction. We abstract this operation into a function and then use the function repeatedly, instead of writing the same code.",
+      "source_content_hash": "e9b7d871ae681545d1f3daee322e00ec5f215e78e533d3c6d2094f75fcf72357",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "開発において、私たちは類似したデータ構造や操作に頻繁に遭遇します。そのような場合、適切な抽象化を通じてこの情報を再利用することで、保守性を確保するだけでなく、一部の詳細を無視することも可能になります。優れた抽象化は2つの原則に従うべきです：第一に、コード内で繰り返し現れる同じパターンや構造を表現すること；第二に、適切な意味論を持つことです。例えば、整数リストに対する合計操作を多くの場面で行う必要がある場合、繰り返しが発生します。合計操作には適切な意味論があるため、抽象化に適しています。この操作を関数として抽象化し、同じコードを書く代わりに関数を繰り返し使用します。"
+      }
+    },
+    {
+      "segment_id": "e7ec8f99",
+      "source_content": "Programming languages provide us with various means of abstraction, such as functions, generics, higher-order functions, interfaces, etc. This chapter will introduce generics and higher-order functions, and the next chapter will discuss interfaces.",
+      "source_content_hash": "91d8d55e1265f5b5731f7043de4121b989e315ea7f096b3e2c58c3068e2d5157",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "プログラミング言語は、関数、ジェネリクス、高階関数、インターフェースなど、さまざまな抽象化手段を提供します。この章ではジェネリクスと高階関数を紹介し、次の章でインターフェースについて議論します。"
+      }
+    },
+    {
+      "segment_id": "a703643c",
+      "source_content": "## Generic Functions and Generic Data",
+      "source_content_hash": "c6bb1c16d50bd32b1e46c5b9d427f3ed12d2646380ceee8982ca0bba5ce31b74",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "## ジェネリック関数とジェネリックデータ"
+      }
+    },
+    {
+      "segment_id": "53eaf0e1",
+      "source_content": "Let's first look at the stack data structure to understand why and how we use generics.",
+      "source_content_hash": "97a35b0ff9b7ee711625193b31a03a81b06d60dfa1250a3c1995df71ffa77b53",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "まず、スタックデータ構造を見て、なぜそしてどのようにジェネリクスを使用するのかを理解しましょう。"
+      }
+    },
+    {
+      "segment_id": "8ac585fb",
+      "source_content": "A stack is a collection composed of a series of objects, where the insertion and removal of these objects follow the Last-In-First-Out (LIFO) principle. For example, consider the containers stacked on a ship as shown in the left-hand image below.",
+      "source_content_hash": "237aa06d3e581b2481a014096ebba381c04799b7392d315e0862829671d374d0",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "スタックは一連のオブジェクトから構成されるコレクションであり、これらのオブジェクトの挿入と削除は後入れ先出し（LIFO）の原則に従います。例えば、左側の画像に示されている船に積まれたコンテナを考えてみてください。"
+      }
+    },
+    {
+      "segment_id": "180bddb1",
+      "source_content": "![](/pics/stack-objects.drawio.webp)",
+      "source_content_hash": "af154e4d1e9614e58f9e4136f6c55643c6a7730db7b1cbbedc9fcaefec59e6e1",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "![](/pics/stack-objects.drawio.webp)"
+      }
+    },
+    {
+      "segment_id": "cf898102",
+      "source_content": "Clearly, new containers are stacked on top, and when removing containers, those on top are removed first, meaning the last placed container is the first to be removed. Similarly, with a pile of stones in the right-hand image, if you don’t want to topple the pile, you can only add stones at the top or remove the most recently added stones. This structure is a stack. There are many such examples in our daily lives, but we will not enumerate them all here.",
+      "source_content_hash": "db6205d877d400d7b9271890ffcc537ecccd96ccb90abb076ed4af2e73c10590",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "明らかに、新しいコンテナは上に積まれ、コンテナを削除する際には上にあるものが最初に削除されます。つまり、最後に置かれたコンテナが最初に削除されることを意味します。同様に、右側の画像にある石の山を考えた場合、山を崩したくないなら、石を山の頂上に追加するか、最も最近追加された石を削除することしかできません。この構造がスタックです。日常生活にはこのような例が多くありますが、ここではすべてを列挙しません。"
+      }
+    },
+    {
+      "segment_id": "42ad8e83",
+      "source_content": "For a data type stack, we can define operations as follows. Taking an integer stack `IntStack` as an example, we can create a new empty stack; we can add an integer to the stack; we can try to remove an element from the stack, which may not exist because the stack could be empty, hence we use an Option to wrap it.",
+      "source_content_hash": "5a12165a81553e6a78d92d5b7d0a96e41995a1fa1a7e9cde9039fe0372b32dde",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "データ型スタックに対して、以下のような操作を定義できます。整数スタック`IntStack`を例にとると、新しい空のスタックを作成できます；スタックに整数を追加できます；スタックから要素を削除しようとすることができますが、スタックが空の場合もあるため、Optionでラップします。"
+      }
+    },
+    {
+      "segment_id": "940e34e3",
+      "source_content": "```moonbit no-check\nempty: () -> IntStack // create a new stack\npush : (Int, IntStack) -> IntStack // add a new element to the top of the stack\npop: IntStack -> (Option[Int], IntStack) // remove an element from the stack\n```",
+      "source_content_hash": "174fcbb58c0af420cf597316dc8fc5ee2181929a974383b02f3593f80a17db28",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_940e34e3"
+      }
+    },
+    {
+      "segment_id": "f2c2bdd0",
+      "source_content": "As shown in the diagram below, we add a 2 and then remove a 2. We simply implement this definition of a stack.",
+      "source_content_hash": "2a3d65344eaca04d4b394a4971b99b4d5ace0c2a6e0fe5b0ee814b50c0c7a796",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "以下の図に示すように、2を追加してから2を削除します。このスタックの定義を単純に実装します。"
+      }
+    },
+    {
+      "segment_id": "a76548f8",
+      "source_content": "![](/pics/stack-push-pop-en.drawio.webp)",
+      "source_content_hash": "257ee14047595036e760fccc1936e2e672f08590fd48fe22fc75f425bb13833a",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "![](/pics/stack-push-pop-en.drawio.webp)"
+      }
+    },
+    {
+      "segment_id": "0c911872",
+      "source_content": "```moonbit\nenum IntStack {\n  Empty\n  NonEmpty(Int, IntStack)\n}\nfn IntStack::empty() -> IntStack { Empty }\nfn push(self: IntStack, value: Int) -> IntStack { NonEmpty(value, self) }\nfn pop(self: IntStack) -> (Option[Int], IntStack) {\n  match self {\n    Empty => (None, Empty)\n    NonEmpty(top, rest) => (Some(top), rest)\n  }\n}\n```",
+      "source_content_hash": "97723d275b1aa49e584363de409d5e93766e1eb63d43bf6d7339ab8766de830f",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_0c911872"
+      }
+    },
+    {
+      "segment_id": "95e9ba12",
+      "source_content": "In the code snippet, we see that we set the first argument as `IntStack`, and the variable name is `self`, allowing us to chain function calls. This means we can write `IntStack::empty().push(2).pop()` instead of `pop(push(2, IntStack::empty()))`. The deeper meaning of this syntax will be explained in the next chapter.",
+      "source_content_hash": "bcb3cd46f3e7cb2d6290943ce816f77618904d4fa3de958768781aa222d73393",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "コードスニペットでは、最初の引数を`IntStack`とし、変数名を`self`としているため、関数呼び出しをチェーンできます。つまり、`pop(push(2, IntStack::empty()))`の代わりに`IntStack::empty().push(2).pop()`と書けます。この構文の深い意味は次の章で説明します。"
+      }
+    },
+    {
+      "segment_id": "8af76f3d",
+      "source_content": "Returning to our code, we defined a recursive data structure based on stack operations: a stack may be empty or may consist of an element and a stack. Creating a stack is to build an empty one. Adding an element builds a non-empty stack with the top element being the one we want to add, while the stack underneath remains as it was. Removing from the stack requires pattern matching, where if the stack is empty, there are no values to retrieve; if the stack is not empty, the top element can be taken.",
+      "source_content_hash": "5cace87d57a35e06f1991d555b2bc510bc1ec9918342efd6cac7667637ac3443",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "コードに戻ると、スタック操作に基づいて再帰的なデータ構造を定義しました：スタックは空であるか、または要素とスタックで構成されます。スタックの作成は空のスタックを構築することです。要素の追加は、追加したい要素をトップに持つ非空のスタックを構築し、下のスタックはそのままにします。スタックからの削除にはパターンマッチングが必要で、スタックが空の場合、取得する値はありません；スタックが空でない場合、トップ要素を取得できます。"
+      }
+    },
+    {
+      "segment_id": "a9d49f92",
+      "source_content": "The definition of a stack is very similar to that of a list. In fact, in MoonBit built-in library, lists are essentially stacks.",
+      "source_content_hash": "b680cd75f5a0176ad2477b3d980ab3910e4f96efe920762c490629fb9b92d5c4",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "スタックの定義はリストの定義と非常に似ています。実際、MoonBitの組み込みライブラリでは、リストは本質的にスタックです。"
+      }
+    },
+    {
+      "segment_id": "a44047a5",
+      "source_content": "After defining a stack for integers, we might also want to define stacks for other types, such as a stack of strings. This is simple, and we only demonstrate the code here without explanation.",
+      "source_content_hash": "3307f4e842013d00d033afeca1e39b25da15e3c29290646bea4918333edf6ef4",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "整数用のスタックを定義した後、他の型のスタック、例えば文字列のスタックも定義したいと思うかもしれません。これは簡単で、ここでは説明せずにコードのみを示します。"
+      }
+    },
+    {
+      "segment_id": "64b6f348",
+      "source_content": "```moonbit\nenum StringStack {\n  Empty\n  NonEmpty(String, StringStack)\n}\nfn StringStack::empty() -> StringStack { Empty }\nfn push(self: StringStack, value: String) -> StringStack { NonEmpty(value, self) }\nfn pop(self: StringStack) -> (Option[String], StringStack) {\n  match self {\n    Empty => (None, Empty)\n    NonEmpty(top, rest) => (Some(top), rest)\n  }\n}\n```",
+      "source_content_hash": "dae7a4c872c73e6e9dac3ca48f33ea2158ca083111c15f694e002b89cac2dad1",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_64b6f348"
+      }
+    },
+    {
+      "segment_id": "0bb95128",
+      "source_content": "Indeed, the stack of strings looks exactly like the stack of integers, except for some differences in type definitions. But if we want to add more data types, should we redefine a stack data structure for each type? Clearly, this is unacceptable.",
+      "source_content_hash": "39b4e4a5fcd7e371b3e69cc51df9d87381376aac069b566dbcc1e5261a7886f0",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "確かに、文字列のスタックは整数のスタックとまったく同じように見えますが、型定義にいくつかの違いがあるだけです。しかし、さらに多くのデータ型を追加したい場合、各型に対してスタックデータ構造を再定義すべきでしょうか？明らかに、これは受け入れられません。"
+      }
+    },
+    {
+      "segment_id": "3ef18741",
+      "source_content": "### Generics in MoonBit",
+      "source_content_hash": "8e9f01942100476bf72dfea51efed611d2d60d40a8db2943765b2b6acf2351a0",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "### MoonBitにおけるジェネリクス"
+      }
+    },
+    {
+      "segment_id": "e7772088",
+      "source_content": "Therefore, MoonBit provides an important language feature: generics. Generics are about taking types as parameters, allowing us to define more abstract and reusable data structures and functions. For example, with our stack, we can add a type parameter `T` after the name to indicate the actual data type stored.",
+      "source_content_hash": "7f727a836231fd425f8f63858dfd27190f7ae366f0a66af143544c804abb2573",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "したがって、MoonBitは重要な言語機能であるジェネリクスを提供しています。ジェネリクスとは、型をパラメータとして受け取ることで、より抽象的で再利用可能なデータ構造や関数を定義できるようにするものです。例えば、スタックの場合、名前の後に型パラメータ`T`を追加することで、実際に格納されるデータの型を示すことができます。"
+      }
+    },
+    {
+      "segment_id": "bc137a19",
+      "source_content": "```moonbit\nenum Stack[T] {\n  Empty\n  NonEmpty(T, Stack[T])\n}\nfn Stack::empty[T]() -> Stack[T] { Empty }\nfn push[T](self: Stack[T], value: T) -> Stack[T] { NonEmpty(value, self) }\nfn pop[T](self: Stack[T]) -> (Option[T], Stack[T]) {\n  match self {\n    Empty => (None, Empty)\n    NonEmpty(top, rest) => (Some(top), rest)\n  }\n}\n```",
+      "source_content_hash": "bc005333032441f6b9d6268f9ef755794950d5f409d11584680b07a767105343",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_bc137a19"
+      }
+    },
+    {
+      "segment_id": "2547a6bb",
+      "source_content": "Similarly, the functions defined later also have a `T` as a type parameter, representing the data type stored in the stack we operate on and the type of data we want to add. We only need to replace the identifier with a parameter, replacing `T` with a specific type, to obtain the actual data structures and functions. For example, if `T` is replaced with `Int`, then we obtain the previously defined `IntStack`.",
+      "source_content_hash": "70f60716233309064deb968914c37e39e6124375843cead3d5e46e0a5e71dcac",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "同様に、後で定義される関数にも`T`という型パラメータがあり、操作するスタックに格納されているデータの型と追加したいデータの型を表します。識別子をパラメータに置き換え、`T`を具体的な型に置き換えるだけで、実際のデータ構造と関数を得ることができます。例えば、`T`を`Int`に置き換えると、前に定義した`IntStack`が得られます。"
+      }
+    },
+    {
+      "segment_id": "90d35b51",
+      "source_content": "### Example: Generic Pair",
+      "source_content_hash": "52c89670a3f567d52df456783cd8f0073229c612cdd2d657c4160d6889d9b5f7",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "### 例: ジェネリックなペア"
+      }
+    },
+    {
+      "segment_id": "86348f98",
+      "source_content": "We have already introduced the syntax, and we have more examples.",
+      "source_content_hash": "3ca488dcd5138f6eb0f0d7b08005764c3e5e38680dacde6060e862afa6b02f71",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "すでに構文を紹介しましたが、さらに例を挙げます。"
+      }
+    },
+    {
+      "segment_id": "daa16011",
+      "source_content": "```moonbit\nstruct Pair[A, B]{ first: A; second: B }\nfn identity[A](value: A) -> A { value }\n```",
+      "source_content_hash": "30718e075154e7a7a6eba541144687fe1372e256d62aa7f1a1afd23b4532075c",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_daa16011"
+      }
+    },
+    {
+      "segment_id": "2822251a",
+      "source_content": "For example, we can define a pair of data, or a tuple. The pair has two type parameters because we might have two elements of two different types. The stored values `first` and `second` are respectively of these two types. As another example, we define a function `identity` that can operate on any type and always return the input value.",
+      "source_content_hash": "99f66581a306a4853aa8d8a753deb500682ddc673be234441109891872a183ed",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "例えば、データのペア、つまりタプルを定義できます。ペアには2つの型パラメータがあります。なぜなら、2つの異なる型の要素を持つ可能性があるからです。格納される値`first`と`second`はそれぞれこれらの型になります。別の例として、任意の型に対して動作し、常に入力値を返す関数`identity`を定義します。"
+      }
+    },
+    {
+      "segment_id": "25212439",
+      "source_content": "`Stack` and `Pair` can themselves be considered as functions on types, with their parameters being `T` or `A, B`, and the results of the operation are specific types like `Stack[T]` and `Pair[A, B]`. `Stack` and `Pair` can be regarded as type constructors. In most cases, the type parameters in MoonBit can be inferred based on the specific parameter types.",
+      "source_content_hash": "5479c059e6b62eae185785c62c70824d7bde7a646daa3fee56750514c7e6c0ba",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "`Stack`と`Pair`は、それ自体が型に対する関数と見なすことができます。パラメータは`T`または`A, B`であり、操作の結果は`Stack[T]`や`Pair[A, B]`などの具体的な型です。`Stack`と`Pair`は型コンストラクタと見なせます。ほとんどの場合、MoonBitでは型パラメータは具体的なパラメータの型に基づいて推論できます。"
+      }
+    },
+    {
+      "segment_id": "d79a4831",
+      "source_content": "![](/pics/polymorphism-type.webp)",
+      "source_content_hash": "e858518ed5f2ef8e04a2c207132aa2759d8d246d14f2c4c0e43d327d7c154dd3",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "![](/pics/polymorphism-type.webp)"
+      }
+    },
+    {
+      "segment_id": "2838eb68",
+      "source_content": "For example, in the screenshot here, the type of `empty` is initially unknown. But after `push(1)`, we understand that it is used to hold integers, thus we can infer that the type parameters for `push` and `empty` should be integer `Int`.",
+      "source_content_hash": "afacffdea7d6a44dd1135fdfc3a314ca4e2ed8e3c0bdeaa6eed21fd31cb905af",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "例えば、このスクリーンショットでは、`empty`の型は最初は不明です。しかし、`push(1)`を行った後、整数を保持するために使用されていることがわかり、`push`と`empty`の型パラメータが整数`Int`であると推論できます。"
+      }
+    },
+    {
+      "segment_id": "42a5832e",
+      "source_content": "### Example: Generic Functional Queue",
+      "source_content_hash": "fdc42b203168304441d6b9f3b2e623a7bf99f066cee4f663789dd0c46ae79950",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "### 例: ジェネリックな関数型キュー"
+      }
+    },
+    {
+      "segment_id": "0e80209e",
+      "source_content": "Now let's look at another generic data structure: the queue. We have already used the queue in the breadth-first sorting in the last lesson. Recall, a queue is a First-In-First-Out data structure, just like we queue up in everyday life. Here we define the following operations, where the queue is called `Queue`, and it has a type parameter.",
+      "source_content_hash": "554b0fce438115efa9adaf3ee456c4a56c085a343e04cabe72dc33dfff035e42",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "次に、別のジェネリックなデータ構造であるキューを見てみましょう。前回のレッスンで幅優先ソートでキューを使用しました。思い出してください、キューは先入れ先出し（FIFO）のデータ構造で、日常生活で並ぶ列のようなものです。ここでは以下の操作を定義します。キューは`Queue`と呼ばれ、型パラメータを持ちます。"
+      }
+    },
+    {
+      "segment_id": "59534425",
+      "source_content": "```moonbit no-check\nfn empty[T]() -> Queue[T] // Create an empty queue\nfn push[T](q: Queue[T], x: T) -> Queue[T] // Add an element to the tail of the queue\n// Try to dequeue an element and return the remaining queue; if empty, return itself\nfn pop[T](q: Queue[T]) -> (Option[T], Queue[T])\n```",
+      "source_content_hash": "310d09e40514887ef262b9c537730c354d36948c304fb40ab32cebfbbb289c8d",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_59534425"
+      }
+    },
+    {
+      "segment_id": "44aaa880",
+      "source_content": "Every operation has a type parameter, indicating the type of data it holds. We define three operations similar to those of a stack. The difference is that when removing elements, the element that was first added to the queue will be removed.",
+      "source_content_hash": "1a6a549de6a3e7c1a7fb2519f39a8acd660ac9dd93e2a1d2358e3e814a79193f",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "すべての操作には型パラメータがあり、保持するデータの型を示します。スタックと同様に3つの操作を定義します。違いは、要素を削除する際に、キューに最初に追加された要素が削除される点です。"
+      }
+    },
+    {
+      "segment_id": "396efb28",
+      "source_content": "The implementation of the queue can be simulated by a list or a stack. We add elements at the end of the list, i.e., at the bottom of the stack, and take them from the front of the list, i.e., the top of the stack. The removal operation is very quick because it only requires one pattern matching. But adding elements requires rebuilding the entire list or stack.",
+      "source_content_hash": "4ad644e3c1eda8350e83cf37dad2f2ad6bff15e75f171488aefce1c6fb7c9580",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "キューの実装はリストまたはスタックでシミュレートできます。要素をリストの末尾、つまりスタックの底に追加し、リストの先頭、つまりスタックの頂点から取り出します。削除操作は非常に高速です。なぜなら、パターンマッチングを1回行うだけで済むからです。しかし、要素を追加するにはリストまたはスタック全体を再構築する必要があります。"
+      }
+    },
+    {
+      "segment_id": "b27056c4",
+      "source_content": "```moonbit no-check\nCons(1, Cons(2, Nil)) => Cons(1, Cons(2, Cons(3, Nil)))\n```",
+      "source_content_hash": "5a4109bafe6625d1b302e1889987c88b57112103902bccfed0e4396502c86ef3",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_b27056c4"
+      }
+    },
+    {
+      "segment_id": "5f82a1e9",
+      "source_content": "As shown here, to add an element at the end, i.e., to replace `Nil` with `Cons(3, Nil)`, we need to replace the whole `Cons(2, Nil)` with `Cons(2, Cons(3, Nil))`. And worse, the next step is to replace the `[2]` occurred as tail in the original list with `[2, 3]`, which means to rebuild the entire list from scratch. It is very inefficient.",
+      "source_content_hash": "789a3c9d357457eda0b1312f6ef2c92524c14c26f1ddbe0ef816689ab7dc5a02",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "ここに示すように、末尾に要素を追加する、つまり`Nil`を`Cons(3, Nil)`に置き換えるには、`Cons(2, Nil)`全体を`Cons(2, Cons(3, Nil))`に置き換える必要があります。さらに悪いことに、次のステップでは、元のリストの末尾として現れた`[2]`を`[2, 3]`に置き換える必要があり、リスト全体を最初から再構築することを意味します。これは非常に非効率的です。"
+      }
+    },
+    {
+      "segment_id": "6fc234cf",
+      "source_content": "To solve this problem, we use two stacks to simulate a queue.",
+      "source_content_hash": "ad0b55f2e23ebe2f851a53dbdaf6913a816363eddd2461edf41bf790a22db107",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "この問題を解決するために、2つのスタックを使用してキューをシミュレートします。"
+      }
+    },
+    {
+      "segment_id": "a3a1b8eb",
+      "source_content": "```moonbit no-check\nstruct Queue[T] {\n  front: Stack[T] // For removing elements\n  back: Stack[T] // For storing elements\n}\n```",
+      "source_content_hash": "12f698d61bb72afd591cb19947a94ce80d06537ad3df4f0171eb94899fde0424",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_a3a1b8eb"
+      }
+    },
+    {
+      "segment_id": "1ecf0882",
+      "source_content": "One stack is for the removal operation, and the other for storage. In the definition, both types are `Stack[T]`, and `T` is the queue's type parameter. When adding data, we directly store it in `back`: this step is quick because it builds a new structure on top of the original one; the removal operation also only needs one pattern matching, which is not slow either. When all elements in `front` have been removed, we need to rotate all elements from `back` into `front`. We check this after each operation to ensure that as long as the queue is not empty, then `front` is not empty. This checking is the invariant of our queue operations, a condition that must hold. This rotation is very costly, proportional to the length of the list at that time, but the good news is that this cost can be amortized, because after a rotation, the following several removal operations no longer need rotation.",
+      "source_content_hash": "84bbf8f9f39041c12972970a01ea98c7c2550faec97790632aadec3f66aa085f",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "一方のスタックは要素の削除操作に使用し、もう一方はデータの格納に使用します。定義上、両方の型は`Stack[T]`であり、`T`はキューの型パラメータです。データを追加する際には、`back`に直接格納します。この操作は高速です。なぜなら、元の構造の上に新しい構造を構築するだけだからです。削除操作も同様に、1回のパターンマッチングのみで済み、遅延は発生しません。`front`の要素がすべて削除された場合、`back`の要素をすべて`front`に移動させる必要があります。各操作後にこのチェックを行い、キューが空でない限り`front`が空にならないことを保証します。このチェックはキュー操作の不変条件（invariant）であり、必ず満たされなければならない条件です。この移動操作はリストの長さに比例した非常にコストのかかる処理ですが、良いニュースはこのコストを償却できることです。なぜなら、一度移動させた後は、続くいくつかの削除操作では移動が必要なくなるからです。"
+      }
+    },
+    {
+      "segment_id": "e77cf7c6",
+      "source_content": "![](/pics/queue_push.drawio.webp)",
+      "source_content_hash": "15246aaf33025195eb2d00fe2f54b494c81ef15f3ea735ba2d5e493508a800df",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "![](/pics/queue_push.drawio.webp)"
+      }
+    },
+    {
+      "segment_id": "bb1346b6",
+      "source_content": "![](/pics/queue_push_more.drawio.webp)",
+      "source_content_hash": "9c41b05f9bc6a4841570b7847d61442cf8aea0cd88cea5d955eb8220b72845e3",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "![](/pics/queue_push_more.drawio.webp)"
+      }
+    },
+    {
+      "segment_id": "8664ed0b",
+      "source_content": "![](/pics/queue_pop.drawio.webp)",
+      "source_content_hash": "2bc6eb1f84f76bd382a9cd934af42f0a94bbddcfc4cbe3bff01d6a452f445aac",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "![](/pics/queue_pop.drawio.webp)"
+      }
+    },
+    {
+      "segment_id": "9e90a9b3",
+      "source_content": "Let's look at a specific example. Initially, we have an empty queue, so both stacks are empty. After one addition, we add a number to `back`. Then we organize the queue and find that the queue is not empty, but `front` is empty, which does not meet our previously stated invariant, so we rotate the stack `back` and move rotated elements to `front`. Afterwards, we continue to add elements to `back`. Since `front` is not empty, it meets the invariant, and we do not need additional processing.",
+      "source_content_hash": "a8519dbbf748b1520364b504de500cd8ba0550d684153633f9bf73a547e50f78",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "具体的な例を見てみましょう。最初、キューは空なので、両方のスタックも空です。1回追加した後、`back`に数値を追加します。その後、キューを整理し、キューが空でないのに`front`が空であることがわかります。これは前述の不変条件を満たしていないため、`back`のスタックを回転させ、要素を`front`に移動させます。その後、引き続き`back`に要素を追加します。`front`が空でないため、不変条件を満たしており、追加の処理は不要です。"
+      }
+    },
+    {
+      "segment_id": "681ef526",
+      "source_content": "After that, our repeatedly additions are only the quick addition of new elements in `back`. Then, we remove elements from `front`. We check the invariant after the operation. We find that the queue is not empty, but `front` is empty, so we do retate `back` and move elements to `front` again. After that, we can normally take elements from `front`.",
+      "source_content_hash": "6d9a8d9e2f7eb0670244f93a757612613d84904a2d9e0ef61e6ee5bcf89731f1",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "その後、繰り返し追加操作を行っても、`back`への新しい要素の追加は高速です。次に、`front`から要素を削除します。操作後に不変条件をチェックします。キューが空でないのに`front`が空であることがわかるため、再度`back`を回転させ、要素を`front`に移動させます。その後、通常通り`front`から要素を取り出すことができます。"
+      }
+    },
+    {
+      "segment_id": "be17ccc3",
+      "source_content": "You can see that one rotation supports multiple removal operations, therefore the overall cost is much less than rebuilding the list every time.",
+      "source_content_hash": "732c960676a674ce44a17ee364dd10587a8a4feed4a6c87f2f8a4414d99b81b6",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "わかるように、1回の回転操作で複数の削除操作をサポートできるため、全体のコストは毎回リストを再構築する場合よりも大幅に少なくなります。"
+      }
+    },
+    {
+      "segment_id": "7d56fc4b",
+      "source_content": "```moonbit\nstruct Queue[T] {\n  front: Stack[T]\n  back: Stack[T]\n}\nfn Queue::empty[T]() -> Queue[T] { {front: Empty, back: Empty} }\n\n// Store element at the end of the queue\nfn push[T](self: Queue[T], value: T) -> Queue[T] {\n  normalize({ ..self, back: self.back.push(value)}) // By defining the first argument as self, we can use xxx.f()\n}\n\n// Remove the first element\nfn pop[T](self: Queue[T]) -> (Option[T], Queue[T]) {\n  match self.front {\n    Empty => (None, self)\n    NonEmpty(top, rest) => (Some(top), normalize({ ..self, front: rest}))\n  }\n}\n\n// If front is empty, reverse back to front\nfn normalize[T](self: Queue[T]) -> Queue[T] {\n  match self.front {\n    Empty => { front: self.back.reverse(), back: Empty }\n    _ => self\n  }\n}\n\n// Helper function: reverse the stack\nfn reverse[T](self: Stack[T]) -> Stack[T] {\n  fn go(acc, xs: Stack[T]) {\n    match xs {\n      Empty => acc\n      NonEmpty(top, rest) => go((NonEmpty(top, acc) : Stack[T]), rest)\n    }\n  }\n  go(Empty, self)\n}\n```",
+      "source_content_hash": "1a5d3b2e643a3494c4d4e709a4b7338f6c351592fdc55777fbc8cbf443ea792e",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_7d56fc4b"
+      }
+    },
+    {
+      "segment_id": "9ebd9d9b",
+      "source_content": "Here is the code for the queue. You can see that we extensively apply generics, so our queue can contain any type, including queues containing other elements. The functions here are the specific implementations of the algorithm we just explained. In function `push`, you we called the stack's `push` function through `back.push()`. We will explain this specifically in the next lesson.",
+      "source_content_hash": "8042c9c9453e8895a95d657a9f5c72038ecff0a965674e8de8b19d000fd70ad7",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "以下はキューのコードです。ジェネリクスを広範に適用しているため、このキューは任意の型を含むことができ、他の要素を含むキューも可能です。ここにある関数は、先ほど説明したアルゴリズムの具体的な実装です。`push`関数では、`back.push()`を通じてスタックの`push`関数を呼び出しています。これについては次のレッスンで詳しく説明します。"
+      }
+    },
+    {
+      "segment_id": "6d457467",
+      "source_content": "## Higher-Order Functions",
+      "source_content_hash": "a6384b65f40c1a592da9385f116249c79849957eca5741e9284d07aa320d58d7",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "## 高階関数"
+      }
+    },
+    {
+      "segment_id": "6fad5db5",
+      "source_content": "This section continues to focus on how to use the features provided by MoonBit to reduce repetitive code and enhance code reusability. So, let’s start with an example.",
+      "source_content_hash": "bff631395b82550a30eb5721dabd2a15162b2275e994dff73423489870bfaa35",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "このセクションでは、MoonBitが提供する機能を活用して、繰り返しのコードを減らし、コードの再利用性を高める方法に焦点を当てます。それでは、例から始めましょう。"
+      }
+    },
+    {
+      "segment_id": "d7631ae3",
+      "source_content": "```moonbit\nfn sum(list: @immut/list.T[Int]) -> Int {\n  match list {\n    Nil => 0\n    Cons(hd, tl) => hd + sum(tl)\n  }\n}\n```",
+      "source_content_hash": "b8388d3a7e679dd45729f5e2e3b7b4a4aa5ea6a020f6cdc89b791779a406f905",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_d7631ae3"
+      }
+    },
+    {
+      "segment_id": "ebfad7e4",
+      "source_content": "Consider some operations on lists. For instance, to sum an integer list, we use structural recursion with the following code: if empty, the sum is 0; otherwise, the sum is the current value plus the sum of the remaining list elements.",
+      "source_content_hash": "d733543a1d52343b716260a565b91d3035479533b0e163bab1f9461513f79d1b",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "リストに対するいくつかの操作を考えてみましょう。例えば、整数リストの合計を求める場合、構造的再帰を使用して次のコードを書きます。リストが空の場合は合計は0、それ以外の場合は現在の値に残りのリスト要素の合計を加算します。"
+      }
+    },
+    {
+      "segment_id": "a4a54521",
+      "source_content": "```moonbit\nfn length[T](list: @immut/list.T[T]) -> Int {\n  match list {\n    Nil => 0\n    Cons(hd, tl) => 1 + length(tl)\n  }\n}\n```",
+      "source_content_hash": "694887694357e0f10bf55816ad3c5358b3d3d950b7341828e94d0fd61d1948b9",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_a4a54521"
+      }
+    },
+    {
+      "segment_id": "d75361e3",
+      "source_content": "Similarly, to find the length of a list of any data type, using structural recursion, we write: if empty, the length is 0; otherwise, the length is 1 plus the length of the remaining list.",
+      "source_content_hash": "7a209f8271b5d0a053fa893507685dfc11c1a22ef133251d6b0792d13df2b0e9",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "同様に、任意のデータ型のリストの長さを求める場合、構造的再帰を使用して次のように書きます。リストが空の場合は長さは0、それ以外の場合は1に残りのリストの長さを加算します。"
+      }
+    },
+    {
+      "segment_id": "c277c3c0",
+      "source_content": "Notice that these two structures have considerable similarities: both are structural recursions with a default value when empty, and when not empty, they both involve processing the current value and combining it with the recursive result of the remaining list. In the summing case, the default value is 0, and the binary operation is additio; in the length case, the default value is also 0, and the binary operation is to replace the current value with 1 and then add it to the remaining result. How can we reuse this structure? We can write it as a function, passing the default value and the binary operation as parameters.",
+      "source_content_hash": "ba606ad05272977e3fba8132836607b06ef464b04033f593a91c48c78685e94c",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "これらの2つの構造にはかなりの類似点があることに気づきます。どちらも構造的再帰を使用しており、空の場合のデフォルト値を持ち、空でない場合は現在の値を処理し、残りのリストの再帰的結果と組み合わせます。合計の場合、デフォルト値は0で、二項演算は加算です。長さの場合、デフォルト値も0で、二項演算は現在の値を1に置き換えてから残りの結果に加算します。この構造を再利用するにはどうすればよいでしょうか？デフォルト値と二項演算をパラメータとして受け取る関数として記述できます。"
+      }
+    },
+    {
+      "segment_id": "3079a4d2",
+      "source_content": "### First-Class Function in MoonBit",
+      "source_content_hash": "cb7c87756d7a4345c188c687bcb445c02d551842e73b9283324a3f2060afbbea",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "### MoonBitにおける第一級関数"
+      }
+    },
+    {
+      "segment_id": "e4945edb",
+      "source_content": "This brings us to the point that in MoonBit, functions are first-class citizens. This means that functions can be passed as parameters and can also be stored as results. For instance, the structure we just described can be defined as the function shown below, where `f` is passed as a parameter and used in line four for calculation.",
+      "source_content_hash": "ca051a008033ab788bec89e2ddc6d1541caa69d02df25d63350f3ce08d71d3ca",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "ここで、MoonBitにおいて関数が第一級市民(first-class citizen)であるという点に着目します。これは、関数を引数として渡したり、結果として返したりできることを意味します。例えば、先ほど説明した構造は以下の関数として定義できます。ここで、`f`は引数として渡され、4行目で計算に使用されます。"
+      }
+    },
+    {
+      "segment_id": "1be6af7b",
+      "source_content": "```moonbit\nfn fold_right[A, B](list: @immut/list.T[A], f: (A, B) -> B, b: B) -> B {\n  match list {\n    Nil => b\n    Cons(hd, tl) => f(hd, fold_right(tl, f, b))\n  }\n}\n```",
+      "source_content_hash": "338dea8a91762310f4671d3ba9fb09417e1cc82b4e14e763f80aae465ded526d",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_1be6af7b"
+      }
+    },
+    {
+      "segment_id": "85b17c36",
+      "source_content": "Here’s another example. If we want to repeat a function’s operation, we could define `repeat` as shown in the first line. `repeat` accepts a function as a parameter and then returns a function as a result. Its operation results in a function that calculates the original function twice.",
+      "source_content_hash": "da30c5e57cbb21e3285c607fff7177f3d04d2ce0681acfe509ebd9887c3bfa3f",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "別の例を見てみましょう。関数の操作を繰り返したい場合、1行目に示すように`repeat`を定義できます。`repeat`は関数を引数として受け取り、関数を結果として返します。その操作結果は、元の関数を2回計算する関数となります。"
+      }
+    },
+    {
+      "segment_id": "d1a6eaaa",
+      "source_content": "```moonbit\nfn repeat[A](f: (A) -> A) -> (A) -> A {\n  fn (a) { f(f(a)) } // Return a function as a result\n}\n\nfn plus_one(i: Int) -> Int { i + 1 }\nfn plus_two(i: Int) -> Int { i + 2 }\n\nlet add_two: (Int) -> Int = repeat(plus_one) // Store a function\n\nlet compare: Bool = add_two(2) == plus_two(2) // true (both are 4)\n```",
+      "source_content_hash": "64375cd73bab444ec258b1e50c27bb4ae41223dcf87d06040ea4e24c2cf40fd3",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_d1a6eaaa"
+      }
+    },
+    {
+      "segment_id": "6dc3e423",
+      "source_content": "For example, if we have two functions `plus_one` and `plus_two`, by using `repeat` with `plus_one` as a parameter, the result is a function that adds one twice, i.e., adds two. We use `let` to bind this function to `add_two`, then perform calculations using normal function syntax to get the result.",
+      "source_content_hash": "be9292988217c1f836990304c5d947b46e1d96eb4d9116846e6a2d396ee6daa7",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "例えば、`plus_one`と`plus_two`という2つの関数がある場合、`plus_one`を引数として`repeat`を使用すると、結果は1を2回加算する、つまり2を加算する関数になります。この関数を`add_two`に`let`でバインドし、通常の関数構文を使って計算を実行して結果を得ます。"
+      }
+    },
+    {
+      "segment_id": "ceb4fd26",
+      "source_content": "`let add_two: (Int) -> Int = repeat(plus_one)`",
+      "source_content_hash": "93e7e604f49b86024e4e4460fd21566e51897b9892d18ee1e380926d1a9d4b78",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "`let add_two: (Int) -> Int = repeat(plus_one)`"
+      }
+    },
+    {
+      "segment_id": "65be34cb",
+      "source_content": "&nbsp; `repeat(plus_one)`",
+      "source_content_hash": "b4a3ab1b908e37e50ea4b65079c14f709b897abed888fb9f58d8f53fd2ceab8c",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "&nbsp; `repeat(plus_one)`"
+      }
+    },
+    {
+      "segment_id": "32fb7230",
+      "source_content": "$\\mapsto$ `fn (a) { plus_one(plus_one(a)) }`",
+      "source_content_hash": "9f761c15799ae77a023f49af1198ffde39cf635482221889d23f5fe3c9a2cb7d",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "$\\mapsto$ `fn (a) { plus_one(plus_one(a)) }`"
+      }
+    },
+    {
+      "segment_id": "41e7f712",
+      "source_content": "`let x: Int = add_two(2)`",
+      "source_content_hash": "aa9fcdc5ef8e545932932c0da0d9251ca8a378aff7774ec0878af04e2ba931a6",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "`let x: Int = add_two(2)`"
+      }
+    },
+    {
+      "segment_id": "15d5abf0",
+      "source_content": "&nbsp; `add_two(2)`",
+      "source_content_hash": "8005f1047e0d9d0b11479542263d4bf9081fdcc52ff966e7797e453a5ed46286",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "&nbsp; `add_two(2)`"
+      }
+    },
+    {
+      "segment_id": "5d5a3416",
+      "source_content": "$\\mapsto$ `plus_one(plus_one(2))`",
+      "source_content_hash": "73dd79c335876e3310892faa7841372cc840bc312bb9f3d9f125ef7490bb4f31",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "$\\mapsto$ `plus_one(plus_one(2))`"
+      }
+    },
+    {
+      "segment_id": "070ff7a2",
+      "source_content": "$\\mapsto$ `plus_one(2) + 1`",
+      "source_content_hash": "7ea806c7c706e7cdcde2eb3b48ebdefdeaccc4c245116208e5e9f676abb30b07",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "$\\mapsto$ `plus_one(2) + 1`"
+      }
+    },
+    {
+      "segment_id": "715a86e2",
+      "source_content": "$\\mapsto$ `(2 + 1) + 1`",
+      "source_content_hash": "0bb35f2b08d00157dd5dd918ec732763e0df12870a315e95bfeb73d41d786895",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "$\\mapsto$ `(2 + 1) + 1`"
+      }
+    },
+    {
+      "segment_id": "2153a2fa",
+      "source_content": "$\\mapsto$ `3 + 1`",
+      "source_content_hash": "31a35b9ff5209a65ae4c2534455d56dc202ade6e15bcb16c4b4e909daefb6127",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "$\\mapsto$ `3 + 1`"
+      }
+    },
+    {
+      "segment_id": "bb5297fc",
+      "source_content": "$\\mapsto$ `4`",
+      "source_content_hash": "a317e09919bbc0026baf364e8f667c9c582b7075a50e4388bd8711604c34a4c8",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "$\\mapsto$ `4`"
+      }
+    },
+    {
+      "segment_id": "2cfc0629",
+      "source_content": "Let's explore the simplification here. First, `add_two` is bound to `repeat(plus_one)`. For this line, simplification is about to replace identifiers in expressions with arguments, obtaining a function as a result. Now, we cannot simplify further for this expression. Then, we Calculate `add_two(2)`. Similarly, we replace identifiers in the expression and simplify `plus_one`. After more simplifications, we finally obtain our result, `4`.",
+      "source_content_hash": "6916f164142c04c993ad69f8357fc9248a3567c6c8a5e1e43fe060edaad56bea",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "ここでの簡約化を詳しく見ていきましょう。まず、`add_two`は`repeat(plus_one)`にバインドされます。この行では、式内の識別子を引数で置き換える簡約化が行われ、結果として関数が得られます。この時点では、この式についてこれ以上簡約化できません。次に、`add_two(2)`を計算します。同様に式内の識別子を置き換え、`plus_one`を簡約化します。さらに簡約化を進めると、最終的に結果の`4`が得られます。"
+      }
+    },
+    {
+      "segment_id": "f4b938fe",
+      "source_content": "We've previously mentioned function types, which go from the accepted parameters to the output parameters, where the accepted parameters are enclosed in parentheses.",
+      "source_content_hash": "48f54bfce2d49100292ef1c765055fedb3044bd9f62548ecea08aa23bdda0b3d",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "これまでに関数の型について触れましたが、これは受け取るパラメータから出力パラメータへの対応を示すもので、受け取るパラメータは括弧で囲まれます。"
+      }
+    },
+    {
+      "segment_id": "08cc9caa",
+      "source_content": "- `(Int) -> Int` Integers to integers\n- `(Int) -> (Int) -> Int` Integers to a function that accepts integers and returns integers\n- `(Int) -> ((Int) -> Int)` The same as the previous line\n- `((Int) -> Int) -> Int` A function that accepts a function from integers to integers and returns an integer",
+      "source_content_hash": "0013d89364b303d57c10d259a6f47122e5b1bc169f9f1e28f9a1676752a1b5b3",
+      "node_type": "list",
+      "translatable": true,
+      "translations": {
+        "ja": "- `(Int) -> Int` 整数から整数への関数\n- `(Int) -> (Int) -> Int` 整数から、整数を受け取り整数を返す関数への関数\n- `(Int) -> ((Int) -> Int)` 前の行と同じ\n- `((Int) -> Int) -> Int` 整数から整数への関数を受け取り、整数を返す関数"
+      }
+    },
+    {
+      "segment_id": "2f8456b2",
+      "source_content": "For example, the function type from integer to integer, would be `(Int) -> Int`. The second line shows an example from integer to function. Notice that the function’s parameter also needs to be enclosed in parentheses. The function type is actually equivalent to enclosing the entire following function type in parentheses, as seen in the third line. If it's from function to integer, as we mentioned earlier, the accepted parameter needs to be enclosed in parentheses, so it should look like the fourth line, not the second.",
+      "source_content_hash": "39c44ad1c8e271cf47c99e00622a0e8ca747953891a0d6899b36563c2c407ed2",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "例えば、整数から整数への関数型は`(Int) -> Int`となります。2行目は整数から関数への例です。関数のパラメータも括弧で囲む必要があることに注意してください。この関数型は実際には、3行目に見られるように、後続の関数型全体を括弧で囲んだものと等価です。関数から整数への場合、前述のように受け取るパラメータは括弧で囲む必要があるため、2行目のようではなく4行目のように記述すべきです。"
+      }
+    },
+    {
+      "segment_id": "9a53bcb1",
+      "source_content": "### Example: Fold Functions",
+      "source_content_hash": "a9934d838270aa1fd9019930913d4b27c72624b67d0db32ac22fd3131e3fc806",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "### 例: 畳み込み関数"
+      }
+    },
+    {
+      "segment_id": "bed77f05",
+      "source_content": "Here are a few more common applications of higher-order functions. Higher-order functions are functions that accept functions. `fold_right`, which we just saw, is a common example. Below, we draw its expression tree.",
+      "source_content_hash": "63b4509425d017ceb837e20ae07961153a1d2bc155dc8bcdac4da243bd3d5204",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "高階関数のさらに一般的な応用例をいくつか紹介します。高階関数とは関数を受け取る関数のことです。先ほど見た`fold_right`はその典型的な例です。以下にその式木を示します。"
+      }
+    },
+    {
+      "segment_id": "34dd1969",
+      "source_content": "```moonbit no-check\nfn fold_right[A, B](list: @immut/list.T[A], f: (A, B) -> B, b: B) -> B {\n  match list {\n    Nil => b\n    Cons(hd, tl) => f(hd, fold_right(tl, f, b))\n  }\n}\n```",
+      "source_content_hash": "f8af010cb6406cf8f0c37d34c20d7a9cc179b99310d1820ee1cc35cd368cd512",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_34dd1969"
+      }
+    },
+    {
+      "segment_id": "858b0a05",
+      "source_content": "![](/pics/fold_right.drawio.webp)",
+      "source_content_hash": "0391b7d6058e53539421501a433d8f9986bcd7dfd5ac8dd76489d27ed741f187",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "![](/pics/fold_right.drawio.webp)"
+      }
+    },
+    {
+      "segment_id": "c95293b9",
+      "source_content": "You can see that for a list from 1 to 3, `f` is applied to the current element and the result of the remaining elements each time, thus it looks like we're building a fold from right to left, one by one, to finally get a result. Therefore, this function is called `fold_right`. If we change the direction, folding the list from left to right, then we get `fold_left`.",
+      "source_content_hash": "14ec5b250808a01ebda0afe7cb37e4e0dc616e8685e6141c9ab9968315a499a7",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "1から3までのリストに対して、`f`が各要素と残りの要素の結果に適用されていく様子がわかります。これは右から左へと一つずつ畳み込んでいき、最終的に結果を得るような構造です。そのため、この関数は`fold_right`と呼ばれます。もし方向を変えて、リストを左から右に畳み込むと、`fold_left`が得られます。"
+      }
+    },
+    {
+      "segment_id": "63d9cf48",
+      "source_content": "```moonbit\nfn fold_left[A, B](list: @immut/list.T[A], f: (B, A) -> B, b: B) -> B {\n  match list {\n    Nil => b\n    Cons(hd, tl) => fold_left(tl, f, f(b, hd))\n  }\n}\n```",
+      "source_content_hash": "f92a246d2176c6761082b17cf91b1d896c23b2de2fca8322d4f65b43317b11de",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_63d9cf48"
+      }
+    },
+    {
+      "segment_id": "d1996877",
+      "source_content": "![](/pics/fold_left.drawio.webp)",
+      "source_content_hash": "7e53a0c66a0ffffe345b8cbbbf0de1eda8365d9ed9423c0c4391542b877c84b0",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "![](/pics/fold_left.drawio.webp)"
+      }
+    },
+    {
+      "segment_id": "95b3e282",
+      "source_content": "Here, we only need to swap the order, first processing the current element with the previous accumulated result, then incorporating the processed result into the subsequent processing, as shown in the fourth line. This function folds from left to right.",
+      "source_content_hash": "cda350f454f8f283286605c65c5adf9cbdf1d3d31bfd81a91cb9399be67c6579",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "ここでは、順序を入れ替えるだけで、まず現在の要素を前回の累積結果で処理し、その後処理された結果を次の処理に組み込むだけで済みます。これは4行目に示されている通りです。この関数は左から右へ畳み込みを行います。"
+      }
+    },
+    {
+      "segment_id": "db1c4f18",
+      "source_content": "### Example: Map Function",
+      "source_content_hash": "c2437764a3bf3f4dfef7c4cb7c4f7b39e7240ab1d88598093c32ecdbaa2fa05e",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "### 例: Map関数"
+      }
+    },
+    {
+      "segment_id": "45d5dee4",
+      "source_content": "Another common application of higher-order functions is to map each element of a function.",
+      "source_content_hash": "a649d143a4c1cfc55e868a97bc614e8f8dbd045761b3b19200c911c7d11b0371",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "高階関数のもう一つの一般的な応用例は、関数の各要素をマッピングすることです。"
+      }
+    },
+    {
+      "segment_id": "b19953ed",
+      "source_content": "```moonbit no-check\nstruct PersonalInfo { name: String; age: Int }\nfn map[A, B](self: @immut/list.T[A], f: (A) -> B) -> @immut/list.T[B] {\n  match list {\n    Nil => Nil\n    Cons(hd, tl) => Cons(f(hd), map(tl, f))\n  }\n}\nlet infos: @immut/list.T[PersonalInfo] = ???\nlet names: @immut/list.T[String] = infos.map(fn (info) { info.name })\n```",
+      "source_content_hash": "67cbfac7ae42b0eafff7f61b8c43770a79072b36c6bdbe41e346f79d4201f717",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_b19953ed"
+      }
+    },
+    {
+      "segment_id": "71e7acda",
+      "source_content": "For example, if we have some people's information and we only need their names, then we can use the mapping function `map`, which accepts `f` as a parameter, to map each element in the list one by one, finally obtaining a new list where the type of elements has become `B`. This function's implementation is very simple. What we need is also structural recursion. The last application is as shown in line 8. Maybe you feel like you've seen this `map` structure before: structural recursion, a default value for the empty case, and a binary operation processing the current value combined with the recursive result when not empty. Indeed, `map` can be entirely implemented using `fold_right`, where the default value is an empty list, and the binary operation is the `Cons` constructor.",
+      "source_content_hash": "620a4e3bf2e00e62129f594836abee07c934fe691f4f7148bbfa6804a189e660",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "例えば、人物情報があり名前だけが必要な場合、マッピング関数`map`を使用できます。この関数はパラメータとして`f`を受け取り、リスト内の各要素を一つずつマッピングし、最終的に要素の型が`B`になった新しいリストを取得します。この関数の実装は非常にシンプルです。必要なのは構造的再帰だけです。最後の応用例は8行目に示されています。この`map`構造を見覚えがあるかもしれません: 構造的再帰、空の場合のデフォルト値、空でない場合に現在の値を再帰結果と組み合わせて処理する二項演算です。実際、`map`は`fold_right`を使って完全に実装できます。ここでデフォルト値は空リストで、二項演算は`Cons`コンストラクタです。"
+      }
+    },
+    {
+      "segment_id": "9b899126",
+      "source_content": "```moonbit\nfn map[A, B](list: @immut/list.T[A], f: (A) -> B) -> @immut/list.T[B] {\n  fold_right(list, fn (value, cumulator) { Cons(f(value), cumulator) }, Nil)\n}\n```",
+      "source_content_hash": "e6cf5bc77470e333c6134af62949d44c5ee7472918e24513614b26bc251852cf",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_9b899126"
+      }
+    },
+    {
+      "segment_id": "4443801b",
+      "source_content": "Here we leave you an exercise: how to implement `fold_left` with `fold_right`? Hint: something called `Continuation` may be involved. `Continuation` represents the remaining computation after the current operation, generally a function whose parameter is the current value and whose return value is the overall program's result.",
+      "source_content_hash": "ec563e33a97df765974d6f23df1141a073e3fc7fa8f01de93a4d8454bcaf203a",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "ここで練習問題を残します: `fold_right`を使って`fold_left`をどのように実装するか？ヒント: `Continuation`と呼ばれるものが関わってくるかもしれません。`Continuation`は現在の操作後の残りの計算を表し、一般的にはパラメータが現在の値で戻り値がプログラム全体の結果である関数です。"
+      }
+    },
+    {
+      "segment_id": "7441a9ec",
+      "source_content": "Having learned about generics and higher-order functions, we can now define the binary search tree studied in the last lesson as a more general binary search tree, capable of storing various data types, not just integers.",
+      "source_content_hash": "2dcfe0c1cd86a7bf310b442801c6916af5dfa4f135c9e6d86ad7b3a472489595",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "ジェネリクスと高階関数について学んだので、前回のレッスンで学んだ二分探索木を、整数だけでなく様々なデータ型を格納できるより一般的な二分探索木として定義できるようになりました。"
+      }
+    },
+    {
+      "segment_id": "ee5332da",
+      "source_content": "```moonbit no-check\nenum Tree[T] {\n  Empty\n  Node(T, Tree[T], Tree[T])\n}\n\n// We need a comparison function to determine the order of values\n// The comparison function should return an integer representing the comparison result\n// -1: less than; 0: equal to; 1: greater than\nfn insert[T](self: Tree[T], value: T, compare: (T, T) -> Int) -> Tree[T]\nfn delete[T](self: Tree[T], value: T, compare: (T, T) -> Int) -> Tree[T]\n```",
+      "source_content_hash": "8e176d2801ddf661a0298ce9ba2bef8baa9e46667ce70fb51f900897f9d76d86",
+      "node_type": "code",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_ee5332da"
+      }
+    },
+    {
+      "segment_id": "4cba7b8e",
+      "source_content": "Here, the data structure itself accepts a type parameter to represent the data type it stores. Considering that a binary search tree should be ordered, we need to know how to sort this specific type, hence we accept a comparison function as a parameter, which should return an integer representing the comparison result as less than, equal to, or greater than, as the code shows. Indeed, we could completely use another feature of MoonBit to omit this parameter. We will introduce this in the next lesson.",
+      "source_content_hash": "f1cc3502b361d74eaedaf02b330db6e5f8c9ec4988c8ee45f1b482e8dfd6d591",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "ここで、データ構造自体は格納するデータ型を表す型パラメータを受け取ります。二分探索木は順序付けされている必要があるため、この特定の型をどのようにソートするかを知る必要があります。したがって、比較関数をパラメータとして受け取ります。この関数は、比較結果を小なり、等しい、大なりとして表す整数を返す必要があります。コードに示されている通りです。実際、MoonBitの別の機能を使用してこのパラメータを省略することも完全に可能です。これについては次のレッスンで紹介します。"
+      }
+    },
+    {
+      "segment_id": "7020a57c",
+      "source_content": "## Summary",
+      "source_content_hash": "30ac03ff33731529441be8fbe52a3bd0d4c5ec830e806d54692168ebb7f98ada",
+      "node_type": "heading",
+      "translatable": true,
+      "translations": {
+        "ja": "## まとめ"
+      }
+    },
+    {
+      "segment_id": "d58af824",
+      "source_content": "In this chapter, we introduced the concepts of generics and functions as first-class citizens, and we saw how to use them in MoonBit. We also discussed the implementations of the data structures stack and queue.",
+      "source_content_hash": "b06b7f6533bc418587d13f36988ab906b05b0e5692137b98de6f922ce7abb455",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "この章では、ジェネリクスと第一級関数としての関数の概念を紹介し、MoonBitでそれらを使用する方法を見てきました。また、データ構造スタックとキューの実装についても議論しました。"
+      }
+    },
+    {
+      "segment_id": "0274aeec",
+      "source_content": "For further exploration, please refer to:",
+      "source_content_hash": "18354b31a6ce4444376362406bccc4a548acbf163acec1b1361ed215e3534f9f",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "さらに詳しく知りたい場合は、以下を参照してください:"
+      }
+    },
+    {
+      "segment_id": "87cc23fd",
+      "source_content": "- _**Software Foundations, Volume 1: Logical Foundations**_: Poly; or\n- _**Programming Language Foundations in Agda**_: Lists",
+      "source_content_hash": "ef46baa5052ec84407a35db3e6f171cfc3efbf4817d77c01c87bd30a176341cf",
+      "node_type": "list",
+      "translatable": true,
+      "translations": {
+        "ja": "- _**Software Foundations, Volume 1: Logical Foundations**_: Poly; または\n- _**Programming Language Foundations in Agda**_: Lists"
+      }
+    }
+  ],
+  "target_i18n_subpath": "docusaurus-plugin-content-docs/current/06-generics-higher-order-functions.md",
+  "last_updated_timestamp": "2025-06-06T05:19:35.745198+00:00",
+  "schema_version": "1.0",
+  "translated_versions": {
+    "ja": "7a411725294d4a33947f6bd0b1086bb72f3620d1edf8ee393c50347b32d20215"
+  }
+}

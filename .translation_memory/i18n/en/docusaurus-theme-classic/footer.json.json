@@ -1,0 +1,31 @@
+{
+  "source_file_path_relative_to_docusaurus_root": "i18n/en/docusaurus-theme-classic/footer.json",
+  "source_file_content_hash": "f5e060068175506951ddfb6c7fbe380ec0c6c4d372cb5861b53cbbf84a788742",
+  "segments": [
+    {
+      "segment_id": "copyright",
+      "source_content": "Copyright © 2025 IDEA. All rights reserved.",
+      "source_content_hash": "945fbb6b4dabd915dd67043bac95eeeab713346ba7c48eaeffb327b318ac776a",
+      "node_type": "json_message",
+      "translatable": true,
+      "translations": {
+        "ja": "Copyright © 2025 IDEA. All rights reserved."
+      },
+      "metadata": {
+        "json_description": "The footer copyright"
+      }
+    }
+  ],
+  "original_json_structure": {
+    "copyright": {
+      "message": "Copyright © 2025 IDEA. All rights reserved.",
+      "description": "The footer copyright"
+    }
+  },
+  "target_i18n_subpath": "docusaurus-theme-classic/footer.json",
+  "last_updated_timestamp": "2025-06-06T05:19:35.740447+00:00",
+  "schema_version": "1.0",
+  "translated_versions": {
+    "ja": "f5e060068175506951ddfb6c7fbe380ec0c6c4d372cb5861b53cbbf84a788742"
+  }
+}

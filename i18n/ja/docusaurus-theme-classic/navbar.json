@@ -1,0 +1,14 @@
+{
+  "title": {
+    "message": "MoonBitでプログラミング：モダンなアプローチ",
+    "description": "The title in the navbar"
+  },
+  "logo.alt": {
+    "message": "MoonBitロゴ",
+    "description": "The alt text of navbar logo"
+  },
+  "item.label.Textbook": {
+    "message": "テキストブック",
+    "description": "Navbar item with label Textbook"
+  }
+}

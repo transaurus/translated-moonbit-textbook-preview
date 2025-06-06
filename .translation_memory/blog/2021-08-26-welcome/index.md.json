@@ -1,0 +1,112 @@
+{
+  "source_file_path_relative_to_docusaurus_root": "blog/2021-08-26-welcome/index.md",
+  "source_file_content_hash": "512463a8c549f9566a384dc0b51fe22db6caab9860ad909d502c8fded68e26f0",
+  "segments": [
+    {
+      "segment_id": "58cfcc64",
+      "source_content": "---\nslug: welcome\ntitle: Welcome\nauthors: [slorber, yangshun]\ntags: [facebook, hello, docusaurus]\n---",
+      "source_content_hash": "c49febaae4f40c199208a4a35d7d3ea8b22c18517b572cc1796af156272aad0b",
+      "node_type": "yaml",
+      "translatable": false,
+      "translations": {
+        "ja": "@@untranslatable_placeholder_58cfcc64"
+      }
+    },
+    {
+      "segment_id": "3fbbcc07",
+      "source_content": "[Docusaurus blogging features](https://docusaurus.io/docs/blog) are powered by the [blog plugin](https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-content-blog).",
+      "source_content_hash": "bb771ad6fe26577c4201562ef2abc5f34a9bc4d0d772c781795c2e67f9385571",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "[Docusaurusのブログ機能](https://docusaurus.io/docs/blog)は[blogプラグイン](https://docusaurus.io/docs/api/plugins/@docusaurus/plugin-content-blog)によって提供されています。"
+      }
+    },
+    {
+      "segment_id": "7e5c5a39",
+      "source_content": "Simply add Markdown files (or folders) to the `blog` directory.",
+      "source_content_hash": "dc48c2fdb49d9d1c104c602bd861ea4d4e3c4dfa51963f19b321039de72aa61c",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "`blog`ディレクトリにMarkdownファイル（またはフォルダ）を追加するだけで利用できます。"
+      }
+    },
+    {
+      "segment_id": "8d66f911",
+      "source_content": "Regular blog authors can be added to `authors.yml`.",
+      "source_content_hash": "f25213274a9bb612e3b71068401a0caa2b73c3340295ca2c99904f79057d7cfa",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "定期的にブログを投稿する著者は`authors.yml`に追加できます。"
+      }
+    },
+    {
+      "segment_id": "ad8fd492",
+      "source_content": "The blog post date can be extracted from filenames, such as:",
+      "source_content_hash": "77905d957b261abc1ed88c505e1b59bdc4db530358ea3dcab26bd7f5a7067b59",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "ブログ投稿の日付は以下のようなファイル名から自動的に抽出されます："
+      }
+    },
+    {
+      "segment_id": "4ddf6ae7",
+      "source_content": "- `2019-05-30-welcome.md`\n- `2019-05-30-welcome/index.md`",
+      "source_content_hash": "86b7b41871bcfa4b32f1e3904e6d61ae3df5059851b67814771c07327366deae",
+      "node_type": "list",
+      "translatable": true,
+      "translations": {
+        "ja": "- `2019-05-30-welcome.md`\n- `2019-05-30-welcome/index.md`"
+      }
+    },
+    {
+      "segment_id": "f6168993",
+      "source_content": "A blog post folder can be convenient to co-locate blog post images:",
+      "source_content_hash": "3abe7361f09fade2ae67383a39b57dd5ca5de0bf624d6e1a3f9f594728c3c009",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "ブログ投稿用フォルダを使用すると、関連画像を一緒に管理するのに便利です："
+      }
+    },
+    {
+      "segment_id": "f5f6d2ce",
+      "source_content": "![Docusaurus Plushie](./docusaurus-plushie-banner.jpeg)",
+      "source_content_hash": "9306bfc01ed23471d7b64f700f347965868fbf20fc2e69c321f238f1167b8fee",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "![Docusaurusのぬいぐるみ](./docusaurus-plushie-banner.jpeg)"
+      }
+    },
+    {
+      "segment_id": "2fdadb08",
+      "source_content": "The blog supports tags as well!",
+      "source_content_hash": "4aa943d2200aac143a605df49c11183bfe2ce791bb439061588fba59f230c859",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "ブログではタグ機能もサポートされています！"
+      }
+    },
+    {
+      "segment_id": "f2c2bdd0",
+      "source_content": "**And if you don't want a blog**: just delete this directory, and use `blog: false` in your Docusaurus config.",
+      "source_content_hash": "a92cb3bb5b4a9dac55ae4af63b30f5d1f98094ae2247c5ce353899660c8ee989",
+      "node_type": "paragraph",
+      "translatable": true,
+      "translations": {
+        "ja": "**ブログ機能が不要な場合**：このディレクトリを削除し、Docusaurus設定で`blog: false`を指定してください。"
+      }
+    }
+  ],
+  "target_i18n_subpath": "docusaurus-plugin-content-blog/2021-08-26-welcome/index.md",
+  "last_updated_timestamp": "2025-06-06T05:19:35.743634+00:00",
+  "schema_version": "1.0",
+  "translated_versions": {
+    "ja": "512463a8c549f9566a384dc0b51fe22db6caab9860ad909d502c8fded68e26f0"
+  }
+}

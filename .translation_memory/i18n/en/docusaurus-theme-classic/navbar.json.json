@@ -1,0 +1,65 @@
+{
+  "source_file_path_relative_to_docusaurus_root": "i18n/en/docusaurus-theme-classic/navbar.json",
+  "source_file_content_hash": "34f0e14bf777b7ac574c27e35ae1504fc4d6341fb8582293297011564956ad72",
+  "segments": [
+    {
+      "segment_id": "title",
+      "source_content": "Programming with MoonBit: A Modern Approach",
+      "source_content_hash": "c639efd2b177b48657671bf8e93df7fc150e9fd649377067522d1244cbbbb940",
+      "node_type": "json_message",
+      "translatable": true,
+      "translations": {
+        "ja": "MoonBitでプログラミング：モダンなアプローチ"
+      },
+      "metadata": {
+        "json_description": "The title in the navbar"
+      }
+    },
+    {
+      "segment_id": "logo.alt",
+      "source_content": "MoonBit Logo",
+      "source_content_hash": "970d0bba07a6f2444567bc6b5ea2e011402d95e449a0f4043b8733b1ef207eb8",
+      "node_type": "json_message",
+      "translatable": true,
+      "translations": {
+        "ja": "MoonBitロゴ"
+      },
+      "metadata": {
+        "json_description": "The alt text of navbar logo"
+      }
+    },
+    {
+      "segment_id": "item.label.Textbook",
+      "source_content": "Textbook",
+      "source_content_hash": "884786adffa34d9b1e4f9dcfb10e3a0eb8ca236d6dd7fee9c9b5871fbd6bd3a3",
+      "node_type": "json_message",
+      "translatable": true,
+      "translations": {
+        "ja": "テキストブック"
+      },
+      "metadata": {
+        "json_description": "Navbar item with label Textbook"
+      }
+    }
+  ],
+  "original_json_structure": {
+    "title": {
+      "message": "Programming with MoonBit: A Modern Approach",
+      "description": "The title in the navbar"
+    },
+    "logo.alt": {
+      "message": "MoonBit Logo",
+      "description": "The alt text of navbar logo"
+    },
+    "item.label.Textbook": {
+      "message": "Textbook",
+      "description": "Navbar item with label Textbook"
+    }
+  },
+  "target_i18n_subpath": "docusaurus-theme-classic/navbar.json",
+  "last_updated_timestamp": "2025-06-06T05:19:35.741155+00:00",
+  "schema_version": "1.0",
+  "translated_versions": {
+    "ja": "34f0e14bf777b7ac574c27e35ae1504fc4d6341fb8582293297011564956ad72"
+  }
+}
